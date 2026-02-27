@@ -34,11 +34,11 @@ Please contact us!
 
 Thank you!
 
-* Luís Miguel Branco Sampaio Costa luismbsampaio@gmail.com
-* team member name and email
-* team member name and email
-* team member name and email
-* team member name and email
+* Luís Miguel Branco Sampaio Costa | luismbsampaio@gmail.com
+* José Dinis Rocha Melo Maçorano dos Santos | josedrmsantos1@gmail.com
+* Afosnso Sofia de Moura | up202403939@edu.fe.up.pt
+* Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt
+* Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt
 
 ---
 ## Business Modelling
