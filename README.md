@@ -114,7 +114,6 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto cliente, quero conseguir limpar a lista de produtos para que não tenha que remover manualmente do carrinho.
 
 <!--
->>>>>>> fb23739ffcdeb6139b9d6c8d3349428d667ed373
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
 
 For LEIC-ES-2025-26, the requirements will be gathered and documented as user stories.
