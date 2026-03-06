@@ -6,27 +6,27 @@
 
 Welcome to the documentation of _[your product name]_!
 
-This Software Development Report, tailored for LEIC-ES-2025-26, provides comprehensive details about _[your product name]_, starting from an high-level vision and going into low-level implementation decisions. 
+This Software Development Report, tailored for LEIC-ES-2025-26, provides comprehensive details about _[your product name]_, starting from an high-level vision and going into low-level implementation decisions.
 
-It is organised by the following activities: 
+It is organised by the following activities:
 
-* [Business modeling](#Business-Modelling) 
-  * [Product Vision](#Product-Vision)
-  * [Features and Assumptions](#Features-and-Assumptions)
-* [Requirements](#Requirements)
-  * [User stories](#User-stories)
-  * [Domain model](#Domain-model)
-  * [User interfaces](#User-interfaces)
-* [Architecture and Design](#Architecture-And-Design)
-  * [Logical architecture](#Logical-Architecture)
-  * [Physical architecture](#Physical-Architecture)
-  * [Functional prototype](#Functional-Prototype)
-* [Project management](#Project-Management)
-  * [Sprint 0](#Sprint-0)
-  * [Sprint 1](#Sprint-1)
-  * [Sprint 2](#Sprint-2)
-  * [Sprint 3](#Sprint-3)
-  * [Final Release](#Final-Release)
+- [Business modeling](#Business-Modelling)
+  - [Product Vision](#Product-Vision)
+  - [Features and Assumptions](#Features-and-Assumptions)
+- [Requirements](#Requirements)
+  - [User stories](#User-stories)
+  - [Domain model](#Domain-model)
+  - [User interfaces](#User-interfaces)
+- [Architecture and Design](#Architecture-And-Design)
+  - [Logical architecture](#Logical-Architecture)
+  - [Physical architecture](#Physical-Architecture)
+  - [Functional prototype](#Functional-Prototype)
+- [Project management](#Project-Management)
+  - [Sprint 0](#Sprint-0)
+  - [Sprint 1](#Sprint-1)
+  - [Sprint 2](#Sprint-2)
+  - [Sprint 3](#Sprint-3)
+  - [Final Release](#Final-Release)
 
 Contributions are expected to be made exclusively by the initial team, but we may open them to the community, after the course, in all areas and topics: requirements, technologies, development, experimentation, testing, etc.
 
@@ -34,35 +34,34 @@ Please contact us!
 
 Thank you!
 
-* Luís Miguel Branco Sampaio Costa | luismbsampaio@gmail.com
-* José Dinis Rocha Melo Maçorano dos Santos | josedrmsantos1@gmail.com
-* Afonso Sofia de Moura | up202403939@edu.fe.up.pt
-* Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt
-* Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt
+- Luís Miguel Branco Sampaio Costa | luismbsampaio@gmail.com
+- José Dinis Rocha Melo Maçorano dos Santos | josedrmsantos1@gmail.com
+- Afonso Sofia de Moura | up202403939@edu.fe.up.pt
+- Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt
+- Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt
 
 ---
+
 ## Business Modelling
 
 O produto surge na necessidade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermercados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no historico, dividir o cesto de compras em 2 supermercados, entre outras.
-
 
 Business modeling in software development involves defining the product's vision, understanding market needs, aligning features with user expectations, and setting the groundwork for strategic planning and execution.
 
 ### Product Vision
 
-E se houvesse um app que disesse onde o teu cesto de compras é mais barato? 
+E se houvesse um app que disesse onde o teu cesto de compras é mais barato?
 (nome da app) faz exatamente isso, dado um cesto de produtos a aplicação cruza os dados (incluindo as promoções diárias) dos principais supermercados em Portugal e diz onde o preço final do cesto é mais barato. Mais ainda, se tiveres disponibilidade de ir a mais do que um supermercado e quiseres poupar ainda mais, tens também a opção de receber a informação de que x produtos comprar num supermercado e o restante no outro.
 A app torna-se bastante útil porque o preço dos produtos está atualizado ao minuto, ou seja, consegue tem o preço do produto com o desconto das campanhas diárias.
 
-
 O produto surge na necissade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermercados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no histórico, dividir o cesto de compras em 2 supermercados, entre outras.
 
-<!-- 
-Start by defining a clear and concise product vision for your app, to help members of the team, contributors, and users into focusing their often disparate views into a concise, visual, and short textual form. 
+<!--
+Start by defining a clear and concise product vision for your app, to help members of the team, contributors, and users into focusing their often disparate views into a concise, visual, and short textual form.
 
 The vision should provide a "high concept" of the product for marketers, developers, and managers.
 
-A product vision describes the essential of the product and sets the direction to where a product is headed, and what the product will deliver in the future. 
+A product vision describes the essential of the product and sets the direction to where a product is headed, and what the product will deliver in the future.
 
 **We favor a catchy and concise statement, ideally one sentence.**
 
@@ -74,7 +73,6 @@ To learn more about how to write a good product vision, please read:
 * [Product Management: Product Vision, by ProductPlan](https://www.productplan.com/glossary/product-vision/)
 * [20 Inspiring Vision Statement Examples (2019 Updated), by lifehack.org](https://www.lifehack.org/articles/work/20-sample-vision-statement-for-the-new-startup.html)
 -->
-
 
 ### Features and Assumptions
 
@@ -90,8 +88,7 @@ To learn more about how to write a good product vision, please read:
 - Simbolo nutricional - Indicador da qualidade nutricinal de cada produto.
 - Horário - horário da loja onde se vai fazer compras.
 
-
-<!-- 
+<!--
 Indicate an  initial/tentative list of high-level features - high-level capabilities or desired services of the system that are necessary to deliver benefits to the users.
  - Feature XPTO - a few words to briefly describe the feature
  - Feature ABCD - ...
@@ -110,25 +107,28 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto cliente, quero que na pagina inicial da aplicação me apareça produtos com preços apeteciveis por causa de promoções individuais para aproveitar promoções ocasionais.
 - Enquanto cliente, quero ter a opção de partilhar o carrinhos de compras com outra conta para um familiar/amigo saiba o que vou comprar.
 - Enquanto cliente, quero ver o meu perfil porque quero saber se estou na minha conta.
-- Enquanto cliente, quero ver se o produto tem o símbolo da pegada de carbono, porque me preocupo com o ambiente
+- Enquanto cliente, quero ver se o produto tem o símbolo da pegada de carbono, porque me preocupo com o ambiente.
+- Enquanto cliente, quero registar uma conta na aplicação, de modo a salvar toda a minha informação.
+- Enquanto cliente, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
+- Enquanto cliente, quero conseguir saber o horário de abertura e fecho de um dado supermercado para que seja mais prático saber quando posso fazer compras.
+- Enquanto cliente, quero conseguir limpar a lista de produtos para que não tenha que remover manualmente do carrinho.
 
-
-
-<!-- 
+<!--
+>>>>>>> fb23739ffcdeb6139b9d6c8d3349428d667ed373
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
 
-For LEIC-ES-2025-26, the requirements will be gathered and documented as user stories. 
+For LEIC-ES-2025-26, the requirements will be gathered and documented as user stories.
 
 Please add in this section a concise summary of all the user stories (not each user story!).
 
 **User stories as GitHub Project Items**
-The user stories themselves should be created and described as items in your GitHub Project with the label "user story". 
+The user stories themselves should be created and described as items in your GitHub Project with the label "user story".
 
 A user story is a description of a desired functionality told from the perspective of the user or customer. A starting template for the description of a user story is *As a < user role >, I want < goal > so that < reason >.*
 
 Name the item with either the full user story or a shorter name (recommended). In the “comments” field, add relevant notes, mockup images, and acceptance test scenarios, linking to the acceptance tests when available, and finally estimate value and effort.
 
-**INVEST in good user stories**. 
+**INVEST in good user stories**.
 You may add more details after, but the shorter and complete, the better. In order to decide if the user story is good, please follow the [INVEST guidelines](https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/).
 
 **User interface mockups**.
@@ -144,9 +144,9 @@ At the end, it is good to add a rough indication of the value of the user story 
 
 ### Domain model
 
-<!-- 
-To better understand the context of the software system, it is useful to have a simple UML class diagram with all and only the key concepts (names, attributes) and relationships involved of the problem domain addressed by your app. 
-Also provide a short textual description of each concept (domain class). 
+<!--
+To better understand the context of the software system, it is useful to have a simple UML class diagram with all and only the key concepts (names, attributes) and relationships involved of the problem domain addressed by your app.
+Also provide a short textual description of each concept (domain class).
 
 Example:
  <p align="center" justify="center">
@@ -154,20 +154,20 @@ Example:
 </p>
 -->
 
-
 ## Architecture and Design
+
 <!--
-The architecture of a software system encompasses the set of key decisions about its organization. 
+The architecture of a software system encompasses the set of key decisions about its organization.
 
 A well written architecture document is brief and reduces the amount of time it takes new programmers to a project to understand the code to feel able to make modifications and enhancements.
 
-To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them. 
+To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them.
 
 In this section you should start by briefly describing the components of the project and their interrelations. You should describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
 -->
 
-
 ### Logical architecture
+
 <!--
 The purpose of this subsection is to document the high-level logical structure of the code (Logical View), using a UML diagram with logical packages, without the worry of allocating to components, processes or machines.
 
@@ -178,8 +178,8 @@ Example of _UML package diagram_ showing a _logical view_ of the Eletronic Ticke
 ![LogicalView](https://user-images.githubusercontent.com/9655877/160585416-b1278ad7-18d7-463c-b8c6-afa4f7ac7639.png)
 -->
 
-
 ### Physical architecture
+
 <!--
 The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams (Deployment View) or component diagrams (Implementation View), separate or integrated, showing the physical structure of the system.
 
@@ -190,8 +190,8 @@ Example of _UML deployment diagram_ showing a _deployment view_ of the Eletronic
 ![DeploymentView](https://user-images.githubusercontent.com/9655877/160592491-20e85af9-0758-4e1e-a704-0db1be3ee65d.png)
 -->
 
-
 ### Functional prototype
+
 <!--
 To help on validating all the architectural, design and technological decisions made, we usually implement a functional prototype, a thin vertical slice of the system integrating as much technologies as we can.
 
@@ -201,6 +201,7 @@ At this phase, instead of a complete user story, you can simply implement a smal
 -->
 
 ## Project management
+
 <!--
 Software project management is the art and science of planning and leading software projects, in which they are planned, implemented, monitored and controlled.
 
@@ -208,11 +209,11 @@ In the context of ESOF, we recommend each team to adopt a set of project managem
 
 Common practices of managing agile software development with Scrum are: backlog management, release management, estimation, Sprint planning, Sprint development, acceptance tests, and Sprint retrospectives.
 
-You can find below information and references related with the project management: 
+You can find below information and references related with the project management:
 
 * Backlog management: Product backlog and Sprint backlog in a [Github Projects board](https://github.com/orgs/FEUP-LEIC-ES-2023-24/projects/64);
 * Release management: [v0](#), v1, v2, v3, ...;
-* Sprint planning and retrospectives: 
+* Sprint planning and retrospectives:
   * plans: screenshots of Github Projects board at begin and end of each Sprint;
   * retrospectives: meeting notes in a document in the repository, addressing the following questions:
     * Did well: things we did well and should continue;
