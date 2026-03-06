@@ -103,6 +103,16 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 ## Requirements
 
 ### User Stories
+
+- Enquanto cliente, quero ver onde o meu carrinho de compras é mais barato porque quero gastar menos dinheiro.
+- Enquanto cliente, quero filtrar os supermecados onde a pesquisa vai ser feita porque eu não gosto dos produtos de X supermecados.
+- Enquanto cliente, quero ter a opção de dividir o carrinho de compras em pelo menos dois supermecados para consesguir poupar ainda mais dinheiro.
+- Enquanto cliente, quero que na pagina inicial da aplicação me apareça produtos com preços apeteciveis por causa de promoções individuais para aproveitar promoções ocasionais.
+- Enquanto cliente, quero ter a opção de partilhar o carrinhos de compras com outra conta para um familiar/amigo saiba o que vou comprar.
+
+
+
+
 <!-- 
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
 
