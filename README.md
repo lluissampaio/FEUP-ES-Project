@@ -109,6 +109,8 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto cliente, quero ter a opção de dividir o carrinho de compras em pelo menos dois supermecados para consesguir poupar ainda mais dinheiro.
 - Enquanto cliente, quero que na pagina inicial da aplicação me apareça produtos com preços apeteciveis por causa de promoções individuais para aproveitar promoções ocasionais.
 - Enquanto cliente, quero ter a opção de partilhar o carrinhos de compras com outra conta para um familiar/amigo saiba o que vou comprar.
+- Enquanto cliente, quero registar uma conta na aplicação, de modo a salvar toda a minha informação.	
+- Enquanto cliente, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
 
 
 
