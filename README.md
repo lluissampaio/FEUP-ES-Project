@@ -82,7 +82,13 @@ To learn more about how to write a good product vision, please read:
 - Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermecado ou em mais que um, conseguindo preços ainda mais baixos
 - Recomendações - com base no histório de compras, recomendar certos produtos
 - Filtrar a pesquisa por um conjunto de lojas - Utilizador tem liberdade de filtrar em que supermecados a query vai ser feita
-- 
+- Simbolo ambiental - Se o produto tiver pouca pegada ambiental e for produzido de forma favorável ao ambiente terá um simbolo que o indicará
+- Perfil - Cada utilizador terá um perfil próprio com as suas informações pessoais.
+- Carrinho partilhado - Um carrinho que pode ser partilhado por vários utilizadores.
+- Modo offline - Caso o utilizador não tenha acesso à internet, poderá abrir a aplicação e ver o que tem no carrinho sabendo assim o que precisa comprar.
+- Definições - um menu onde tenha algumas definições da própria aplicação, notificações entre outras.
+- Simbolo nutricional - Indicador da qualidade nutricinal de cada produto.
+- Horário - horário da loja onde se vai fazer compras.
 
 <!-- 
 Indicate an  initial/tentative list of high-level features - high-level capabilities or desired services of the system that are necessary to deliver benefits to the users.
