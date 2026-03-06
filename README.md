@@ -36,14 +36,14 @@ Thank you!
 
 * Luís Miguel Branco Sampaio Costa | luismbsampaio@gmail.com
 * José Dinis Rocha Melo Maçorano dos Santos | josedrmsantos1@gmail.com
-* Afosnso Sofia de Moura | up202403939@edu.fe.up.pt
+* Afonso Sofia de Moura | up202403939@edu.fe.up.pt
 * Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt
 * Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt
 
 ---
 ## Business Modelling
 
-O produto surge na necissade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermecados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no historico, dividir o cesto de compras em 2 supermecados, entre outras.
+O produto surge na necessidade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermercados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no historico, dividir o cesto de compras em 2 supermercados, entre outras.
 
 
 Business modeling in software development involves defining the product's vision, understanding market needs, aligning features with user expectations, and setting the groundwork for strategic planning and execution.
@@ -51,11 +51,11 @@ Business modeling in software development involves defining the product's vision
 ### Product Vision
 
 E se houvesse um app que disesse onde o teu cesto de compras é mais barato? 
-(nome da app) faz exatamente isso, dado um cesto de produtos a aplicação cruza os dados (incluindo as promoções diárias) dos principais supermecados em Portugal e diz onde o preço final do cesto é mais barato. Mais ainda, se tiveres disponibilidade de ir a mais do que um supermecado e quiseres poupar ainda mais, tens também a opção de receber a informação de que x produtos comprar num supermecado e o restante no outro.
+(nome da app) faz exatamente isso, dado um cesto de produtos a aplicação cruza os dados (incluindo as promoções diárias) dos principais supermercados em Portugal e diz onde o preço final do cesto é mais barato. Mais ainda, se tiveres disponibilidade de ir a mais do que um supermercado e quiseres poupar ainda mais, tens também a opção de receber a informação de que x produtos comprar num supermercado e o restante no outro.
 A app torna-se bastante útil porque o preço dos produtos está atualizado ao minuto, ou seja, consegue tem o preço do produto com o desconto das campanhas diárias.
 
 
-O produto surge na necissade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermecados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no historico, dividir o cesto de compras em 2 supermecados, entre outras.
+O produto surge na necissade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermercados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no histórico, dividir o cesto de compras em 2 supermercados, entre outras.
 
 <!-- 
 Start by defining a clear and concise product vision for your app, to help members of the team, contributors, and users into focusing their often disparate views into a concise, visual, and short textual form. 
@@ -78,8 +78,8 @@ To learn more about how to write a good product vision, please read:
 
 ### Features and Assumptions
 
-- Feature principal - dado um cesto de produtos, a app dá output ao supermecado/loja onde o preço final é mais barato (já com as promoções)
-- Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermecado ou em mais que um, conseguindo preços ainda mais baixos
+- Feature principal - dado um cesto de produtos, a app dá output ao supermercado/loja onde o preço final é mais barato (já com as promoções)
+- Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermercado ou em mais que um, conseguindo preços ainda mais baixos
 - Recomendações - com base no histório de compras, recomendar certos produtos
 - Filtrar a pesquisa por um conjunto de lojas - Utilizador tem liberdade de filtrar em que supermecados a query vai ser feita
 - Simbolo ambiental - Se o produto tiver pouca pegada ambiental e for produzido de forma favorável ao ambiente terá um simbolo que o indicará
@@ -89,6 +89,7 @@ To learn more about how to write a good product vision, please read:
 - Definições - um menu onde tenha algumas definições da própria aplicação, notificações entre outras.
 - Simbolo nutricional - Indicador da qualidade nutricinal de cada produto.
 - Horário - horário da loja onde se vai fazer compras.
+
 
 <!-- 
 Indicate an  initial/tentative list of high-level features - high-level capabilities or desired services of the system that are necessary to deliver benefits to the users.
