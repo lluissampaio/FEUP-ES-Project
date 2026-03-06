@@ -80,7 +80,7 @@ To learn more about how to write a good product vision, please read:
 - Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermercado ou em mais que um, conseguindo preços ainda mais baixos
 - Recomendações - com base no histório de compras, recomendar certos produtos
 - Filtrar a pesquisa por um conjunto de lojas - Utilizador tem liberdade de filtrar em que supermecados a query vai ser feita
-- Simbolo ambiental - Se o produto tiver pouca pegada ambiental e for produzido de forma favorável ao ambiente terá um simbolo que o indicará
+- Simbolo pegada de carbono - Se o produto tiver pouca pegada de carbono e for produzido de forma favorável ao ambiente terá um simbolo que o indicará
 - Perfil - Cada utilizador terá um perfil próprio com as suas informações pessoais.
 - Carrinho partilhado - Um carrinho que pode ser partilhado por vários utilizadores.
 - Modo offline - Caso o utilizador não tenha acesso à internet, poderá abrir a aplicação e ver o que tem no carrinho sabendo assim o que precisa comprar.
@@ -110,6 +110,9 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
 - Enquanto utilizador, quero consultar o horário de abertura/fecho de um dado supermercado para que seja mais prático saber quando posso fazer compras.
 - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
+- Enquanto utilizador registado, quero ver o meu perfil porque quero saber se estou na minha conta.
+- Enquanto utilizador, quero ver se o produto tem o símbolo da pegada de carbono porque me preocupo com o ambiente.
+
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
 
