@@ -104,13 +104,13 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 
 ### User Stories
 
-- Enquanto cliente, quero ver onde o meu carrinho de compras é mais barato porque quero gastar menos dinheiro.
-- Enquanto cliente, quero filtrar os supermecados onde a pesquisa vai ser feita porque eu não gosto dos produtos de X supermecados.
-- Enquanto cliente, quero ter a opção de dividir o carrinho de compras em pelo menos dois supermecados para consesguir poupar ainda mais dinheiro.
-- Enquanto cliente, quero que na pagina inicial da aplicação me apareça produtos com preços apeteciveis por causa de promoções individuais para aproveitar promoções ocasionais.
-- Enquanto cliente, quero ter a opção de partilhar o carrinhos de compras com outra conta para um familiar/amigo saiba o que vou comprar.
-- Enquanto cliente, quero registar uma conta na aplicação, de modo a salvar toda a minha informação.	
-- Enquanto cliente, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
+- Enquanto utilizador, quero consultar onde o meu carrinho de compras é mais barato porque quero saber onde é mais barato para fazer a compra.
+- Enquanto utilizador, quero selecionar os supermecados onde a pesquisa vai ser feita porque eu não gosto dos produtos de X supermecados.
+- Enquanto utilizador, quero dividir o carrinho de compras em pelo menos dois supermecados para conseguir poupar ainda mais dinheiro.
+- Enquanto utilizador, quero visualizar produtos com preços mais baixo (que o habitual) por causa de promoções individuais para aproveitar promoções ocasionais.
+- Enquanto utilizador registado, quero partilhar o carrinho de compras com outro utilizador registado para qualquer pessoa saiba o que vou comprar.
+- Enquanto utilizador não registado, quero registar uma conta na aplicação de modo a aceder a mais funcionalidades.
+- Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
 
 
 
