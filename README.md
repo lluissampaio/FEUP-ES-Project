@@ -80,12 +80,12 @@ To learn more about how to write a good product vision, please read:
 - Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermercado ou em mais que um, conseguindo preços ainda mais baixos
 - Recomendações - com base no histório de compras, recomendar certos produtos
 - Filtrar a pesquisa por um conjunto de lojas - Utilizador tem liberdade de filtrar em que supermecados a query vai ser feita
-- Simbolo pegada de carbono - Se o produto tiver pouca pegada de carbono e for produzido de forma favorável ao ambiente terá um simbolo que o indicará
+- símbolo pegada de carbono - Se o produto tiver pouca pegada de carbono e for produzido de forma favorável ao ambiente terá um símbolo que o indicará
 - Perfil - Cada utilizador terá um perfil próprio com as suas informações pessoais.
 - Carrinho partilhado - Um carrinho que pode ser partilhado por vários utilizadores.
 - Modo offline - Caso o utilizador não tenha acesso à internet, poderá abrir a aplicação e ver o que tem no carrinho sabendo assim o que precisa comprar.
 - Definições - um menu onde tenha algumas definições da própria aplicação, notificações entre outras.
-- Simbolo nutricional - Indicador da qualidade nutricinal de cada produto.
+- símbolo nutricional - Indicador da qualidade nutricinal de cada produto.
 - Horário - horário da loja onde se vai fazer compras.
 
 <!--
@@ -110,8 +110,22 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
 - Enquanto utilizador, quero consultar o horário de abertura/fecho de um dado supermercado para que seja mais prático saber quando posso fazer compras.
 - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
-- Enquanto utilizador registado, quero ver o meu perfil porque quero saber se estou na minha conta.
-- Enquanto utilizador, quero ver se o produto tem o símbolo da pegada de carbono porque me preocupo com o ambiente.
+J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta. 
+
+Business value - Ao saber que estou na minha conta sei que tenho acesso ao meu cesto e histórico de compras. 
+
+Assumptions /Dependencies– O utilizador tem de estar autenticado para que seja possivel ver o seu perfil. 
+
+Acceptance tests - Primeiro, faria um teste com credenciais que funcionassem, ou seja, utilizaria o email e a palavra-passe de um conta válida. Após o login verificaria se o nome dentro da página principal da aplicação estaria de acordo com a minha conta. Por outro lado, também faria um teste onde usava credencias inválidas no sistema e verificaria se recebia uma mensagem de erro.
+
+
+K - Enquanto utilizador registado, quero ver se o produto tem o símbolo da pegada de carbono para que possa preservar o ambiente. 
+
+Business value - Enquanto apoiante da preservação ambiental, apenas considero comprar produtos que não sejam prejudiciais para o planeta ou que pelo menos tenham uma baixa pegada de carbono. 
+
+Assumptions /Dependencies– O utilizador deve aceder à página de detalhe de um produto para visualizar informações específicas, como o símbolo ecológico. 
+
+Acceptance tests - Pesquisaria um dos produtos que sei que tem de ter esse símbolo. Ao entrar no produto em questão, verificaria se o símbolo estaria na página. Faria exatamente o mesmo com um produto que não fosse ambientalmente favorável e verificaria se não tinha o símbolo. 
 
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
