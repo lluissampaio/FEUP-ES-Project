@@ -147,13 +147,13 @@ Email já utilizado:
 
 Dado que estou na página de registo, quando preencho o campo do email com um endereço que já se encontra registado, e os restantes campos com dados válidos, e clico no botão "Registar", devo ver uma mensagem de erro apropriada.
 
-G - Enquanto utilizador, quero conseguir saber o horário de abertura e fecho de um supermercado próximo para que seja mais prático saber quando posso fazer compras.
+G - Enquanto utilizador, quero conseguir consultar o horário de funcionamento dos supermercados, para planear as minhas compras de forma mais eficiente.
 
 Business Value - Pretendo reduzir o meu tempo de busca para horário de supermercados e aumentar a utilidade da app.
 
-Assumptions/Dependencies - Assume-se que foi implementado uma maneira de conseguir obter os dados para supermercados e que a app tem acesso à localização ou seleção da cidade.
+Assumptions/Dependencies - Sabe-se o horário dos supermercados, quais ficam numa dada região, a hora atual e a localização do utilizador (caso pretenda saber os supermercados mais próximos de si).
 
-Acceptance Tests - Clicando em cima do logo de uma cadeia de supermercados apareceria os supermercados mais próximas dessa cadeia, com abertura e fecho para o dia e estado atual ("Aberto", "Fechado"). Poderia ter a opção de "Ver mais" e apareceria todos os horários para a semana. Num caso excecional, onde não fosse possível aceder aos dados, apareceria "Não foi possível carregar dados".
+Acceptance Tests - Primeiro, faria um teste num cenário normal, escolhendo uma localização e uma cadeia de supermercados específica. Verificaria se os resultados apresentados correspondem à região e cadeia corretas e se exibem claramente os horários de abertura e fecho. Por outro lado, faria um teste num cenário excecional simulando a falta de acesso aos dados (por exemplo, falha de internet), e verificaria se a aplicação apresentava a mensagem de erro "Não foi possível carregar dados".
 
 I - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
 
@@ -161,7 +161,7 @@ Business value: Quero tornar a limpeza do carrinho mais intuitiva e mais rápida
 
 Assumptions / Dependencies: Assume-se que já foi implementado um carrinho funcional, onde é possível adicionar e remover produtos.
 
-Acceptance Tests: Clicando num botão com um ícone, a lista de produtos deve ser totalmente limpa, sendo possível adicionar e remover produtos mais tarde. Num caso excecional, onde o carrinho já estaria vazio, apareceria "Impossível limpar carrinho vazio".
+Acceptance Tests: Primeiro, num cenário normal, acederia a um carrinho que contivesse vários produtos e clicaria no botão de limpar a lista. Verificaria se o carrinho ficava totalmente vazio, com o preço total a zero, e se continuava a ser possível adicionar novos produtos depois. Por outro lado, faria um teste num cenário excecional em que o utilizador tenta limpar um carrinho que já se encontra sem produtos, e verificaria se a aplicação apresentava a mensagem indicativa "Impossível limpar carrinho vazio".
 
 J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta.
 
