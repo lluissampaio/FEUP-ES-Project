@@ -108,24 +108,37 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto utilizador registado, quero partilhar o carrinho de compras com outro utilizador registado para qualquer pessoa saiba o que vou comprar.
 - Enquanto utilizador não registado, quero registar uma conta na aplicação de modo a aceder a mais funcionalidades.
 - Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
-- Enquanto utilizador, quero consultar o horário de abertura/fecho de um dado supermercado para que seja mais prático saber quando posso fazer compras.
-- Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
-J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta. 
+  G - Enquanto utilizador, quero conseguir saber o horário de abertura e fecho de um supermercado próximo para que seja mais prático saber quando posso fazer compras.
 
-Business value - Ao saber que estou na minha conta sei que tenho acesso ao meu cesto e histórico de compras. 
+Business Value - Pretendo reduzir o meu tempo de busca para horário de supermercados e aumentar a utilidade da app.
 
-Assumptions /Dependencies– O utilizador tem de estar autenticado para que seja possivel ver o seu perfil. 
+Assumptions/Dependencies - Assume-se que foi implementado uma maneira de conseguir obter os dados para supermercados e que a app tem acesso à localização ou seleção da cidade.
+
+Acceptance Tests - Clicando em cima do logo de uma cadeia de supermercados apareceria os supermercados mais próximas dessa cadeia, com abertura e fecho para o dia e estado atual ("Aberto", "Fechado"). Poderia ter a opção de "Ver mais" e apareceria todos os horários para a semana. Num caso excecional, onde não fosse possível aceder aos dados, apareceria "Não foi possível carregar dados".
+
+I - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
+
+Business value: Quero tornar a limpeza do carrinho mais intuitiva e mais rápida.
+
+Assumptions / Dependencies: Assume-se que já foi implementado um carrinho funcional, onde é possível adicionar e remover produtos.
+
+Acceptance Tests: Clicando num botão com um ícone, a lista de produtos deve ser totalmente limpa, sendo possível adicionar e remover produtos mais tarde. Num caso excecional, onde o carrinho já estaria vazio, apareceria "Impossível limpar carrinho vazio".
+
+J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta.
+
+Business value - Ao saber que estou na minha conta sei que tenho acesso ao meu cesto e histórico de compras.
+
+Assumptions/Dependencies – O utilizador tem de estar autenticado para que seja possivel ver o seu perfil.
 
 Acceptance tests - Primeiro, faria um teste com credenciais que funcionassem, ou seja, utilizaria o email e a palavra-passe de um conta válida. Após o login verificaria se o nome dentro da página principal da aplicação estaria de acordo com a minha conta. Por outro lado, também faria um teste onde usava credencias inválidas no sistema e verificaria se recebia uma mensagem de erro.
 
+K - Enquanto utilizador registado, quero ver se o produto tem o símbolo da pegada de carbono para que possa preservar o ambiente.
 
-K - Enquanto utilizador registado, quero ver se o produto tem o símbolo da pegada de carbono para que possa preservar o ambiente. 
+Business value - Enquanto apoiante da preservação ambiental, apenas considero comprar produtos que não sejam prejudiciais para o planeta ou que pelo menos tenham uma baixa pegada de carbono.
 
-Business value - Enquanto apoiante da preservação ambiental, apenas considero comprar produtos que não sejam prejudiciais para o planeta ou que pelo menos tenham uma baixa pegada de carbono. 
+Assumptions/Dependencies– O utilizador deve aceder à página de detalhe de um produto para visualizar informações específicas, como o símbolo ecológico.
 
-Assumptions /Dependencies– O utilizador deve aceder à página de detalhe de um produto para visualizar informações específicas, como o símbolo ecológico. 
-
-Acceptance tests - Pesquisaria um dos produtos que sei que tem de ter esse símbolo. Ao entrar no produto em questão, verificaria se o símbolo estaria na página. Faria exatamente o mesmo com um produto que não fosse ambientalmente favorável e verificaria se não tinha o símbolo. 
+Acceptance tests - Pesquisaria um dos produtos que sei que tem de ter esse símbolo. Ao entrar no produto em questão, verificaria se o símbolo estaria na página. Faria exatamente o mesmo com um produto que não fosse ambientalmente favorável e verificaria se não tinha o símbolo.
 
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
