@@ -106,8 +106,46 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto utilizador, quero dividir o carrinho de compras em pelo menos dois supermecados para conseguir poupar ainda mais dinheiro.
 - Enquanto utilizador, quero visualizar produtos com preços mais baixo (que o habitual) por causa de promoções individuais para aproveitar promoções ocasionais.
 - Enquanto utilizador registado, quero partilhar o carrinho de compras com outro utilizador registado para qualquer pessoa saiba o que vou comprar.
-- Enquanto utilizador não registado, quero registar uma conta na aplicação de modo a aceder a mais funcionalidades.
-- Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
+
+F - Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
+
+Business Value: Permite ao utilizador retomar o seu progresso na aplicação. Permite proporcionar uma experiência personalizada/avançada a cada utlizador (histórico de compras, etc.)
+
+Assumptions: Assume-se que o utilizador já possui credenciais válidas, criadas previamente.
+
+Dependencies: Serviço de autenticação, existência de ecrã de login, funcionalidade de registo de conta.
+
+Acceptance tests:
+
+Login com sucesso:
+
+Dado que estou na página de login, e insiro uma combinação de email e password válida, quando clico no botão "Entrar", devo ser redirecionado para a página inicial e ver o meu nome de utilizador, com uma indicação de que a sessão foi iniciada.
+
+Login inválido:
+
+Dado que estou na página de login, e insiro uma combinação de email e password inválida (email não registado ou password incorreta), quando clico no botão "Entrar", devo ver uma mensagem de erro e permanecer na página de login.
+
+Campos não preenchidos:
+
+Dado que estou na página de login, e insiro apenas o email ou a password, quando clico no botão "Entrar", devo ver uma indicação de que campo não preenchi, e permanecer na página de login.
+
+F - Enquanto utilizador não registado, quero registar uma conta na aplicação, de modo a guardar toda a informação necessária.
+
+Business Value: Permite guardar o progresso de várias funcionalidades da aplicação, como o carrinho de compras.
+
+Assumptions: Assume-se que o utilizador tem um endereço de email válido ao qual tem acesso.
+
+Dependências: Base de dados para armazenamento de credenciais, existência de ecrã de registo.
+
+Acceptance tests:
+
+Registo com sucesso:
+
+Dado que estou na página de registo, quando preencho todos os campos com dados válidos (a definir), e clico no botão "Registar", a minha conta deve ser criada.
+
+Email já utilizado:
+
+Dado que estou na página de registo, quando preencho o campo do email com um endereço que já se encontra registado, e os restantes campos com dados válidos, e clico no botão "Registar", devo ver uma mensagem de erro apropriada.
 
 G - Enquanto utilizador, quero conseguir saber o horário de abertura e fecho de um supermercado próximo para que seja mais prático saber quando posso fazer compras.
 
