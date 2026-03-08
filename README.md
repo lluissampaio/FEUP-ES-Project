@@ -108,7 +108,8 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 - Enquanto utilizador registado, quero partilhar o carrinho de compras com outro utilizador registado para qualquer pessoa saiba o que vou comprar.
 - Enquanto utilizador não registado, quero registar uma conta na aplicação de modo a aceder a mais funcionalidades.
 - Enquanto utilizador registado, quero fazer login na aplicação de modo a todas as funcionalidades avançadas.
-  G - Enquanto utilizador, quero conseguir saber o horário de abertura e fecho de um supermercado próximo para que seja mais prático saber quando posso fazer compras.
+
+G - Enquanto utilizador, quero conseguir saber o horário de abertura e fecho de um supermercado próximo para que seja mais prático saber quando posso fazer compras.
 
 Business Value - Pretendo reduzir o meu tempo de busca para horário de supermercados e aumentar a utilidade da app.
 
