@@ -50,13 +50,13 @@ Business modeling in software development involves defining the product's vision
 
 ### Product Vision
 
-E se houvesse uma aplicação que informasse o utilizador de onde o seu cesto de compras é mais barato, ajudando-o a poupar dinheiro? (nome da app) resolve este problema. Dado um cesto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e descobre onde o preço final do cesto é mais barato. 
+E se houvesse uma aplicação que informasse o utilizador de onde o seu cesto de compras é mais barato, ajudando-o a poupar dinheiro? (nome da app) resolve este problema. Dado um cesto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e descobre onde o preço final do cesto é mais barato.
 
-Além disso, se o utilizador tiver disponibilidade de ir a mais do que um supermercado e quiser poupar ainda mais, tem também a opção de receber a informação da melhor escolha de supermercado relativamente a cada produto selecionado. 
+Além disso, se o utilizador tiver disponibilidade de ir a mais do que um supermercado e quiser poupar ainda mais, tem também a opção de receber a informação da melhor escolha de supermercado relativamente a cada produto selecionado.
 
-A aplicação destaca-se no mercado devido à sua capacidade de atualização avançada, conseguindo obter os preços dos produtos em tempo real. 
+A aplicação destaca-se no mercado devido à sua capacidade de atualização avançada, conseguindo obter os preços dos produtos em tempo real.
 
-Esta aplicação surge na necessidade do consumidor final saber onde o cesto de produtos que pretende comprar é mais barato naquele exato momento, acompanhando as ofertas diárias de cada supermercado de modo que este consiga planear eficazmente as suas compras. 
+Esta aplicação surge na necessidade do consumidor final saber onde o cesto de produtos que pretende comprar é mais barato naquele exato momento, acompanhando as ofertas diárias de cada supermercado de modo que este consiga planear eficazmente as suas compras.
 
 Partindo da ideia inicial, surgem outras funcionalidades potencialmente interessantes, tais como, por exemplo, recomendações de produtos com base no histórico, partilha do cesto de compras entre diversos utilizadores, entre outras.
 
@@ -151,21 +151,69 @@ Email já utilizado:
 
 Dado que estou na página de registo, quando preencho o campo do email com um endereço que já se encontra registado, e os restantes campos com dados válidos, e clico no botão "Registar", devo ver uma mensagem de erro apropriada.
 
-G - Enquanto utilizador, quero conseguir consultar o horário de funcionamento dos supermercados, para planear as minhas compras de forma mais eficiente.
+G - Enquanto utilizador, quero pesquisar supermercados pelo nome, para encontrar as lojas de uma cadeia específica na minha zona.
 
-Business Value - Pretendo reduzir o meu tempo de busca para horário de supermercados e aumentar a utilidade da app.
+Business Value:
+Aumenta a conveniência da app, reduzindo o tempo que o utilizador demora a encontrar a sua superfície comercial preferida.
 
-Assumptions/Dependencies - Sabe-se o horário dos supermercados, quais ficam numa dada região, a hora atual e a localização do utilizador (caso pretenda saber os supermercados mais próximos de si).
+Assumptions/Dependencies:
+O utilizador tem a localização ativada/preenchida. Existem dados, como o nome, logo e estado de cada supermercado.
 
-Acceptance Tests - Primeiro, faria um teste num cenário normal, escolhendo uma localização e uma cadeia de supermercados específica. Verificaria se os resultados apresentados correspondem à região e cadeia corretas e se exibem claramente os horários de abertura e fecho. Por outro lado, faria um teste num cenário excecional simulando a falta de acesso aos dados (por exemplo, falha de internet), e verificaria se a aplicação apresentava a mensagem de erro "Não foi possível carregar dados".
+Acceptance Tests:
+
+Pesquisa com sucesso:
+Dado que estou na página de pesquisa de lojas, quando insiro "Continente" na barra de pesquisa, devo ver uma lista de cartões com as lojas "Continente" ordenadas por proximidade, apresentando o nome, estado atual ("Aberto Hoje: 8h-22h") e a distância em metros/km.
+
+Erro de rede/Sem resultados:
+Dado que estou a efetuar uma pesquisa, caso perca a ligação à internet ou insira um nome inexistente, quando a pesquisa termina, devo ver uma mensagem clara no ecrã (ex: "Nenhuma loja encontrada").
+
+G - Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar os que estão abertos agora, para decidir rapidamente onde fazer compras neste exato momento.
+
+Business Value:
+Melhora drasticamente a experiência de utilização ao refinar os resultados para o estado de necessidade imediata do utilizador.
+
+Assumptions / Dependencies:
+Depende da implementação da pesquisa de supermercados por nome. A app consegue ler a hora atual do sistema para comparar com o estado de abertura.
+
+Acceptance Tests:
+
+Filtro aplicado com sucesso:
+Dado que tenho uma lista de supermercados após uma pesquisa, quando seleciono os botões de filtro "Aberto" e "Distância", a lista de cartões deve atualizar imediatamente, ocultando as lojas fechadas e as que ultrapassam a distância selecionada.
+
+Filtros demasiado restritos:
+Dado que estou a usar os filtros, quando seleciono combinações que excluem todos os resultados, a lista deve desaparecer e apresentar a mensagem "Nenhuma loja encontrada".
+
+G - Enquanto utilizador, quero consultar o horário de funcionamento de todos os dias da semana de um supermercado específico, para conseguir planear compras para dias futuros.
+
+Business Value:
+Retém o utilizador na app, fornecendo a informação completa de planeamento sem que ele precise de ir procurar ao Google.
+
+Assumptions / Dependencies:
+Depende da implementação da pesquisa de supermercados por nome. Existir uma estrutura completa de horários para cada supermercado.
+
+Acceptance Tests:
+
+Verificação do horário completo:
+Dado que estou a visualizar um cartão de supermercado na lista, quando clico em "Ver mais", devo visualizar a expansão do cartão ou uma nova página que lista de forma clara os horários desde Segunda-feira até Domingo.
+
+Falha no carregamento dos detalhes:
+Dado que clico em "Ver mais", se ocorrer uma falha na obtenção dos dados específicos do horário semanal, a aplicação deve exibir a indicação "Indisponível no momento" na secção dos dias da semana.
 
 I - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
 
-Business value: Quero tornar a limpeza do carrinho mais intuitiva e mais rápida.
+Business value:
+Quero tornar a limpeza do carrinho mais intuitiva e mais rápida.
 
-Assumptions / Dependencies: Assume-se que já foi implementado um carrinho funcional, onde é possível adicionar e remover produtos.
+Assumptions/Dependencies:
+Assume-se que já foi implementado um carrinho funcional, onde é possível adicionar e remover produtos.
 
-Acceptance Tests: Primeiro, num cenário normal, acederia a um carrinho que contivesse vários produtos e clicaria no botão de limpar a lista. Verificaria se o carrinho ficava totalmente vazio, com o preço total a zero, e se continuava a ser possível adicionar novos produtos depois. Por outro lado, faria um teste num cenário excecional em que o utilizador tenta limpar um carrinho que já se encontra sem produtos, e verificaria se a aplicação apresentava a mensagem indicativa "Impossível limpar carrinho vazio".
+Acceptance Tests:
+
+Limpeza com sucesso:
+Dado que estou na página do carrinho e este contém vários produtos adicionados, quando clico no botão de limpar a lista, devo verificar que o carrinho fica totalmente vazio e o preço total passa a zero, devendo continuar a ser possível adicionar novos produtos posteriormente.
+
+Tentativa em carrinho vazio:
+Dado que estou na página do carrinho e este já se encontra sem qualquer produto, quando tento efetuar a ação de limpar o carrinho, deve ser apresentada a mensagem "Impossível limpar carrinho vazio".
 
 J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta.
 
