@@ -50,11 +50,15 @@ Business modeling in software development involves defining the product's vision
 
 ### Product Vision
 
-E se houvesse um app que disesse onde o teu cesto de compras é mais barato?
-(nome da app) faz exatamente isso, dado um cesto de produtos a aplicação cruza os dados (incluindo as promoções diárias) dos principais supermercados em Portugal e diz onde o preço final do cesto é mais barato. Mais ainda, se tiveres disponibilidade de ir a mais do que um supermercado e quiseres poupar ainda mais, tens também a opção de receber a informação de que x produtos comprar num supermercado e o restante no outro.
-A app torna-se bastante útil porque o preço dos produtos está atualizado ao minuto, ou seja, consegue tem o preço do produto com o desconto das campanhas diárias.
+E se houvesse uma aplicação que informasse o utilizador de onde o seu cesto de compras é mais barato, ajudando-o a poupar dinheiro? (nome da app) resolve este problema. Dado um cesto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e descobre onde o preço final do cesto é mais barato. 
 
-O produto surge na necissade do consumidor final saber onde o cesto de produtos que pretende comprar está mais barato, acompanhado promoções diárias cruzando dados de vários supermercados. A partir desta ideia inicial surgem outras features para a aplicação, por exemplo, recomendações de produtos com base no histórico, dividir o cesto de compras em 2 supermercados, entre outras.
+Além disso, se o utilizador tiver disponibilidade de ir a mais do que um supermercado e quiser poupar ainda mais, tem também a opção de receber a informação da melhor escolha de supermercado relativamente a cada produto selecionado. 
+
+A aplicação destaca-se no mercado devido à sua capacidade de atualização avançada, conseguindo obter os preços dos produtos em tempo real. 
+
+Esta aplicação surge na necessidade do consumidor final saber onde o cesto de produtos que pretende comprar é mais barato naquele exato momento, acompanhando as ofertas diárias de cada supermercado de modo que este consiga planear eficazmente as suas compras. 
+
+Partindo da ideia inicial, surgem outras funcionalidades potencialmente interessantes, tais como, por exemplo, recomendações de produtos com base no histórico, partilha do cesto de compras entre diversos utilizadores, entre outras.
 
 <!--
 Start by defining a clear and concise product vision for your app, to help members of the team, contributors, and users into focusing their often disparate views into a concise, visual, and short textual form.
