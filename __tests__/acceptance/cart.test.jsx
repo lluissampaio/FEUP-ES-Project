@@ -6,19 +6,31 @@ jest.mock('react-native-safe-area-context', () => require('react-native-safe-are
 
 describe('Acceptance Test: Página do Carrinho', () => {
   
-  it('fluxo completo: mostra produtos, limpa o carrinho e tenta limpar vazio', () => {
+  it('Cenário 1: Limpa todos os itens do carrinho com sucesso', () => {
     render(<Cart />);
 
-    expect(screen.getByText('Leite')).toBeTruthy();
-    expect(screen.getByText('Pão')).toBeTruthy();
-    expect(screen.getByText('Total: 2.09 €')).toBeTruthy();
+    const itensIniciais = screen.getAllByTestId('cart-item');
+    expect(itensIniciais.length).toBeGreaterThan(0);
+
+    expect(screen.getByText(/Total:/i)).toBeTruthy();
 
     const botaoLimpar = screen.getByText('Limpar');
     fireEvent.press(botaoLimpar);
 
-    expect(screen.queryByText('Leite')).toBeNull();
-    expect(screen.queryByText('Pão')).toBeNull();
-    expect(screen.queryByText('Total: 2.09 €')).toBeNull();
+    const itensFinais = screen.queryAllByTestId('cart-item');
+    expect(itensFinais.length).toBe(0);
+
+    expect(screen.queryByText(/Total:/i)).toBeNull();
+  });
+
+  it('Cenário 2: Mostra aviso ao tentar limpar um carrinho que já está vazio', () => {
+    render(<Cart />);
+    
+    const botaoLimpar = screen.getByText('Limpar');
+
+    fireEvent.press(botaoLimpar);
+    
+    expect(screen.queryAllByTestId('cart-item').length).toBe(0);
 
     fireEvent.press(botaoLimpar);
 

@@ -2,7 +2,7 @@ import { StyleSheet, View } from "react-native";
 import ThemedText from "./ThemedText";
 
 const CartItemRow = ({ name, price }) => (
-  <View style={styles.row}>
+  <View style={styles.row} testID="cart-item">
     <ThemedText>{name}</ThemedText>
     <ThemedText>{price.toFixed(2)} €</ThemedText>
   </View>
