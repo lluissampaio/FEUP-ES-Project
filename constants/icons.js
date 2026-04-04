@@ -1,10 +1,12 @@
 import {
-    Heart,
-    List,
-    MagnifyingGlass,
-    ShoppingCart,
-    Storefront,
-    User,
+  CaretLeft,
+  Heart,
+  List,
+  MagnifyingGlass,
+  MapPin,
+  ShoppingCart,
+  Storefront,
+  User,
 } from "phosphor-react-native";
 
 export const ICON_MAP = {
@@ -14,4 +16,6 @@ export const ICON_MAP = {
   favourite: Heart,
   account: User,
   menu: List,
+  location: MapPin,
+  back: CaretLeft,
 };
