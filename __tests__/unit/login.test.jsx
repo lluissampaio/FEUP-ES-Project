@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Alert } from 'react-native';
 
 /*------------Mocks------------*/
 
@@ -11,14 +12,10 @@ jest.mock('expo-router',() => ({
     },
 }));
 
-// Mock do avisos (popups)
-jest.mock('react-native/Libraries/Alert/Alert',() => ({
-    alert: jest.fn(),
-}));
 
 // Mock ThemedText - versão que retira contexto
 jest.mock('@/components/ThemedText', () => {
-    const { Text } = require('react-native');       // Importa os componentes nativos do react native
+    const { Text, Alert } = require('react-native');       // Importa os componentes nativos do react native
     return ({ children, ...props }) => <Text {...props}>{children}</Text>;
 });
 
@@ -37,6 +34,8 @@ describe('Login screen', () => {
     // Antes de cada testes resetar os mocks
     beforeEach(() => {
         jest.clearAllMocks();
+        // Mock do Alert
+        jest.spyOn(Alert, 'alert').mockImplementation(() => {});       // Tem de ser apenas spyOn desta forma porque é nativo e não pode ser substituido
         render(
             <Login />      /* Renderiza a componente Login antes de cada teste (importante!!!)*/
         );
@@ -75,7 +74,37 @@ describe('Login screen', () => {
         });
     });
 
-    /*------------Testes preencher campos------------*/
+    /*------------Testes de aceitação------------*/
+
+    describe('Testes de aceitação', () => {
+
+        it('Login com sucesso', async () => {
+            const emailInput = screen.getByTestId('email-input');
+            const passwordInput = screen.getByTestId('password-input');
+            const loginButton = screen.getByTestId('login-button');
+
+            const { router } = require('expo-router');
+
+            fireEvent.changeText(emailInput, 'exemplo@email.com');
+            fireEvent.changeText(passwordInput, 'exemplo123');
+            fireEvent.press(loginButton);
+
+            await waitFor(() => {
+                expect(router.replace).toHaveBeenCalledWith('/(tabs)'); // Esperar para ver se a troca de ecrã é feita pelo router
+            });
+        });
+
+        it('Campos vazios', () => {
+            const loginButton = screen.getByTestId('login-button');
+
+            fireEvent.press(loginButton);
+
+            expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor preencha todos os campos');
+        });
+
+
+
+    });
 
 
 
