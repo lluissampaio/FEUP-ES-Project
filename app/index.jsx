@@ -19,7 +19,7 @@ export default function Login() {
       return;
     }
     
-    // Aqui depois podes adicionar a lógica de autenticação
+    // Aqui podemos adicionar a lógica de autenticação
     router.replace('/(tabs)');
   };
 
@@ -46,6 +46,7 @@ export default function Login() {
       {/* Email */}
       <ThemedText style={styles.label}>Email</ThemedText>
       <TextInput
+        testID='email-input'
         style={styles.input}
         value={email}
         onChangeText={setEmail}
@@ -59,6 +60,7 @@ export default function Login() {
       {/* Password */}
       <ThemedText style={styles.label}>Password</ThemedText>
       <TextInput
+        testID='password-input'
         style={styles.input}
         value={password}
         onChangeText={setPassword}
@@ -69,7 +71,9 @@ export default function Login() {
       <Spacer height={12} />
 
       {/* Link recuperação da password */}
-      <Pressable onPress={handleForgotPassword}>
+      <Pressable
+        testID='forgot-password'
+        onPress={handleForgotPassword}>
         <ThemedText style={styles.forgotPassword}>
           Esqueceu-se da sua password?
         </ThemedText>
@@ -77,15 +81,19 @@ export default function Login() {
 
       <Spacer height={30} />
 
-      {/* Botão Log In */}
-      <ThemedButton onPress={handleLogin} style={styles.loginButton}>
+      {/* Botão de Log In */}
+      <ThemedButton 
+        testID='login-button'
+        onPress={handleLogin} style={styles.loginButton}>
         <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </ThemedButton>
 
       <Spacer height={20} />
 
       {/* Link Registe-se */}
-      <Pressable onPress={handleRegister}>
+      <Pressable 
+        testID='register'
+        onPress={handleRegister}>
         <ThemedText style={styles.registerText}>
           Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
         </ThemedText>
