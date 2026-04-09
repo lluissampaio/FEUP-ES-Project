@@ -2,6 +2,9 @@ import { db } from "@/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+// Utilizamos a fórmula de Haversine para distâncias em linha reta esférica.
+// É uma aproximação suficientemente precisa para este caso de uso e poupa 
+// os custos associados a usar APIs de routing pagas
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -32,6 +35,7 @@ export function useSupermarkets(userLat, userLon) {
           const dbData = doc.data();
           
           let dist = null;
+          // Fallback de segurança (Null Safety). 
           if (dbData.location && userLat && userLon) {
             dist = calculateDistance(userLat, userLon, dbData.location.latitude, dbData.location.longitude);
           }
