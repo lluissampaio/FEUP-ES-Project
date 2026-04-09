@@ -1,5 +1,6 @@
 import AppIcon from '@/components/AppIcon';
 import SupermarketCard from '@/components/SupermarketCard';
+import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
@@ -15,14 +16,13 @@ export default function SearchSupermarkets() {
   const { supermarkets, loading } = useSupermarkets(41.177, -8.591);
 
   const filteredData = useMemo(() => {
-    if (!query.trim()) return [];
     return supermarkets.filter((s) => 
-      s.name.toLowerCase().includes(query.toLowerCase())
+      s.name.toLowerCase().includes(query.trim().toLowerCase())
     );
   }, [query, supermarkets]);
 
   const renderItem = useCallback(({ item }) => (
-    <SupermarketCard name={item.name} distance={item.formattedDistance} />
+    <SupermarketCard name={item.name} distance={item.formattedDistance} isOpen={item.isOpen} scheduleToday={item.scheduleToday} />
   ), []);
 
   return (
@@ -48,6 +48,11 @@ export default function SearchSupermarkets() {
             estimatedItemSize={100}
             numColumns={2}
             keyboardDismissMode="on-drag"
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <ThemedText style={styles.emptyText}>Nenhuma loja encontrada</ThemedText>
+              </View>
+            }
           />
         )}
       </View>
@@ -65,6 +70,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 3,
   },
-  input: { flex: 1, marginLeft: 10, fontSize: 16 },
-  listContainer: { flex: 1, paddingHorizontal: 8 },
+  input: {
+     flex: 1, marginLeft: 10, fontSize: 16 
+  },
+  listContainer: { 
+    flex: 1, paddingHorizontal: 8 
+  },
+  emptyContainer: {
+     flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 40 
+  },
+  emptyText: { 
+    fontSize: 16, opacity: 0.6 
+  },
 });

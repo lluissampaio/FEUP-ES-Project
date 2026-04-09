@@ -8,12 +8,15 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const dLon = (lon2 - lon1) * (Math.PI / 180);
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) *
-      Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+};
+
+const formatTime = (minutes) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m === 0 ? `${h}h` : `${h}h${m.toString().padStart(2, '0')}`;
 };
 
 export function useSupermarkets(userLat, userLon) {
@@ -27,11 +30,22 @@ export function useSupermarkets(userLat, userLon) {
         const querySnapshot = await getDocs(collection(db, "stores"));
         const data = querySnapshot.docs.map((doc) => {
           const dbData = doc.data();
-          const loc = dbData.location;
           
           let dist = null;
-          if (loc && userLat && userLon) {
-            dist = calculateDistance(userLat, userLon, loc.latitude, loc.longitude);
+          if (dbData.location && userLat && userLon) {
+            dist = calculateDistance(userLat, userLon, dbData.location.latitude, dbData.location.longitude);
+          }
+
+          const today = new Date();
+          const currentMinutes = today.getHours() * 60 + today.getMinutes();
+          const todaySchedule = dbData.schedule ? dbData.schedule[today.getDay()] : null;
+          
+          let isOpen = false;
+          let scheduleToday = "Indisponível";
+
+          if (todaySchedule) {
+            isOpen = currentMinutes >= todaySchedule.opening && currentMinutes <= todaySchedule.closing;
+            scheduleToday = `${formatTime(todaySchedule.opening)}-${formatTime(todaySchedule.closing)}`;
           }
 
           return {
@@ -39,6 +53,8 @@ export function useSupermarkets(userLat, userLon) {
             name: dbData.name || "Sem Nome",
             rawDistance: dist,
             formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A",
+            isOpen, 
+            scheduleToday 
           };
         });
         setSupermarkets(data);
@@ -48,7 +64,6 @@ export function useSupermarkets(userLat, userLon) {
         setLoading(false);
       }
     }
-
     fetchSupermarkets();
   }, [userLat, userLon]);
 
