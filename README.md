@@ -78,7 +78,23 @@ Partindo da ideia inicial, surgem outras funcionalidades potencialmente interess
 
 ### User Stories
 
-TODO: add concise user stories
+Enquanto utilizador não registado, quero registar uma conta na aplicação, de modo a guardar toda a informação necessária.
+
+Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
+
+Enquanto utilizador registado, quero ver o meu perfil, para que possa saber se estou na minha conta.
+
+Enquanto utilizador, quero seleccionar os supermercados onde a pesquisa vai ser feita, para escolher os meus preferidos.
+
+Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar os que estão abertos agora, para decidir rapidamente onde fazer compras.
+
+Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados, para planear as minhas compras de forma mais eficiente.
+
+Enquanto utilizador, quero ver se os produtos são ecológicos, para diminuir a minha pegada ambiental.
+
+Enquanto utilizador, quero consultar onde o meu carrinho de compras é mais barato, para que possa poupar dinheiro.
+
+Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente cada produto do carrinho.
 
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
@@ -98,7 +114,6 @@ Name the item with either the full user story or a shorter name (recommended). I
 You may add more details after, but the shorter and complete, the better. In order to decide if the user story is good, please follow the [INVEST guidelines](https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/).
 
 **User interface mockups**.
-After the user story text, you should add a draft of the corresponding user interfaces, a simple mockup or draft, if applicable.
 
 **Acceptance tests**.
 For each user story you should write also the acceptance tests (textually in [Gherkin](https://cucumber.io/docs/gherkin/reference/)), i.e., a description of scenarios (situations) that will help to confirm that the system satisfies the requirements addressed by the user story.
@@ -184,6 +199,14 @@ You can find below information and references related with the project managemen
 -->
 
 ### Sprint 0
+
+#### Mockups
+
+![Screenshot_20260410_135451_Expo_Go](https://github.com/user-attachments/assets/3b7f33f3-70fb-4801-a752-c7375f5432c8)
+
+![Screenshot_20260410_112341_Expo_Go](https://github.com/user-attachments/assets/3eb2d83a-2b1f-4a3c-abb8-6a7da684bb11)
+
+![Screenshot_20260410_112401_Expo_Go](https://github.com/user-attachments/assets/6ea33589-7b4d-43be-bfef-e5af379c1d89)
 
 ### Sprint 1
 
