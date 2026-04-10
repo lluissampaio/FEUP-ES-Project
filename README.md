@@ -61,7 +61,6 @@ Partindo da ideia inicial, surgem outras funcionalidades potencialmente interess
 - **Pesquisa e Filtro de Lojas** - O utilizador pode pesquisar supermercados pelo nome e filtrar os resultados da sua zona em tempo real.
 - **Horário e Estado** - Indicação em tempo real do estado da loja (Aberto/Fechado) e exibição do horário de funcionamento do dia atual.
 - **Geolocalização (Smart Feature)** - Cálculo da distância real entre a localização atual do utilizador (via GPS/Cache do telemóvel) e os supermercados disponíveis.
-- **Gestão Base do Carrinho** - Interface base do carrinho com cálculo de totais e funcionalidade de limpeza rápida.
 - **Autenticação (UI)** - Ecrã inicial de Login e estrutura base de proteção de rotas preparada.
 
 **Planeadas (Backlog / Próximos Sprints)**
