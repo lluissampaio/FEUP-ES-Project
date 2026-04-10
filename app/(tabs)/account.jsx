@@ -5,7 +5,7 @@ import { StyleSheet } from "react-native";
 const Home = () => {
   return (
     <ThemedView style={styles.container}>
-      <ThemedText>Shop</ThemedText>
+      <ThemedText>Account</ThemedText>
     </ThemedView>
   );
 };
