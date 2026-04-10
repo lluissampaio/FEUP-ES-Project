@@ -105,131 +105,7 @@ Optionally, indicate an initial/tentative list of assumptions that you are doing
 
 ### User Stories
 
-- Enquanto utilizador, quero consultar onde o meu carrinho de compras é mais barato porque quero saber onde é mais barato para fazer a compra.
-- Enquanto utilizador, quero selecionar os supermecados onde a pesquisa vai ser feita porque eu não gosto dos produtos de X supermecados.
-- Enquanto utilizador, quero dividir o carrinho de compras em pelo menos dois supermecados para conseguir poupar ainda mais dinheiro.
-- Enquanto utilizador, quero visualizar produtos com preços mais baixo (que o habitual) por causa de promoções individuais para aproveitar promoções ocasionais.
-- Enquanto utilizador registado, quero partilhar o carrinho de compras com outro utilizador registado para qualquer pessoa saiba o que vou comprar.
-
-F - Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
-
-Business Value: Permite ao utilizador retomar o seu progresso na aplicação. Permite proporcionar uma experiência personalizada/avançada a cada utlizador (histórico de compras, etc.)
-
-Assumptions: Assume-se que o utilizador já possui credenciais válidas, criadas previamente.
-
-Dependencies: Serviço de autenticação, existência de ecrã de login, funcionalidade de registo de conta.
-
-Acceptance tests:
-
-Login com sucesso:
-
-Dado que estou na página de login, e insiro uma combinação de email e password válida, quando clico no botão "Entrar", devo ser redirecionado para a página inicial e ver o meu nome de utilizador, com uma indicação de que a sessão foi iniciada.
-
-Login inválido:
-
-Dado que estou na página de login, e insiro uma combinação de email e password inválida (email não registado ou password incorreta), quando clico no botão "Entrar", devo ver uma mensagem de erro e permanecer na página de login.
-
-Campos não preenchidos:
-
-Dado que estou na página de login, e insiro apenas o email ou a password, quando clico no botão "Entrar", devo ver uma indicação de que campo não preenchi, e permanecer na página de login.
-
-F - Enquanto utilizador não registado, quero registar uma conta na aplicação, de modo a guardar toda a informação necessária.
-
-Business Value: Permite guardar o progresso de várias funcionalidades da aplicação, como o carrinho de compras.
-
-Assumptions: Assume-se que o utilizador tem um endereço de email válido ao qual tem acesso.
-
-Dependências: Base de dados para armazenamento de credenciais, existência de ecrã de registo.
-
-Acceptance tests:
-
-Registo com sucesso:
-
-Dado que estou na página de registo, quando preencho todos os campos com dados válidos (a definir), e clico no botão "Registar", a minha conta deve ser criada.
-
-Email já utilizado:
-
-Dado que estou na página de registo, quando preencho o campo do email com um endereço que já se encontra registado, e os restantes campos com dados válidos, e clico no botão "Registar", devo ver uma mensagem de erro apropriada.
-
-G - Enquanto utilizador, quero pesquisar supermercados pelo nome, para encontrar as lojas de uma cadeia específica na minha zona.
-
-Business Value:
-Aumenta a conveniência da app, reduzindo o tempo que o utilizador demora a encontrar a sua superfície comercial preferida.
-
-Assumptions/Dependencies:
-O utilizador tem a localização ativada/preenchida. Existem dados, como o nome, logo e estado de cada supermercado.
-
-Acceptance Tests:
-
-Pesquisa com sucesso:
-Dado que estou na página de pesquisa de lojas, quando insiro "Continente" na barra de pesquisa, devo ver uma lista de cartões com as lojas "Continente" ordenadas por proximidade, apresentando o nome, estado atual ("Aberto Hoje: 8h-22h") e a distância em metros/km.
-
-Erro de rede/Sem resultados:
-Dado que estou a efetuar uma pesquisa, caso perca a ligação à internet ou insira um nome inexistente, quando a pesquisa termina, devo ver uma mensagem clara no ecrã (ex: "Nenhuma loja encontrada").
-
-G - Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar os que estão abertos agora, para decidir rapidamente onde fazer compras neste exato momento.
-
-Business Value:
-Melhora drasticamente a experiência de utilização ao refinar os resultados para o estado de necessidade imediata do utilizador.
-
-Assumptions / Dependencies:
-Depende da implementação da pesquisa de supermercados por nome. A app consegue ler a hora atual do sistema para comparar com o estado de abertura.
-
-Acceptance Tests:
-
-Filtro aplicado com sucesso:
-Dado que tenho uma lista de supermercados após uma pesquisa, quando seleciono os botões de filtro "Aberto" e "Distância", a lista de cartões deve atualizar imediatamente, ocultando as lojas fechadas e as que ultrapassam a distância selecionada.
-
-Filtros demasiado restritos:
-Dado que estou a usar os filtros, quando seleciono combinações que excluem todos os resultados, a lista deve desaparecer e apresentar a mensagem "Nenhuma loja encontrada".
-
-G - Enquanto utilizador, quero consultar o horário de funcionamento de todos os dias da semana de um supermercado específico, para conseguir planear compras para dias futuros.
-
-Business Value:
-Retém o utilizador na app, fornecendo a informação completa de planeamento sem que ele precise de ir procurar ao Google.
-
-Assumptions / Dependencies:
-Depende da implementação da pesquisa de supermercados por nome. Existir uma estrutura completa de horários para cada supermercado.
-
-Acceptance Tests:
-
-Verificação do horário completo:
-Dado que estou a visualizar um cartão de supermercado na lista, quando clico em "Ver mais", devo visualizar a expansão do cartão ou uma nova página que lista de forma clara os horários desde Segunda-feira até Domingo.
-
-Falha no carregamento dos detalhes:
-Dado que clico em "Ver mais", se ocorrer uma falha na obtenção dos dados específicos do horário semanal, a aplicação deve exibir a indicação "Indisponível no momento" na secção dos dias da semana.
-
-I - Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente produto a produto do carrinho.
-
-Business value:
-Quero tornar a limpeza do carrinho mais intuitiva e mais rápida.
-
-Assumptions/Dependencies:
-Assume-se que já foi implementado um carrinho funcional, onde é possível adicionar e remover produtos.
-
-Acceptance Tests:
-
-Limpeza com sucesso:
-Dado que estou na página do carrinho e este contém vários produtos adicionados, quando clico no botão de limpar a lista, devo verificar que o carrinho fica totalmente vazio e o preço total passa a zero, devendo continuar a ser possível adicionar novos produtos posteriormente.
-
-Tentativa em carrinho vazio:
-Dado que estou na página do carrinho e este já se encontra sem qualquer produto, quando tento efetuar a ação de limpar o carrinho, deve ser apresentada a mensagem "Impossível limpar carrinho vazio".
-
-J - Enquanto utilizador registado, quero ver o meu perfil para que possa saber se estou na minha conta.
-
-Business value - Ao saber que estou na minha conta sei que tenho acesso ao meu cesto e histórico de compras.
-
-Assumptions/Dependencies – O utilizador tem de estar autenticado para que seja possivel ver o seu perfil.
-
-Acceptance tests - Primeiro, faria um teste com credenciais que funcionassem, ou seja, utilizaria o email e a palavra-passe de um conta válida. Após o login verificaria se o nome dentro da página principal da aplicação estaria de acordo com a minha conta. Por outro lado, também faria um teste onde usava credencias inválidas no sistema e verificaria se recebia uma mensagem de erro.
-
-K - Enquanto utilizador registado, quero ver se o produto tem o símbolo da pegada de carbono para que possa preservar o ambiente.
-
-Business value - Enquanto apoiante da preservação ambiental, apenas considero comprar produtos que não sejam prejudiciais para o planeta ou que pelo menos tenham uma baixa pegada de carbono.
-
-Assumptions/Dependencies– O utilizador deve aceder à página de detalhe de um produto para visualizar informações específicas, como o símbolo ecológico.
-
-Acceptance tests - Pesquisaria um dos produtos que sei que tem de ter esse símbolo. Ao entrar no produto em questão, verificaria se o símbolo estaria na página. Faria exatamente o mesmo com um produto que não fosse ambientalmente favorável e verificaria se não tinha o símbolo.
+TODO: add concise user stories
 
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
@@ -261,51 +137,41 @@ At the end, it is good to add a rough indication of the value of the user story 
 
 ### Domain model
 
-<!--
-To better understand the context of the software system, it is useful to have a simple UML class diagram with all and only the key concepts (names, attributes) and relationships involved of the problem domain addressed by your app.
-Also provide a short textual description of each concept (domain class).
 
-Example:
- <p align="center" justify="center">
-  <img src="https://github.com/FEUP-LEIC-ES-2022-23/templates/blob/main/images/DomainModel.png"/>
+<p align="center">
+  <img src="docs/uml/domain/domain_model.png"/>
 </p>
--->
+
+O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o Utilizador, que possui um Carrinho com Produtos, uma lista de Favoritos, uma Conta e recebe Alertas do sistema. A navegação é gerida pela BarraNavegacao, composta por 5 Icones, e o aspeto visual é definido pelo Tema global da aplicação.
+
+Para mais detalhes: [Domain Model PDF](docs/uml/domain/domain_model.pdf)
 
 ## Architecture and Design
 
-<!--
-The architecture of a software system encompasses the set of key decisions about its organization.
 
-A well written architecture document is brief and reduces the amount of time it takes new programmers to a project to understand the code to feel able to make modifications and enhancements.
-
-To document the architecture requires describing the decomposition of the system in their parts (high-level components) and the key behaviors and collaborations between them.
-
-In this section you should start by briefly describing the components of the project and their interrelations. You should describe how you solved typical problems you may have encountered, pointing to well-known architectural and design patterns, if applicable.
--->
+A arquitetura da aplicação segue uma organização em camadas, separando a interface do utilizador da lógica de negócio. A camada de apresentação é composta por ecrãs e componentes reutilizáveis, enquanto a lógica da aplicação é gerida por hooks e constantes partilhadas. Esta separação facilita a manutenção e evolução do código ao longo do projeto.
 
 ### Logical architecture
 
-<!--
-The purpose of this subsection is to document the high-level logical structure of the code (Logical View), using a UML diagram with logical packages, without the worry of allocating to components, processes or machines.
 
-It can be beneficial to present the system in a horizontal decomposition, defining layers and implementation concepts, such as the user interface, business logic and concepts.
+<p align="center">
+  <img src="docs/uml/architecture/package_diagram.png"/>
+</p>
 
-Example of _UML package diagram_ showing a _logical view_ of the Eletronic Ticketing System (to be accompanied by a short description of each package):
+A arquitetura lógica organiza o sistema em duas camadas principais: Presentation (Navigation, Screens, Components e Assets) e Application Logic (Hooks e Constants). A navegação encaminha para os ecrãs, os ecrãs utilizam os componentes, e tanto os componentes como os ecrãs dependem das constantes e hooks para lógica e estilo.
 
-![LogicalView](https://user-images.githubusercontent.com/9655877/160585416-b1278ad7-18d7-463c-b8c6-afa4f7ac7639.png)
--->
+Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
 
 ### Physical architecture
 
-<!--
-The goal of this subsection is to document the high-level physical structure of the software system (machines, connections, software components installed, and their dependencies) using UML deployment diagrams (Deployment View) or component diagrams (Implementation View), separate or integrated, showing the physical structure of the system.
 
-It should describe also the technologies considered and justify the selections made. Examples of technologies relevant for ESOF are, for example, frameworks for mobile applications (such as Flutter).
+<p align="center">
+  <img src="docs/uml/architecture/deployment_diagram.png"/>
+</p>
 
-Example of _UML deployment diagram_ showing a _deployment view_ of the Eletronic Ticketing System (please notice that, instead of software components, one should represent their physical/executable manifestations for deployment, called artifacts in UML; the diagram should be accompanied by a short description of each node and artifact):
+A aplicação é frontend-only, sem backend próprio. Em desenvolvimento, o Expo CLI na Developer Machine serve o bundle via HTTP para o Mobile Device. Em produção, a app é compilada e distribuída através da Apple App Store (iOS) e Google Play Store (Android). A tecnologia escolhida foi React Native com Expo, permitindo desenvolver para iOS e Android com uma única base de código.
 
-![DeploymentView](https://user-images.githubusercontent.com/9655877/160592491-20e85af9-0758-4e1e-a704-0db1be3ee65d.png)
--->
+Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
 
 ### Functional prototype
 

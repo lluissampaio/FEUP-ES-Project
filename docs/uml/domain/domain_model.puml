@@ -1,0 +1,111 @@
+@startuml
+
+class Utilizador {
+  +email: String
+  +password: String
+  +login(): void
+  +recuperarPassword(): void
+  +registar(): void
+}
+
+class Sessao {
+  +autenticado: Boolean
+  +iniciar(): void
+  +terminar(): void
+}
+
+class Carrinho {
+  +total: Float
+  +erro: String
+  +limpar(): void
+  +calcularTotal(): Float
+}
+
+class Produto {
+  +id: String
+  +nome: String
+  +preco: Float
+}
+
+class ItemCarrinho {
+  +quantidade: Integer
+  +precoUnitario: Float
+  +calcularSubtotal(): Float
+}
+
+class Favoritos {
+  +adicionarProduto(): void
+  +removerProduto(): void
+  +listaProdutos: List
+}
+
+class Loja {
+  +listarProdutos(): void
+  +filtrarProdutos(): void
+}
+
+class Explorar {
+  +pesquisar(): void
+  +filtrar(): void
+}
+
+class Conta {
+  +verPerfil(): void
+  +editarPerfil(): void
+}
+
+class Tema {
+  +esquemaCores: String
+  +corPrimaria: String
+  +corFundo: String
+  +corTexto: String
+  +corNavegacao: String
+}
+
+class Icone {
+  +nome: String
+  +tamanho: Integer
+  +cor: String
+  +peso: String
+  +renderizar(): void
+}
+
+class BarraNavegacao {
+  +corAtiva: String
+  +corInativa: String
+  +altura: Integer
+  +navegar(): void
+}
+
+class Alerta {
+  +titulo: String
+  +mensagem: String
+  +mostrar(): void
+}
+
+Utilizador "1" -- "1" Sessao : inicia
+Utilizador "1" -- "1" Carrinho : possui
+Utilizador "1" -- "1" Favoritos : gere
+Utilizador "1" -- "1" Conta : acede
+Utilizador "1" -- "1" Alerta : recebe
+Sessao "1" --> "1" BarraNavegacao : desbloqueia
+Carrinho "1" *-- "0..*" ItemCarrinho : contem
+ItemCarrinho "0..*" --> "1" Produto : referencia
+Carrinho "1" --> "1" Alerta : gera
+Favoritos "1" o-- "0..*" Produto : guarda
+Loja "1" -- "0..*" Produto : apresenta
+Explorar "1" -- "0..*" Produto : pesquisa
+BarraNavegacao "1" *-- "5" Icone : exibe
+BarraNavegacao "1" --> "1" Loja : navega
+BarraNavegacao "1" --> "1" Explorar : navega
+BarraNavegacao "1" --> "1" Carrinho : navega
+BarraNavegacao "1" --> "1" Favoritos : navega
+BarraNavegacao "1" --> "1" Conta : navega
+Tema "1" --> "1" BarraNavegacao : estiliza
+Tema "1" --> "1" Carrinho : estiliza
+Tema "1" --> "1" Loja : estiliza
+Tema "1" --> "1" Explorar : estiliza
+Tema "1" --> "1" Favoritos : estiliza
+Tema "1" --> "1" Conta : estiliza
+
+@enduml
