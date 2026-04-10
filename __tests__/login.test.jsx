@@ -26,7 +26,7 @@ jest.mock('@/components/ThemedView', () => {
 });
 
 
-import Login from '../../app/index.jsx';   // Apenas pode ser importado aqui por causa dos mocks
+import Login from '../app/index.jsx';   // Apenas pode ser importado aqui por causa dos mocks
 
 /*------------Testes------------*/
 
@@ -102,12 +102,42 @@ describe('Login screen', () => {
             expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor preencha todos os campos');
         });
 
-
-
     });
 
 
+    /*------------Testes de integração------------*/
+    // Verificar se as PARTES INTERNAS funcionam
+    describe('Testes de integração', () => {
 
+        it('Login chama as funções corretamente', async () => {
 
+            const loginButton = screen.getByTestId('login-button');
+            const { router } = require('expo-router');
 
+            fireEvent.press(loginButton);
+            
+            expect(Alert.alert).toHaveBeenCalled();      // Alert foi chamado?
+            expect(router.replace).not.toHaveBeenCalled(); // Router NÃO foi chamado?
+
+        });
+    
+
+        it('Preenchimento dos campos atualiza o estado corretamente', () => {
+            const emailInput = screen.getByTestId('email-input');
+            const passwordInput = screen.getByTestId('password-input');
+
+            // Simular utilizador a escrever
+            fireEvent.changeText(emailInput, 'exemplo@email.com');
+            fireEvent.changeText(passwordInput, 'exemplo123');
+
+            // Verificar se o estado interno foi atualizado
+            expect(emailInput.props.value).toBe('exemplo@email.com');
+            expect(passwordInput.props.value).toBe('exemplo123');
+            
+            // Verificar que NÃO houve chamadas ao router ou alert (só atualizou estado)
+            const { router } = require('expo-router');
+            expect(router.replace).not.toHaveBeenCalled();
+            expect(Alert.alert).not.toHaveBeenCalled();
+        });
+    });
 });
