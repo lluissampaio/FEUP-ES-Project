@@ -1,0 +1,2127 @@
+This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: README.md
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+__tests__/
+  cart.test.jsx
+  distance.test.js
+  login.test.jsx
+  logos.test.js
+  searchsupermarkets.test.jsx
+  SupermarketCard.test.jsx
+  time.test.js
+  useCart.test.js
+  useSupermarkets.test.js
+.github/
+  dependabot.yml
+app/
+  (tabs)/
+    _layout.jsx
+    account.jsx
+    cart.jsx
+    explore.jsx
+    favourite.jsx
+    index.jsx
+  search/
+    supermarkets.jsx
+  _layout.jsx
+  index.jsx
+assets/
+  images/
+    android-icon-background.png
+    android-icon-foreground.png
+    android-icon-monochrome.png
+    favicon.png
+    icon.png
+    splash-icon.png
+  logos/
+    aldi.png
+    continente.png
+    default.png
+    lidl.png
+    mercadona.png
+    pingodoce.png
+components/
+  AppIcon.jsx
+  BaseCard.jsx
+  CartItemRow.jsx
+  FakeSearchBar.jsx
+  Spacer.jsx
+  SupermarketCard.jsx
+  ThemedButton.jsx
+  ThemedText.jsx
+  ThemedView.jsx
+constants/
+  colors.js
+  icons.js
+  logos.js
+docs/
+  uml/
+    architecture/
+      architecture.pdf
+      deployment_diagram.png
+      deployment_diagram.puml
+      package_diagram.png
+      package_diagram.puml
+    domain/
+      domain_model.pdf
+      domain_model.png
+      domain_model.puml
+hooks/
+  useCart.js
+  useSupermarkets.js
+utils/
+  distance.js
+  time.js
+.gitignore
+app.json
+eslint.config.js
+firebaseConfig.js
+package.json
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="__tests__/distance.test.js">
+import { calculateDistance } from "@/utils/distance";
+
+describe("Unit Test: Utils de Distância (Haversine)", () => {
+  it("A distância para o mesmo ponto deve ser zero", () => {
+    const dist = calculateDistance(41.15, -8.61, 41.15, -8.61);
+    expect(dist).toBe(0);
+  });
+
+  it("Deve calcular a distância correta entre dois pontos conhecidos (ex: Porto a Lisboa)", () => {
+    const dist = calculateDistance(41.1579, -8.6291, 38.7223, -9.1393);
+    
+    expect(dist).toBeCloseTo(274, -1);
+  });
+});
+</file>
+
+<file path="__tests__/logos.test.js">
+import { getLogoForSupermarket, SUPERMARKET_LOGOS } from "@/constants/logos";
+
+describe("Unit Test: Lógica de Mapeamento de Logos", () => {
+  it("Deve retornar o logo do Continente para variações do nome", () => {
+    expect(getLogoForSupermarket("Continente")).toBe(SUPERMARKET_LOGOS.continente);
+    expect(getLogoForSupermarket("continente bom dia")).toBe(SUPERMARKET_LOGOS.continente);
+  });
+
+  it("Deve retornar o logo do Pingo Doce ignorando espaços e maiúsculas", () => {
+    expect(getLogoForSupermarket("Pingo Doce")).toBe(SUPERMARKET_LOGOS.pingo_doce);
+    expect(getLogoForSupermarket("PINGODOCE")).toBe(SUPERMARKET_LOGOS.pingo_doce);
+  });
+
+  it("Deve retornar o logo default para supermercados desconhecidos", () => {
+    expect(getLogoForSupermarket("Supermercado Default")).toBe(SUPERMARKET_LOGOS.default);
+    expect(getLogoForSupermarket("")).toBe(SUPERMARKET_LOGOS.default);
+  });
+});
+</file>
+
+<file path="__tests__/searchsupermarkets.test.jsx">
+import SearchSupermarkets from '@/app/search/supermarkets';
+import { useSupermarkets } from '@/hooks/useSupermarkets';
+import { fireEvent, render, screen } from '@testing-library/react-native';
+
+jest.mock('expo-location', () => ({
+  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+  getCurrentPositionAsync: jest.fn().mockResolvedValue({ coords: { latitude: 41.177, longitude: -8.591 } }),
+  Accuracy: { Balanced: 3 }
+}));
+
+jest.mock('@/hooks/useSupermarkets', () => ({
+  useSupermarkets: jest.fn()
+}));
+
+jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+describe('Acceptance Test: Pesquisa de Supermercados', () => {
+
+  it('Cenário 1: Pesquisa com sucesso retorna apenas a lista filtrada', async () => {
+    useSupermarkets.mockReturnValue({
+      loading: false,
+      supermarkets: [
+        { 
+          id: '1', 
+          name: 'Continente Asprela', 
+          formattedDistance: '1.2 km',
+          isOpen: true,
+          scheduleToday: '8h-22h'
+        },
+        { 
+          id: '2', 
+          name: 'Pingo Doce Areosa', 
+          formattedDistance: '3.0 km',
+          isOpen: false,
+          scheduleToday: 'Fechado'
+        }
+      ]
+    });
+
+    render(<SearchSupermarkets />);
+
+    const searchInput = screen.getByPlaceholderText('Pesquisar...');
+    fireEvent.changeText(searchInput, 'Continente');
+
+    expect(screen.getByText('Continente Asprela')).toBeTruthy();
+    expect(screen.getByText('1.2 km')).toBeTruthy();
+    expect(screen.getByText('Aberto')).toBeTruthy();
+    expect(screen.getByText('Hoje: 8h-22h')).toBeTruthy();
+
+    expect(screen.queryByText('Pingo Doce Areosa')).toBeNull();
+  });
+
+  it('Cenário 2: Erro de rede/Sem resultados mostra mensagem de Empty State', async () => {
+    useSupermarkets.mockReturnValue({
+      loading: false,
+      supermarkets: []
+    });
+
+    render(<SearchSupermarkets />);
+
+    const searchInput = screen.getByPlaceholderText('Pesquisar...');
+    fireEvent.changeText(searchInput, 'Inexistente');
+
+    expect(screen.getByText('Nenhuma loja encontrada')).toBeTruthy();
+  });
+
+  it('Cenário 3: Renderização inicial exibe todos os supermercados com os devidos estados', async () => {
+    useSupermarkets.mockReturnValue({
+      loading: false,
+      supermarkets: [
+        { 
+          id: '1', 
+          name: 'Continente Asprela', 
+          formattedDistance: '1.2 km',
+          isOpen: true,
+          scheduleToday: '8h-22h'
+        },
+        { 
+          id: '2', 
+          name: 'Pingo Doce Areosa', 
+          formattedDistance: '3.0 km',
+          isOpen: false,
+          scheduleToday: 'Fechado'
+        }
+      ]
+    });
+
+    render(<SearchSupermarkets />);
+
+    expect(screen.getByText('Continente Asprela')).toBeTruthy();
+    expect(screen.getByText('Aberto')).toBeTruthy();
+
+    expect(screen.getByText('Pingo Doce Areosa')).toBeTruthy();
+    expect(screen.getByText('Fechado')).toBeTruthy();
+  });
+
+});
+</file>
+
+<file path="__tests__/SupermarketCard.test.jsx">
+import SupermarketCard from "@/components/SupermarketCard";
+import { render, screen } from "@testing-library/react-native";
+
+jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+describe("Unit Test: Componente SupermarketCard", () => {
+  it("Deve renderizar corretamente o estado 'Aberto' com horário", () => {
+    render(
+      <SupermarketCard
+        name="Continente"
+        distance="2.5 km"
+        isOpen={true}
+        scheduleToday="8h-22h"
+      />
+    );
+
+    expect(screen.getByText("Continente")).toBeTruthy();
+    expect(screen.getByText("2.5 km")).toBeTruthy();
+    expect(screen.getByText("Aberto")).toBeTruthy();
+    expect(screen.getByText("Hoje: 8h-22h")).toBeTruthy();
+  });
+
+  it("Deve renderizar 'Fechado' e ocultar horário se scheduleToday não for passado", () => {
+    render(
+      <SupermarketCard
+        name="Mercadona"
+        distance="5.0 km"
+        isOpen={false}
+      />
+    );
+
+    expect(screen.getByText("Mercadona")).toBeTruthy();
+    expect(screen.getByText("Fechado")).toBeTruthy();
+    
+    expect(screen.queryByText(/Hoje:/)).toBeNull();
+  });
+});
+</file>
+
+<file path="__tests__/time.test.js">
+import { formatTime } from "@/utils/time";
+
+describe("Unit Test: Utils de Tempo (formatTime)", () => {
+  it("Deve formatar horas certas sem os minutos zero", () => {
+    expect(formatTime(480)).toBe("8h");
+  });
+
+  it("Deve formatar horas e minutos corretamente", () => {
+    expect(formatTime(510)).toBe("8h30");
+  });
+
+  it("Deve adicionar padding (zero à esquerda) a minutos menores que 10", () => {
+    expect(formatTime(545)).toBe("9h05");
+  });
+});
+</file>
+
+<file path="__tests__/useSupermarkets.test.js">
+import { useSupermarkets } from "@/hooks/useSupermarkets";
+import { renderHook, waitFor } from "@testing-library/react-native";
+
+jest.mock("firebase/firestore", () => {
+  return {
+    collection: jest.fn(),
+    getDocs: jest.fn(() => Promise.resolve({
+      docs: [
+        {
+          id: "store_1",
+          data: () => ({
+            name: "Continente Teste",
+            location: { latitude: 41.15, longitude: -8.61 },
+            schedule: {
+              [new Date().getDay()]: { opening: 0, closing: 1439 } 
+            }
+          })
+        }
+      ]
+    }))
+  };
+});
+
+jest.mock("@/firebaseConfig", () => ({ db: {} }));
+
+describe("Unit Test: Hook useSupermarkets", () => {
+  it("Deve extrair, calcular e mapear os dados do Firebase corretamente", async () => {
+    const { result } = renderHook(() => useSupermarkets(41.16, -8.61));
+
+    expect(result.current.loading).toBe(true);
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    const stores = result.current.supermarkets;
+    
+    expect(stores).toHaveLength(1);
+    expect(stores[0].name).toBe("Continente Teste");
+    expect(stores[0].isOpen).toBe(true);
+    expect(stores[0].formattedDistance).toContain("km");
+  });
+});
+</file>
+
+<file path="__tests__/login.test.jsx">
+import React from "react";
+import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Alert } from 'react-native';
+
+/*------------Mocks------------*/
+
+// Mock do router (navegação entre abas)
+jest.mock('expo-router',() => ({
+    router: {
+        replace: jest.fn(),
+    },
+}));
+
+
+// Mock ThemedText - versão que retira contexto
+jest.mock('@/components/ThemedText', () => {
+    const { Text, Alert } = require('react-native');       // Importa os componentes nativos do react native
+    return ({ children, ...props }) => <Text {...props}>{children}</Text>;
+});
+
+// Mock ThemedView - versão que retira contexto
+jest.mock('@/components/ThemedView', () => {
+    const { View } = require('react-native');
+    return ({ children, ...props }) => <View {...props}>{children}</View>;
+});
+
+
+import Login from '../app/index.jsx';   // Apenas pode ser importado aqui por causa dos mocks
+
+/*------------Testes------------*/
+
+describe('Login screen', () => {
+    // Antes de cada testes resetar os mocks
+    beforeEach(() => {
+        jest.clearAllMocks();
+        // Mock do Alert
+        jest.spyOn(Alert, 'alert').mockImplementation(() => {});       // Tem de ser apenas spyOn desta forma porque é nativo e não pode ser substituido
+        render(
+            <Login />      /* Renderiza a componente Login antes de cada teste (importante!!!)*/
+        );
+    });
+
+    /*------------Texto no ecrã------------*/
+
+    describe('Text', () => {
+
+        it('Título', () => {
+            expect(screen.getByText('Log in')).toBeTruthy();
+        });
+
+        it('Subtítulo', () => {
+            expect(screen.getByText('Insira as suas credenciais')).toBeTruthy();
+        });
+
+        it('Email', () => {
+            expect(screen.getByText('Email')).toBeTruthy();
+        });
+
+        it('Password', () => {
+            expect(screen.getByText('Password')).toBeTruthy();
+        });
+
+        it('Login button', () => {
+            expect(screen.getByText('Log In')).toBeTruthy();
+        });
+
+        it('Password esquecida', () => {
+            expect(screen.getByText('Esqueceu-se da sua password?')).toBeTruthy();
+        });
+        
+        it('Registar-se', () => {
+            expect(screen.getByText('Registe-se')).toBeTruthy();
+        });
+    });
+
+    /*------------Testes de aceitação------------*/
+
+    describe('Testes de aceitação', () => {
+
+        it('Login com sucesso', async () => {
+            const emailInput = screen.getByTestId('email-input');
+            const passwordInput = screen.getByTestId('password-input');
+            const loginButton = screen.getByTestId('login-button');
+
+            const { router } = require('expo-router');
+
+            fireEvent.changeText(emailInput, 'exemplo@email.com');
+            fireEvent.changeText(passwordInput, 'exemplo123');
+            fireEvent.press(loginButton);
+
+            await waitFor(() => {
+                expect(router.replace).toHaveBeenCalledWith('/(tabs)'); // Esperar para ver se a troca de ecrã é feita pelo router
+            });
+        });
+
+        it('Campos vazios', () => {
+            const loginButton = screen.getByTestId('login-button');
+
+            fireEvent.press(loginButton);
+
+            expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor preencha todos os campos');
+        });
+
+    });
+
+
+    /*------------Testes de integração------------*/
+    // Verificar se as PARTES INTERNAS funcionam
+    describe('Testes de integração', () => {
+
+        it('Login chama as funções corretamente', async () => {
+
+            const loginButton = screen.getByTestId('login-button');
+            const { router } = require('expo-router');
+
+            fireEvent.press(loginButton);
+            
+            expect(Alert.alert).toHaveBeenCalled();      // Alert foi chamado?
+            expect(router.replace).not.toHaveBeenCalled(); // Router NÃO foi chamado?
+
+        });
+    
+
+        it('Preenchimento dos campos atualiza o estado corretamente', () => {
+            const emailInput = screen.getByTestId('email-input');
+            const passwordInput = screen.getByTestId('password-input');
+
+            // Simular utilizador a escrever
+            fireEvent.changeText(emailInput, 'exemplo@email.com');
+            fireEvent.changeText(passwordInput, 'exemplo123');
+
+            // Verificar se o estado interno foi atualizado
+            expect(emailInput.props.value).toBe('exemplo@email.com');
+            expect(passwordInput.props.value).toBe('exemplo123');
+            
+            // Verificar que NÃO houve chamadas ao router ou alert (só atualizou estado)
+            const { router } = require('expo-router');
+            expect(router.replace).not.toHaveBeenCalled();
+            expect(Alert.alert).not.toHaveBeenCalled();
+        });
+    });
+});
+</file>
+
+<file path="__tests__/useCart.test.js">
+import useCart from "@/hooks/useCart";
+import { act, renderHook } from "@testing-library/react-native";
+
+test("limpar carrinho com produtos remove todos", () => {
+  const { result } = renderHook(() =>
+    useCart([
+      { id: "1", name: "Leite", price: 0.89 },
+      { id: "2", name: "Pão", price: 1.2 },
+    ]),
+  );
+
+  expect(result.current.products).toHaveLength(2);
+  act(() => result.current.clear());
+  expect(result.current.products).toHaveLength(0);
+});
+
+test("limpar carrinho vazio mostra erro", () => {
+  const { result } = renderHook(() => useCart([]));
+
+  act(() => result.current.clear());
+  expect(result.current.error).toBe("Impossível limpar carrinho vazio");
+});
+</file>
+
+<file path="app/(tabs)/account.jsx">
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { StyleSheet } from "react-native";
+
+const Home = () => {
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedText>Account</ThemedText>
+    </ThemedView>
+  );
+};
+
+export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+</file>
+
+<file path="components/BaseCard.jsx">
+import ThemedView from "@/components/ThemedView";
+import { Pressable, StyleSheet } from "react-native";
+
+const BaseCard = ({ children, onPress, style }) => {
+  return (
+    <Pressable 
+      onPress={onPress} 
+      style={({ pressed }) => [styles.wrapper, pressed && styles.pressed, style]}
+    >
+      <ThemedView style={styles.card}>
+        {children}
+      </ThemedView>
+    </Pressable>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    margin: 8,
+  },
+  pressed: {
+    opacity: 0.8,
+  },
+  card: {
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "rgba(150, 150, 150, 0.1)",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+});
+
+export default BaseCard;
+</file>
+
+<file path="components/FakeSearchBar.jsx">
+import { router } from 'expo-router';
+import { Pressable, StyleSheet, useColorScheme } from 'react-native';
+import { Colors } from '../constants/colors';
+import AppIcon from './AppIcon';
+import ThemedText from './ThemedText';
+
+const FakeSearchBar = () => {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  return (
+    <Pressable 
+      style={[styles.searchBox, { backgroundColor: theme.searchBackground }]} 
+      onPress={() => router.push('/search/supermarkets')}
+    >
+      <AppIcon name="explore" size={18} color={Colors.searchPlaceholder} weight = "bold" />
+      <ThemedText style={[styles.placeholder, { color: Colors.searchPlaceholder }]}>
+        Search Supermarket
+      </ThemedText>
+    </Pressable>
+  );
+};
+
+const styles = StyleSheet.create({
+  searchBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginHorizontal: 20,
+  },
+  placeholder: {
+    marginLeft: 10,
+    fontSize: 16,
+  },
+});
+
+export default FakeSearchBar;
+</file>
+
+<file path="constants/logos.js">
+export const SUPERMARKET_LOGOS = {
+  continente: require("@/assets/logos/continente.png"),
+  pingo_doce: require("@/assets/logos/pingodoce.png"),
+  mercadona: require("@/assets/logos/mercadona.png"),
+  lidl: require("@/assets/logos/lidl.png"),
+  aldi: require("@/assets/logos/aldi.png"),
+  default: require("@/assets/logos/default.png"),
+};
+
+export const getLogoForSupermarket = (name) => {
+  const normalizedName = name.toLowerCase().replace(/\s/g, "");
+  
+  if (normalizedName.includes("continente")) return SUPERMARKET_LOGOS.continente;
+  if (normalizedName.includes("pingodoce")) return SUPERMARKET_LOGOS.pingo_doce;
+  if (normalizedName.includes("mercadona")) return SUPERMARKET_LOGOS.mercadona;
+  if (normalizedName.includes("lidl")) return SUPERMARKET_LOGOS.lidl;
+  if (normalizedName.includes("aldi")) return SUPERMARKET_LOGOS.aldi;
+
+  return SUPERMARKET_LOGOS.default;
+};
+</file>
+
+<file path="docs/uml/architecture/deployment_diagram.puml">
+@startuml
+
+node "Developer Machine" {
+  artifact "Source Code"
+  node "Expo CLI" {
+    artifact "Metro Bundler"
+  }
+}
+
+node "Mobile Device" {
+  node "iOS / Android OS" {
+    node "Expo Go / Native App" {
+      artifact "React Native Runtime"
+      artifact "JavaScript Bundle"
+    }
+  }
+}
+
+node "Distribution" {
+  node "Apple App Store" {
+    artifact "iOS Build (.ipa)"
+  }
+  node "Google Play Store" {
+    artifact "Android Build (.apk/.aab)"
+  }
+}
+
+"Developer Machine" --> "Mobile Device" : HTTP (LAN / tunnel)\nDev mode
+"Developer Machine" --> "Distribution" : expo build / eas build
+"Distribution" --> "Mobile Device" : download & install
+
+@enduml
+</file>
+
+<file path="docs/uml/architecture/package_diagram.puml">
+@startuml
+
+top to bottom direction
+
+package "Presentation" {
+  package "Navigation" {
+    [RootLayout]
+    [TabsLayout]
+  }
+  package "Screens" {
+    [Login]
+    [Shop]
+    [Explore]
+    [Cart]
+    [Favourite]
+    [Account]
+  }
+  package "Components" {
+    [ThemedView]
+    [ThemedText]
+    [ThemedButton]
+    [CartItemRow]
+    [Spacer]
+    [AppIcon]
+  }
+  package "Assets" {
+    [Images]
+    [Fonts]
+  }
+}
+
+package "Application Logic" {
+  package "Constants" {
+    [Colors]
+    [Icons]
+  }
+  package "Hooks" {
+    [useCart]
+  }
+}
+
+[Navigation] ..> [Screens] : routes to
+[Screens] ..> [Components] : uses
+[Cart] ..> [useCart] : uses
+[Components] ..> [Colors] : uses
+[AppIcon] ..> [Icons] : uses
+
+@enduml
+</file>
+
+<file path="docs/uml/domain/domain_model.puml">
+@startuml
+
+class Utilizador {
+  +email: String
+  +password: String
+  +login(): void
+  +recuperarPassword(): void
+  +registar(): void
+}
+
+class Sessao {
+  +autenticado: Boolean
+  +iniciar(): void
+  +terminar(): void
+}
+
+class Carrinho {
+  +total: Float
+  +erro: String
+  +limpar(): void
+  +calcularTotal(): Float
+}
+
+class Produto {
+  +id: String
+  +nome: String
+  +preco: Float
+}
+
+class ItemCarrinho {
+  +quantidade: Integer
+  +precoUnitario: Float
+  +calcularSubtotal(): Float
+}
+
+class Favoritos {
+  +adicionarProduto(): void
+  +removerProduto(): void
+  +listaProdutos: List
+}
+
+class Loja {
+  +listarProdutos(): void
+  +filtrarProdutos(): void
+}
+
+class Explorar {
+  +pesquisar(): void
+  +filtrar(): void
+}
+
+class Conta {
+  +verPerfil(): void
+  +editarPerfil(): void
+}
+
+class Tema {
+  +esquemaCores: String
+  +corPrimaria: String
+  +corFundo: String
+  +corTexto: String
+  +corNavegacao: String
+}
+
+class Icone {
+  +nome: String
+  +tamanho: Integer
+  +cor: String
+  +peso: String
+  +renderizar(): void
+}
+
+class BarraNavegacao {
+  +corAtiva: String
+  +corInativa: String
+  +altura: Integer
+  +navegar(): void
+}
+
+class Alerta {
+  +titulo: String
+  +mensagem: String
+  +mostrar(): void
+}
+
+Utilizador "1" -- "1" Sessao : inicia
+Utilizador "1" -- "1" Carrinho : possui
+Utilizador "1" -- "1" Favoritos : gere
+Utilizador "1" -- "1" Conta : acede
+Utilizador "1" -- "1" Alerta : recebe
+Sessao "1" --> "1" BarraNavegacao : desbloqueia
+Carrinho "1" *-- "0..*" ItemCarrinho : contem
+ItemCarrinho "0..*" --> "1" Produto : referencia
+Carrinho "1" --> "1" Alerta : gera
+Favoritos "1" o-- "0..*" Produto : guarda
+Loja "1" -- "0..*" Produto : apresenta
+Explorar "1" -- "0..*" Produto : pesquisa
+BarraNavegacao "1" *-- "5" Icone : exibe
+BarraNavegacao "1" --> "1" Loja : navega
+BarraNavegacao "1" --> "1" Explorar : navega
+BarraNavegacao "1" --> "1" Carrinho : navega
+BarraNavegacao "1" --> "1" Favoritos : navega
+BarraNavegacao "1" --> "1" Conta : navega
+Tema "1" --> "1" BarraNavegacao : estiliza
+Tema "1" --> "1" Carrinho : estiliza
+Tema "1" --> "1" Loja : estiliza
+Tema "1" --> "1" Explorar : estiliza
+Tema "1" --> "1" Favoritos : estiliza
+Tema "1" --> "1" Conta : estiliza
+
+@enduml
+</file>
+
+<file path="utils/distance.js">
+// Utilizamos a fórmula de Haversine para distâncias em linha reta esférica.
+// É uma aproximação suficientemente precisa para este caso de uso e poupa 
+// os custos associados a usar APIs de routing pagas
+export const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // Raio da Terra em km
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+};
+</file>
+
+<file path="utils/time.js">
+export const formatTime = (minutes) => {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return m === 0 ? `${h}h` : `${h}h${m.toString().padStart(2, '0')}`;
+};
+</file>
+
+<file path="firebaseConfig.js">
+import { initializeApp } from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCchLtA_aX0eFUjUX2M9kyVd3NUFAvGe5c",
+  authDomain: "cheapy-5d3bb.firebaseapp.com",
+  databaseURL: "https://cheapy-5d3bb-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "cheapy-5d3bb",
+  storageBucket: "cheapy-5d3bb.firebasestorage.app",
+  messagingSenderId: "972393976723",
+  appId: "1:972393976723:web:1c2ee2b93f0a0dde11ce66"
+};
+
+const app = initializeApp(firebaseConfig);
+
+export const db = getFirestore(app);
+</file>
+
+<file path="components/SupermarketCard.jsx">
+import ThemedText from "@/components/ThemedText";
+import { getLogoForSupermarket } from "@/constants/logos";
+import { Image, StyleSheet } from "react-native";
+import BaseCard from "./BaseCard";
+
+const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress }) => {
+  return (
+    <BaseCard onPress={onPress}>
+      <Image 
+        source={getLogoForSupermarket(name)} 
+        style={styles.logo} 
+        resizeMode="contain" 
+      />
+      <ThemedText title style={styles.name} numberOfLines={2}>
+        {name}
+      </ThemedText>
+      <ThemedText title style={[styles.status, { color: isOpen ? '#53B175' : '#cc475a' }]}>
+        {isOpen ? "Aberto" : "Fechado"}
+      </ThemedText>
+      {scheduleToday && (
+        <ThemedText style={styles.details}>Hoje: {scheduleToday}</ThemedText>
+      )}
+      <ThemedText style={styles.details}>{distance}</ThemedText>
+    </BaseCard>
+  );
+};
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 80,
+    height: 80,
+    marginBottom: 16,
+    alignSelf: "center",
+  },
+  name: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 4,
+    minHeight: 38,
+  },
+  details: {
+    fontSize: 12,
+    textAlign: "center",
+    opacity: 0.7,
+  },
+  status: { 
+    fontSize: 13, fontWeight: "bold", textAlign: "center", marginBottom: 2 
+  },
+});
+
+export default SupermarketCard;
+</file>
+
+<file path="__tests__/cart.test.jsx">
+import Cart from '@/app/(tabs)/cart';
+import { fireEvent, render, screen } from '@testing-library/react-native';
+import React from 'react';
+
+jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+describe('Acceptance Test: Página do Carrinho', () => {
+  
+  it('Cenário 1: Limpa todos os itens do carrinho com sucesso', () => {
+    render(<Cart />);
+
+    const itensIniciais = screen.getAllByTestId('cart-item');
+    expect(itensIniciais.length).toBeGreaterThan(0);
+
+    expect(screen.getByText(/Total:/i)).toBeTruthy();
+
+    const botaoLimpar = screen.getByText('Limpar');
+    fireEvent.press(botaoLimpar);
+
+    const itensFinais = screen.queryAllByTestId('cart-item');
+    expect(itensFinais.length).toBe(0);
+
+    expect(screen.queryByText(/Total:/i)).toBeNull();
+  });
+
+  it('Cenário 2: Mostra aviso ao tentar limpar um carrinho que já está vazio', () => {
+    render(<Cart />);
+    
+    const botaoLimpar = screen.getByText('Limpar');
+
+    fireEvent.press(botaoLimpar);
+    
+    expect(screen.queryAllByTestId('cart-item').length).toBe(0);
+
+    fireEvent.press(botaoLimpar);
+
+    expect(screen.getByText('Impossível limpar carrinho vazio')).toBeTruthy();
+  });
+
+});
+</file>
+
+<file path="app/(tabs)/explore.jsx">
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { StyleSheet } from "react-native";
+
+const Home = () => {
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedText>Explore</ThemedText>
+    </ThemedView>
+  );
+};
+
+export default Home;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+</file>
+
+<file path="app/(tabs)/favourite.jsx">
+import ThemedText from '@/components/ThemedText';
+import ThemedView from '@/components/ThemedView';
+import { StyleSheet } from 'react-native';
+
+const Home = () => {
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedText>Favourite</ThemedText>
+    </ThemedView>
+  )
+}
+
+export default Home
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
+</file>
+
+<file path="components/AppIcon.jsx">
+import { Colors } from "@/constants/colors";
+import { ICON_MAP } from "@/constants/icons";
+import React from "react";
+import { useColorScheme } from "react-native";
+
+export default function AppIcon({
+  name,
+  size = 24,
+  color,
+  weight = "duotone",
+  ...props
+}) {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  const IconComponent = ICON_MAP[name];
+
+  if (!IconComponent) {
+    console.warn(`Ícone "${name}" não está mapeado em constants/icons.js.`);
+    return null;
+  }
+
+  return (
+    <IconComponent
+      size={size}
+      weight={weight}
+      color={color || theme.text}
+      {...props}
+    />
+  );
+}
+</file>
+
+<file path=".github/dependabot.yml">
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    target-branch: "develop"
+</file>
+
+<file path="app/(tabs)/cart.jsx">
+import CartItemRow from "@/components/CartItemRow";
+import Spacer from "@/components/Spacer";
+import ThemedButton from "@/components/ThemedButton";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import useCart from "@/hooks/useCart";
+import { FlatList } from "react-native";
+
+export default function Cart() {
+  const { products, total, error, clear } = useCart([
+    { id: "1", name: "Leite", price: 0.89 },
+    { id: "2", name: "Pão", price: 1.2 },
+  ]);
+
+  return (
+    <ThemedView style={{ flex: 1, padding: 20 }}>
+      <ThemedText title>Carrinho</ThemedText>
+      <Spacer height={16} />
+
+      <FlatList
+        data={products}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <CartItemRow name={item.name} price={item.price} />
+        )}
+      />
+
+      {products.length > 0 && (
+        <ThemedText>Total: {total.toFixed(2)} €</ThemedText>
+      )}
+      {error && <ThemedText style={{ color: "#cc475a" }}>{error}</ThemedText>}
+
+      <ThemedButton onPress={clear}>
+        <ThemedText style={{ color: "#fff", textAlign: "center" }}>
+          Limpar
+        </ThemedText>
+      </ThemedButton>
+    </ThemedView>
+  );
+}
+</file>
+
+<file path="app/(tabs)/index.jsx">
+import { Colors } from '@/constants/colors';
+import { StyleSheet, View, useColorScheme } from 'react-native';
+
+import AppIcon from '@/components/AppIcon';
+import FakeSearchBar from '@/components/FakeSearchBar';
+import Spacer from '@/components/Spacer';
+import ThemedText from '@/components/ThemedText';
+import ThemedView from '@/components/ThemedView';
+
+export default function Home() {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  return (
+    <ThemedView safe style={styles.container}>
+      <View style={styles.header}>
+        <AppIcon name="location" size={24} color={theme.text} weight="fill" />
+        <ThemedText title style={styles.locationText}>
+          Porto, Portugal
+        </ThemedText>
+      </View>
+
+      <Spacer height={16} />
+
+      <FakeSearchBar />
+    </ThemedView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  locationText: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 8,
+  },
+})
+</file>
+
+<file path="app/search/supermarkets.jsx">
+import AppIcon from '@/components/AppIcon';
+import SupermarketCard from '@/components/SupermarketCard';
+import ThemedText from '@/components/ThemedText';
+import ThemedView from '@/components/ThemedView';
+import { Colors } from '@/constants/colors';
+import { useSupermarkets } from '@/hooks/useSupermarkets';
+import { FlashList } from '@shopify/flash-list';
+import * as Location from 'expo-location';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, StyleSheet, TextInput, useColorScheme, View } from 'react-native';
+
+export default function SearchSupermarkets() {
+  const [query, setQuery] = useState('');
+  const [userLocation, setUserLocation] = useState(null);
+  const [isFetchingLocation, setIsFetchingLocation] = useState(true);
+  
+  const theme = Colors[useColorScheme()] ?? Colors.light;
+
+  useEffect(() => {
+    // Flag de mitigação de Memory Leaks. Previne que o estado
+    // seja atualizado se o componente já tiver sido desmontado durante o loading
+    let isMounted = true;
+
+    async function getUserLocation() {
+      try {
+        // Otimização de ciclo: get() valida silenciosamente
+        // Evita invocar o request() desnecessariamente se já tivermos permissão
+        let { status } = await Location.getForegroundPermissionsAsync();
+        
+        //Ler da cache resolve o pedido em 0ms.
+        // Apenas recorremos à antena GPS se a cache do OS estiver vazia.
+        if (status !== 'granted') {
+          const request = await Location.requestForegroundPermissionsAsync();
+          status = request.status;
+        }
+
+        if (status !== 'granted') {
+          if (isMounted) setIsFetchingLocation(false);
+          return;
+        }
+
+        let location = await Location.getLastKnownPositionAsync();
+
+        if (!location) {
+          const locationPromise = Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+          });
+
+          const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("Timeout: Erro no GPS")), 5000);
+          });
+
+          // Workaround arquitetural para o bug "Permitir uma vez" do iOS/Android.
+          // Força a libertação da thread UI se o SO encravar o acesso ao hardware.
+          location = await Promise.race([locationPromise, timeoutPromise]);
+        }
+        
+        if (isMounted && location) {
+          setUserLocation({
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+          });
+        }
+
+      } catch (error) {
+        console.warn("Aviso GPS (A usar fallback sem distância):", error.message);
+      } finally {
+        if (isMounted) setIsFetchingLocation(false);
+      }
+    }
+
+    getUserLocation();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const { supermarkets, loading: isSupermarketsLoading } = useSupermarkets(
+    userLocation?.latitude,
+    userLocation?.longitude
+  );
+
+  // useMemo protege contra re-renderizações complexas do filtro ao digitar.
+  const filteredData = useMemo(() => {
+    return supermarkets.filter((s) => 
+      s.name.toLowerCase().includes(query.trim().toLowerCase())
+    );
+  }, [query, supermarkets]);
+
+  // useCallback estabiliza a referência da função para a FlashList.
+  // Evita que os cartões sofram re-renderizações de memória em cada scroll.
+  const renderItem = useCallback(({ item }) => (
+    <SupermarketCard 
+      name={item.name} 
+      distance={item.formattedDistance} 
+      isOpen={item.isOpen} 
+      scheduleToday={item.scheduleToday} 
+    />
+  ), []);
+
+  const isLoading = isFetchingLocation || isSupermarketsLoading;
+
+  return (
+    <ThemedView safe style={styles.container}>
+      <View style={[styles.searchBox, { backgroundColor: theme.searchBackground }]}>
+        <AppIcon name="explore" size={20} color={theme.iconColor} weight="bold" />
+        <TextInput
+          style={[styles.input, { color: theme.text }]}
+          placeholder="Pesquisar..."
+          placeholderTextColor={theme.iconColor}
+          value={query}
+          onChangeText={setQuery}
+        />
+      </View>
+
+      <View style={styles.listContainer}>
+        {isLoading ? (
+          <ActivityIndicator size="large" color={Colors.primary} />
+        ) : (
+          <FlashList
+            data={filteredData}
+            renderItem={renderItem}
+            estimatedItemSize={100}
+            numColumns={2}
+            keyboardDismissMode="on-drag"
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <ThemedText style={styles.emptyText}>Nenhuma loja encontrada</ThemedText>
+              </View>
+            }
+          />
+        )}
+      </View>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1 
+  },
+  searchBox: {
+     flexDirection: 'row',
+      alignItems: 'center', 
+      margin: 16, 
+      borderRadius: 12, 
+      paddingHorizontal: 16, 
+      paddingVertical: 3 
+  },
+  input: { 
+    flex: 1,
+     marginLeft: 10,
+      fontSize: 16 
+  },
+  listContainer: {
+     flex: 1,
+    paddingHorizontal: 8 
+  },
+  emptyContainer: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    marginTop: 40 
+  },
+  emptyText: { 
+    fontSize: 16, 
+    opacity: 0.6 
+  },
+});
+</file>
+
+<file path="app/_layout.jsx">
+import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+export default function RootLayout() {
+  return (
+    <SafeAreaProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+
+        {}
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      </Stack>
+    </SafeAreaProvider>
+  );
+}
+</file>
+
+<file path="components/CartItemRow.jsx">
+import { StyleSheet, View } from "react-native";
+import ThemedText from "./ThemedText";
+
+const CartItemRow = ({ name, price }) => (
+  <View style={styles.row} testID="cart-item">
+    <ThemedText>{name}</ThemedText>
+    <ThemedText>{price.toFixed(2)} €</ThemedText>
+  </View>
+);
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+});
+
+export default CartItemRow;
+</file>
+
+<file path="components/Spacer.jsx">
+import { View } from "react-native";
+
+const Spacer = ({ width = "100%", height = 40 }) => {
+  return <View style={{ width, height }} />;
+};
+
+export default Spacer;
+</file>
+
+<file path="components/ThemedButton.jsx">
+import { Pressable, StyleSheet } from "react-native";
+import { Colors } from "@/constants/colors";
+
+const ThemedButton = ({ style, ...props }) => {
+  return (
+    <Pressable
+      style={({ pressed }) => [styles.btn, pressed && styles.pressed, style]}
+      {...props}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  btn: {
+    backgroundColor: Colors.primary,
+    padding: 18,
+    borderRadius: 6,
+    marginVertical: 10,
+  },
+  pressed: {
+    opacity: 0.5,
+  },
+});
+
+export default ThemedButton;
+</file>
+
+<file path="constants/icons.js">
+import {
+  CaretLeft,
+  Heart,
+  List,
+  MagnifyingGlass,
+  MapPin,
+  ShoppingCart,
+  Storefront,
+  User,
+} from "phosphor-react-native";
+
+export const ICON_MAP = {
+  shop: Storefront,
+  explore: MagnifyingGlass,
+  cart: ShoppingCart,
+  favourite: Heart,
+  account: User,
+  menu: List,
+  location: MapPin,
+  back: CaretLeft,
+};
+</file>
+
+<file path="hooks/useCart.js">
+import { useState } from "react";
+
+export default function useCart(initialProducts = []) {
+  const [products, setProducts] = useState(initialProducts);
+  const [error, setError] = useState(null);
+
+  const clear = () => {
+    if (products.length === 0) {
+      setError("Impossível limpar carrinho vazio");
+      return;
+    }
+    setProducts([]);
+    setError(null);
+  };
+
+  const total = products.reduce((sum, p) => sum + p.price, 0);
+
+  return { products, total, error, clear };
+}
+</file>
+
+<file path=".gitignore">
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+app-example
+
+# generated native folders
+/ios
+/android
+
+.vscode/
+</file>
+
+<file path="eslint.config.js">
+// https://docs.expo.dev/guides/using-eslint/
+const { defineConfig } = require('eslint/config');
+const expoConfig = require('eslint-config-expo/flat');
+
+module.exports = defineConfig([
+  expoConfig,
+  {
+    ignores: ['dist/*'],
+  },
+  {
+    files: ['**/__tests__/**/*.js', '**/__tests__/**/*.jsx'],
+    languageOptions: {
+      globals: {
+        jest: true,
+        describe: true,
+        it: true,
+        test: true,
+        expect: true,
+        beforeAll: true,
+        afterAll: true,
+        beforeEach: true,
+        afterEach: true,
+      },
+    },
+  },
+]);
+</file>
+
+<file path="tsconfig.json">
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "types": ["jest"]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}
+</file>
+
+<file path="app/(tabs)/_layout.jsx">
+import AppIcon from "@/components/AppIcon";
+import { Colors } from "@/constants/colors";
+import { Tabs } from "expo-router";
+import { Platform, useColorScheme } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+  const colorScheme = useColorScheme();
+
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  return (
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: theme.iconColor,
+        tabBarStyle: {
+          backgroundColor: theme.navBackground,
+          borderTopWidth: 0,
+          elevation: 15,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: colorScheme === "dark" ? 0.3 : 0.05,
+          shadowRadius: 10,
+
+          height: 65 + insets.bottom,
+          paddingBottom: insets.bottom > 0 ? insets.bottom : 12,
+          paddingTop: 12,
+
+          borderTopLeftRadius: 24,
+          borderTopRightRadius: 24,
+          position: "absolute",
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "600",
+          fontFamily: Platform.OS === "ios" ? "System" : "sans-serif-medium",
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Shop",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <AppIcon name="shop" color={color} weight="regular" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          title: "Explore",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <AppIcon name="explore" color={color} weight="regular" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="cart"
+        options={{
+          title: "Cart",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <AppIcon name="cart" color={color} weight="regular" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="favourite"
+        options={{
+          title: "Favourite",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <AppIcon name="favourite" color={color} weight="regular" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: "Account",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <AppIcon name="account" color={color} weight="regular" />
+          ),
+        }}
+      />
+    </Tabs>
+  );
+}
+</file>
+
+<file path="components/ThemedText.jsx">
+import { Text, useColorScheme } from "react-native";
+import { Colors } from "@/constants/colors";
+
+const ThemedText = ({ style, title = false, ...props }) => {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  const textColor = title ? theme.title : theme.text;
+
+  return <Text style={[{ color: textColor }, style]} {...props} />;
+};
+
+export default ThemedText;
+</file>
+
+<file path="components/ThemedView.jsx">
+import { useColorScheme, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Colors } from "@/constants/colors";
+
+const ThemedView = ({ style, safe = false, ...props }) => {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+  const insets = useSafeAreaInsets();
+
+  if (!safe)
+    return (
+      <View style={[{ backgroundColor: theme.background }, style]} {...props} />
+    );
+
+  return (
+    <View
+      style={[
+        {
+          backgroundColor: theme.background,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+        },
+        style,
+      ]}
+      {...props}
+    />
+  );
+};
+
+export default ThemedView;
+</file>
+
+<file path="constants/colors.js">
+export const Colors = {
+  primary: "#53B175",
+  warning: "#cc475a",
+  
+  searchPlaceholder: "#7C7C7C",
+
+  dark: {
+    text: "#d4d4d4",
+    title: "#fff",
+    background: "#252231",
+    navBackground: "#201e2b",
+    iconColor: "#9591a5",
+    iconColorFocused: "#fff",
+    uiBackground: "#2f2b3d",
+    searchBackground: "#3a3649", 
+  },
+  light: {
+    text: "#625f72",
+    title: "#201e2b",
+    background: "#FFFFFF",
+    navBackground: "#F8F9FA",
+    iconColor: "#7C7C7C",
+    iconColorFocused: "#181725",
+    uiBackground: "#ffffff",
+    searchBackground: "#F2F3F2",
+  },
+};
+</file>
+
+<file path="hooks/useSupermarkets.js">
+import { db } from "@/firebaseConfig";
+import { calculateDistance } from "@/utils/distance";
+import { formatTime } from "@/utils/time";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+
+
+export function useSupermarkets(userLat, userLon) {
+  const [supermarkets, setSupermarkets] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchSupermarkets() {
+      setLoading(true);
+      try {
+        const querySnapshot = await getDocs(collection(db, "stores"));
+        const data = querySnapshot.docs.map((doc) => {
+          const dbData = doc.data();
+          
+          let dist = null;
+          // Fallback de segurança (Null Safety). 
+          if (dbData.location && userLat && userLon) {
+            dist = calculateDistance(userLat, userLon, dbData.location.latitude, dbData.location.longitude);
+          }
+
+          const today = new Date();
+          const currentMinutes = today.getHours() * 60 + today.getMinutes();
+          const todaySchedule = dbData.schedule ? dbData.schedule[today.getDay()] : null;
+          
+          let isOpen = false;
+          let scheduleToday = "Indisponível";
+
+          if (todaySchedule) {
+            isOpen = currentMinutes >= todaySchedule.opening && currentMinutes <= todaySchedule.closing;
+            scheduleToday = `${formatTime(todaySchedule.opening)}-${formatTime(todaySchedule.closing)}`;
+          }
+
+          return {
+            id: doc.id,
+            name: dbData.name || "Sem Nome",
+            rawDistance: dist,
+            formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A",
+            isOpen, 
+            scheduleToday 
+          };
+        });
+        setSupermarkets(data);
+      } catch (error) {
+        console.error("Erro ao buscar supermercados:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchSupermarkets();
+  }, [userLat, userLon]);
+
+  return { supermarkets, loading };
+}
+</file>
+
+<file path="app/index.jsx">
+import { router } from 'expo-router';
+import { StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+
+import Spacer from '@/components/Spacer';
+import ThemedButton from '@/components/ThemedButton';
+import ThemedText from '@/components/ThemedText';
+import ThemedView from '@/components/ThemedView';
+import { Colors } from '@/constants/colors'
+import { useState } from 'react';
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    // Verificação email/password
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor preencha todos os campos');
+      return;
+    }
+    
+    // Aqui podemos adicionar a lógica de autenticação
+    router.replace('/(tabs)');
+  };
+
+  const handleForgotPassword = () => {
+    Alert.alert('Recuperar password', 'Função ainda não implementada');
+  };
+
+  const handleRegister = () => {
+    Alert.alert('Registo', 'Função ainda não implementada');
+  };
+
+  return (
+    <ThemedView safe style={styles.container}>
+      {/* Titulo */}
+      <ThemedText title style={styles.logoText}>Log in</ThemedText>
+      
+      <Spacer height={30} />
+
+      {/* Subtítulo */}
+      <ThemedText style={styles.subtitle}>Insira as suas credenciais</ThemedText>
+
+      <Spacer height={30} />
+
+      {/* Email */}
+      <ThemedText style={styles.label}>Email</ThemedText>
+      <TextInput
+        testID='email-input'
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        placeholderTextColor="#999"
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+
+      <Spacer height={16} />
+
+      {/* Password */}
+      <ThemedText style={styles.label}>Password</ThemedText>
+      <TextInput
+        testID='password-input'
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+        placeholderTextColor="#999"
+        secureTextEntry
+      />
+
+      <Spacer height={12} />
+
+      {/* Link recuperação da password */}
+      <Pressable
+        testID='forgot-password'
+        onPress={handleForgotPassword}>
+        <ThemedText style={styles.forgotPassword}>
+          Esqueceu-se da sua password?
+        </ThemedText>
+      </Pressable>
+
+      <Spacer height={30} />
+
+      {/* Botão de Log In */}
+      <ThemedButton 
+        testID='login-button'
+        onPress={handleLogin} style={styles.loginButton}>
+        <ThemedText style={styles.buttonText}>Log In</ThemedText>
+      </ThemedButton>
+
+      <Spacer height={20} />
+
+      {/* Link Registe-se */}
+      <Pressable 
+        testID='register'
+        onPress={handleRegister}>
+        <ThemedText style={styles.registerText}>
+          Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
+        </ThemedText>
+      </Pressable>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+    justifyContent: 'center',
+  },
+  logoText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  label: {
+    fontSize: 14,
+    marginBottom: 8,
+    fontWeight: '500',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    backgroundColor: '#f9f9f9',
+  },
+  forgotPassword: {
+    textAlign: 'right',
+    fontSize: 13,
+    opacity: 0.7,
+  },
+  loginButton: {
+    borderRadius: 8,
+    paddingVertical: 14,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  registerText: {
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  registerLink: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+});
+</file>
+
+<file path="app.json">
+{
+  "expo": {
+    "name": "cheapy",
+    "slug": "cheapy",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "cheapy",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
+        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.cheapy"
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      [ 
+        "expo-location",
+          {
+            "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "cheapy",
+  "main": "expo-router/entry",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "lint": "expo lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
+    "@react-navigation/bottom-tabs": "^7.4.0",
+    "@react-navigation/elements": "^2.6.3",
+    "@react-navigation/native": "^7.1.8",
+    "@shopify/flash-list": "2.0.2",
+    "expo": "~54.0.33",
+    "expo-constants": "~18.0.13",
+    "expo-font": "~14.0.11",
+    "expo-haptics": "~15.0.8",
+    "expo-image": "~3.0.11",
+    "expo-linking": "~8.0.11",
+    "expo-location": "~19.0.8",
+    "expo-router": "~6.0.23",
+    "expo-splash-screen": "~31.0.13",
+    "expo-status-bar": "~3.0.9",
+    "expo-symbols": "~1.0.8",
+    "expo-system-ui": "~6.0.9",
+    "expo-web-browser": "~15.0.10",
+    "firebase": "^12.11.0",
+    "firebase-admin": "^13.7.0",
+    "phosphor-react-native": "^3.0.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-gesture-handler": "~2.28.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "15.12.1",
+    "react-native-web": "~0.21.0",
+    "react-native-worklets": "0.5.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-native": "^5.4.3",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "29.5.14",
+    "@types/react": "~19.1.0",
+    "eslint": "^9.25.0",
+    "eslint-config-expo": "~10.0.0",
+    "jest": "^29.7.0",
+    "jest-expo": "~54.0.0",
+    "react-test-renderer": "^19.1.0",
+    "typescript": "~5.9.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ]
+  },
+  "private": true
+}
+</file>
+
+</files>
