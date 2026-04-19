@@ -1,0 +1,93 @@
+import SearchProducts from '@/app/search/products';
+import { useProducts } from '@/hooks/useProducts';
+import { fireEvent, render, screen } from '@testing-library/react-native';
+import React from 'react';
+
+// Aceptance Tests
+
+jest.mock('@/hooks/useProducts', () => ({
+  useProducts: jest.fn()
+}));
+
+jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+describe('Acceptance Test: Pesquisa de Produtos e Preços', () => {
+
+  it('Cenário 1 e 2: Renderiza produto base, capacidade e calcula a badge de Melhor Preço', () => {
+    useProducts.mockReturnValue({
+      loading: false,
+      products: [
+        {
+          id: 'prod_acucar_mb',
+          name: 'Açúcar Branco',
+          formattedCapacity: '1 Kg',
+          currentPrice: 0.94,
+          isPromo: true,
+          originalPrice: 1.08,
+          bestStore: 'Minipreço'
+        }
+      ]
+    });
+
+    render(<SearchProducts />);
+
+    expect(screen.getByText('Açúcar Branco')).toBeTruthy();
+    expect(screen.getByText('1 Kg')).toBeTruthy();
+
+    expect(screen.getByText('Melhor preço: Minipreço')).toBeTruthy();
+  });
+
+  it('Cenário 3: Renderiza preço promocional com strikethrough vs Preço Normal', () => {
+    useProducts.mockReturnValue({
+      loading: false,
+      products: [
+        {
+          id: 'prod_1',
+          name: 'Produto Com Promo',
+          currentPrice: 0.94,
+          isPromo: true,
+          originalPrice: 1.08,
+          bestStore: 'Minipreço'
+        },
+        {
+          id: 'prod_2',
+          name: 'Produto Sem Promo',
+          currentPrice: 0.99,
+          isPromo: false,
+          originalPrice: 0.99,
+          bestStore: 'Continente'
+        }
+      ]
+    });
+
+    render(<SearchProducts />);
+
+    expect(screen.getByText('€0.94')).toBeTruthy();
+    const originalPricePromo = screen.getByText('€1.08');
+    expect(originalPricePromo).toBeTruthy();
+    // Risco no preço será verificado pelas props do componente Text no React Native
+    expect(originalPricePromo.props.style).toEqual(
+      expect.arrayContaining([expect.objectContaining({ textDecorationLine: 'line-through' })])
+    );
+
+    expect(screen.getByText('€0.99')).toBeTruthy();
+    // Garante que o preço original não é renderizado se não houver promo
+    const originalPrices = screen.queryAllByText('€0.99');
+    expect(originalPrices.length).toBe(1);
+  });
+
+  it('Cenário 4: Erro de rede / Sem resultados mostra Empty State', () => {
+    useProducts.mockReturnValue({
+      loading: false,
+      products: []
+    });
+
+    render(<SearchProducts />);
+
+    const searchInput = screen.getByPlaceholderText('Pesquisar produtos...');
+    fireEvent.changeText(searchInput, 'Inexistente');
+
+    expect(screen.getByText('Nenhum produto encontrado')).toBeTruthy();
+  });
+
+});
