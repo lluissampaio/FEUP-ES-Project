@@ -2,27 +2,18 @@ import { db } from "@/firebaseConfig";
 import { calculateDistance } from "@/utils/distance";
 import { formatTime } from "@/utils/time";
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-
-export function useSupermarkets(userLat, userLon) {
-  const [supermarkets, setSupermarkets] = useState([]);
+export function useSupermarkets(userLocation) {
+  const [rawSupermarkets, setRawSupermarkets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchSupermarkets() {
-      setLoading(true);
       try {
         const querySnapshot = await getDocs(collection(db, "stores"));
         const data = querySnapshot.docs.map((doc) => {
           const dbData = doc.data();
-          
-          let dist = null;
-          // Fallback de segurança (Null Safety). 
-          if (dbData.location && userLat && userLon) {
-            dist = calculateDistance(userLat, userLon, dbData.location.latitude, dbData.location.longitude);
-          }
-
           const today = new Date();
           const currentMinutes = today.getHours() * 60 + today.getMinutes();
           const todaySchedule = dbData.schedule ? dbData.schedule[today.getDay()] : null;
@@ -38,13 +29,12 @@ export function useSupermarkets(userLat, userLon) {
           return {
             id: doc.id,
             name: dbData.name || "Sem Nome",
-            rawDistance: dist,
-            formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A",
+            location: dbData.location, // Guardamos as coordenadas brutas para cálculo posterior
             isOpen, 
             scheduleToday 
           };
         });
-        setSupermarkets(data);
+        setRawSupermarkets(data);
       } catch (error) {
         console.error("Erro ao buscar supermercados:", error);
       } finally {
@@ -52,7 +42,25 @@ export function useSupermarkets(userLat, userLon) {
       }
     }
     fetchSupermarkets();
-  }, [userLat, userLon]);
+  }, []);
+
+  // 2. Processamento Local: Recalcula a distância síncronamente sempre que o GPS atualizar
+  const supermarkets = useMemo(() => {
+    return rawSupermarkets.map(store => {
+      let dist = null;
+      if (store.location && userLocation?.latitude && userLocation?.longitude) {
+        dist = calculateDistance(
+          userLocation.latitude, userLocation.longitude, 
+          store.location.latitude, store.location.longitude
+        );
+      }
+      return {
+        ...store,
+        rawDistance: dist,
+        formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A"
+      };
+    });
+  }, [rawSupermarkets, userLocation]);
 
   return { supermarkets, loading };
 }
