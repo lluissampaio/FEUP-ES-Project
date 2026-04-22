@@ -1,17 +1,18 @@
-import SearchProducts from '@/app/search/products';
-import { useProducts } from '@/hooks/useProducts';
+import Explore from '@/app/(tabs)/explore'; // 1. Importação correta adicionada
+import useProducts from '@/hooks/useProducts';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
 
-// Aceptance Tests
-
-jest.mock('@/hooks/useProducts', () => ({
-  useProducts: jest.fn()
-}));
+jest.mock('@/hooks/useProducts', () => {
+  return {
+    __esModule: true,
+    default: jest.fn()
+  };
+});
 
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 
-describe('Acceptance Test: Pesquisa de Produtos e Preços', () => {
+describe('Acceptance Test: Pesquisa de Produtos e Preços no Explore', () => {
 
   it('Cenário 1 e 2: Renderiza produto base, capacidade e calcula a badge de Melhor Preço', () => {
     useProducts.mockReturnValue({
@@ -29,12 +30,13 @@ describe('Acceptance Test: Pesquisa de Produtos e Preços', () => {
       ]
     });
 
-    render(<SearchProducts />);
+    render(<Explore />);
 
     expect(screen.getByText('Açúcar Branco')).toBeTruthy();
     expect(screen.getByText('1 Kg')).toBeTruthy();
 
-    expect(screen.getByText('Melhor preço: Minipreço')).toBeTruthy();
+    expect(screen.getByText(/Melhor preço:/)).toBeTruthy();
+    expect(screen.getByText('Minipreço')).toBeTruthy();
   });
 
   it('Cenário 3: Renderiza preço promocional com strikethrough vs Preço Normal', () => {
@@ -60,19 +62,18 @@ describe('Acceptance Test: Pesquisa de Produtos e Preços', () => {
       ]
     });
 
-    render(<SearchProducts />);
+    render(<Explore />);
 
-    expect(screen.getByText('€0.94')).toBeTruthy();
-    const originalPricePromo = screen.getByText('€1.08');
+    expect(screen.getByText('0.94€')).toBeTruthy();
+    
+    const originalPricePromo = screen.getByText('1.08€');
     expect(originalPricePromo).toBeTruthy();
-    // Risco no preço será verificado pelas props do componente Text no React Native
     expect(originalPricePromo.props.style).toEqual(
       expect.arrayContaining([expect.objectContaining({ textDecorationLine: 'line-through' })])
     );
 
-    expect(screen.getByText('€0.99')).toBeTruthy();
-    // Garante que o preço original não é renderizado se não houver promo
-    const originalPrices = screen.queryAllByText('€0.99');
+    expect(screen.getByText('0.99€')).toBeTruthy();
+    const originalPrices = screen.queryAllByText('0.99€');
     expect(originalPrices.length).toBe(1);
   });
 
@@ -82,7 +83,7 @@ describe('Acceptance Test: Pesquisa de Produtos e Preços', () => {
       products: []
     });
 
-    render(<SearchProducts />);
+    render(<Explore />);
 
     const searchInput = screen.getByPlaceholderText('Pesquisar produtos...');
     fireEvent.changeText(searchInput, 'Inexistente');
