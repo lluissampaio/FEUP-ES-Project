@@ -25,7 +25,7 @@ jest.mock("@/firebaseConfig", () => ({ db: {} }));
 
 describe("Unit Test: Hook useSupermarkets", () => {
   it("Deve extrair, calcular e mapear os dados do Firebase corretamente", async () => {
-    const { result } = renderHook(() => useSupermarkets(41.16, -8.61));
+    const { result } = renderHook(() => useSupermarkets({ latitude: 41.16, longitude: -8.61 }));
 
     expect(result.current.loading).toBe(true);
 
