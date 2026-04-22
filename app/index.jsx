@@ -1,5 +1,7 @@
 import { router } from 'expo-router';
-import { StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+import { StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebaseConfig';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
@@ -11,16 +13,26 @@ import { useState } from 'react';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Verificação email/password
     if (!email || !password) {
       Alert.alert('Erro', 'Por favor preencha todos os campos');
       return;
     }
     
-    // Aqui podemos adicionar a lógica de autenticação
-    router.replace('/(tabs)');
+    setLoading(true);
+
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+      router.replace('/(tabs)');
+    } catch (error) {
+      console.error('Erro login:', error);
+      Alert.alert('Erro', 'Email ou password incorretos');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -28,7 +40,7 @@ export default function Login() {
   };
 
   const handleRegister = () => {
-    Alert.alert('Registo', 'Função ainda não implementada');
+    router.push('/register'); // Vai para o ecrã de registo (register.jsx)
   };
 
   return (
@@ -53,6 +65,7 @@ export default function Login() {
         placeholderTextColor="#999"
         keyboardType="email-address"
         autoCapitalize="none"
+        editable={!loading}
       />
 
       <Spacer height={16} />
@@ -66,6 +79,7 @@ export default function Login() {
         onChangeText={setPassword}
         placeholderTextColor="#999"
         secureTextEntry
+        editable={!loading}
       />
 
       <Spacer height={12} />
@@ -84,8 +98,15 @@ export default function Login() {
       {/* Botão de Log In */}
       <ThemedButton 
         testID='login-button'
-        onPress={handleLogin} style={styles.loginButton}>
-        <ThemedText style={styles.buttonText}>Log In</ThemedText>
+        onPress={handleLogin}
+        style={styles.loginButton}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <ThemedText style={styles.buttonText}>Log In</ThemedText>
+        )}
       </ThemedButton>
 
       <Spacer height={20} />
