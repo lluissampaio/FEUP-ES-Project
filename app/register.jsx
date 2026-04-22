@@ -1,5 +1,7 @@
 import { router } from 'expo-router';
-import { StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+import { StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '@/firebaseConfig';
 import { useState } from 'react';
 
 import Spacer from '@/components/Spacer';
@@ -9,43 +11,56 @@ import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
 
 export default function Register() {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-    // Validação dos campos
-    if (!email || !password || !confirmPassword) {
-      Alert.alert('Erro', 'Por favor preencha todos os campos');
-      return;
-    }
+  const handleRegister = async () => {  // MUDAR para async
+  if (!email || !password || !confirmPassword) {
+    Alert.alert('Erro', 'Por favor preencha todos os campos');
+    return;
+  }
 
-    // Verificar se a password está igual
-    if (password !== confirmPassword) {
-      Alert.alert('Erro', 'As passwords não coincidem');
-      return;
-    }
+  if (password !== confirmPassword) {
+    Alert.alert('Erro', 'As passwords não coincidem');
+    return;
+  }
 
-    // Password tamanho minimo 6 chars
-    if (password.length < 6) {
-      Alert.alert('Erro', 'A password deve ter pelo menos 6 caracteres');
-      return;
-    }
+  if (password.length < 6) {
+    Alert.alert('Erro', 'A password deve ter pelo menos 6 caracteres');
+    return;
+  }
 
-    // Validação básica de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      Alert.alert('Erro', 'Por favor insira um email válido');
-      return;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    Alert.alert('Erro', 'Por favor insira um email válido');
+    return;
+  }
+  
+  setLoading(true);  // NOVO - desativa botões
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // NOVO - cria conta no Firebase
+    
+    Alert.alert('Sucesso', 'Conta criada!', [
+      { text: 'OK', onPress: () => router.replace('/') }
+    ]);
+  } catch (error) {
+    // NOVO - trata erros do Firebase
+    let errorMessage = 'Erro ao criar conta';
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        errorMessage = 'Email já registado';
+        break;
+      case 'auth/weak-password':
+        errorMessage = 'Password muito fraca';
+        break;
     }
-
-    // TODO: Adicionar lógica de criação de conta no Firebase
-    // Por enquanto, apenas mostra sucesso e redireciona
-    Alert.alert(
-      'Sucesso', 
-      'Conta criada com sucesso!',
-      [{ text: 'OK', onPress: () => router.replace('/') }]
-    );
+    Alert.alert('Erro', errorMessage);
+  } finally {
+    setLoading(false);  // NOVO - reativa botões
+    }
   };
 
   const handleLoginRedirect = () => {
@@ -78,6 +93,7 @@ export default function Register() {
         placeholderTextColor="#999"
         keyboardType="email-address"
         autoCapitalize="none"
+        editable={!loading}
       />
 
       <Spacer height={16} />
@@ -91,6 +107,7 @@ export default function Register() {
         onChangeText={setPassword}
         placeholderTextColor="#999"
         secureTextEntry
+        editable={!loading}
       />
 
       <Spacer height={16} />
@@ -104,6 +121,7 @@ export default function Register() {
         onChangeText={setConfirmPassword}
         placeholderTextColor="#999"
         secureTextEntry
+        editable={!loading}
       />
 
       <Spacer height={30} />
@@ -113,8 +131,13 @@ export default function Register() {
         testID="register-button"
         onPress={handleRegister} 
         style={styles.registerButton}
+        disabled={loading}
       >
-        <ThemedText style={styles.buttonText}>Registar</ThemedText>
+        {loading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          <ThemedText style={styles.buttonText}>Registar</ThemedText>
+        )}
       </ThemedButton>
 
       <Spacer height={20} />
