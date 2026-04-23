@@ -15,7 +15,7 @@ import { searchLocations } from '@/utils/photon';
 export default function LocationPage() {
   const { location: gpsLocation, isLoading: isGpsLoading, error: gpsError, refreshLocation } = useUserLocation();
 
-  const [mode, setMode] = useState('none'); // 'none' | 'gps' | 'manual'
+  const [mode, setMode] = useState('none');
   const [manualLocation, setManualLocation] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,21 +24,18 @@ export default function LocationPage() {
 
   const debounceRef = useRef(null);
 
-  // Cleanup debounce on unmount
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, []);
 
-  // Sync GPS to mode when it arrives and no manual override
   useEffect(() => {
     if (gpsLocation && mode === 'none') {
       setMode('gps');
     }
   }, [gpsLocation, mode]);
 
-  // Debounced fuzzy search
   const handleSearchChange = useCallback((text) => {
     setSearchQuery(text);
 
@@ -63,17 +60,11 @@ export default function LocationPage() {
     setMode('manual');
     setSearchQuery('');
     setSearchResults([]);
-    // TODO: persist + wire to useSupermarkets
-    console.log('Manual location:', { lat: loc.latitude, lon: loc.longitude, name: loc.displayString });
   }, []);
 
-  const handleClearManual = useCallback(() => {
+  const handleRemoveManual = useCallback(() => {
     setManualLocation(null);
-    if (gpsLocation) {
-      setMode('gps');
-    } else {
-      setMode('none');
-    }
+    setMode(gpsLocation ? 'gps' : 'none');
   }, [gpsLocation]);
 
   const handleGps = useCallback(() => {
@@ -82,14 +73,19 @@ export default function LocationPage() {
     refreshLocation();
   }, [refreshLocation]);
 
-  const isManual = mode === 'manual';
   const isActive = mode === 'gps' || mode === 'manual';
+  const isManual = mode === 'manual';
+
+  const activeCoords = isManual
+    ? `${manualLocation.latitude.toFixed(4)}, ${manualLocation.longitude.toFixed(4)}`
+    : gpsLocation
+      ? `${gpsLocation.latitude.toFixed(4)}, ${gpsLocation.longitude.toFixed(4)}`
+      : '';
 
   return (
     <ThemedView safe style={styles.container}>
       <Spacer height={80} />
 
-      {/* Centered status */}
       <View style={styles.statusArea}>
         <AppIcon
           name={isActive ? "location" : "warningCircle"}
@@ -99,7 +95,7 @@ export default function LocationPage() {
           style={{ opacity: isActive ? 0.6 : 0.35 }}
         />
         <Spacer height={16} />
-        {isManual && manualLocation ? (
+        {isManual ? (
           <ThemedText style={[styles.statusText, styles.activeText]}>
             Localização manual ativa
           </ThemedText>
@@ -112,62 +108,64 @@ export default function LocationPage() {
             Sem localização definida
           </ThemedText>
         )}
-        {gpsError && !isActive && (
-          <ThemedText style={styles.errorDetail}>{gpsError}</ThemedText>
-        )}
       </View>
 
-      <Spacer height={48} />
+      <Spacer height={32} />
 
-      {/* GPS button — hidden when manual is active */}
-      {!isManual && (
-        <ThemedButton onPress={handleGps} style={styles.gpsButton}>
-          <View style={styles.buttonContent}>
-            <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
-            <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
-          </View>
-        </ThemedButton>
-      )}
-
-      {/* Manual location card — shown when manual is active */}
-      {isManual && manualLocation && (
-        <BaseCard style={styles.manualCard}>
-          <View style={styles.manualInfo}>
-            <AppIcon name="location" size={20} weight="fill" color="#53B175" />
-            <View style={{ flex: 1 }}>
-              <ThemedText title style={styles.manualName} numberOfLines={2}>
-                {manualLocation.displayString}
+      {isActive && activeCoords && (
+        <>
+          <BaseCard style={[styles.locationCard, styles.cardFlushBottom]}>
+            <View style={styles.cardTop}>
+              <AppIcon
+                name={isManual ? "location" : "crosshair"}
+                size={22}
+                weight="fill"
+                color="#53B175"
+              />
+              <Spacer width={12} />
+              <ThemedText title style={styles.cardName} numberOfLines={2}>
+                {isManual ? manualLocation.displayString : "Localização GPS"}
               </ThemedText>
             </View>
-          </View>
-          <Pressable onPress={handleClearManual} hitSlop={12}>
-            <ThemedText style={styles.changeText}>Alterar</ThemedText>
-          </Pressable>
-        </BaseCard>
-      )}
+            <View style={styles.cardSplitter} />
+            <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
+          </BaseCard>
 
-      {/* Divider + search — only if NOT manual */}
-      {!isManual && (
-        <>
-          <Spacer height={36} />
-          <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
-            <View style={styles.dividerLine} />
-          </View>
-          <Spacer height={16} />
-
-          <SearchInput
-            value={searchQuery}
-            onChangeText={handleSearchChange}
-            placeholder="Pesquisar cidade, morada..."
-          />
+          {isManual && (
+            <Pressable onPress={handleRemoveManual} style={styles.removeButton}>
+              <ThemedText style={styles.removeButtonText}>Remover</ThemedText>
+            </Pressable>
+          )}
         </>
       )}
 
+      <Spacer height={16} />
+
+      <ThemedButton onPress={handleGps} style={styles.gpsButton}>
+        <View style={styles.buttonContent}>
+          <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
+          <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
+        </View>
+      </ThemedButton>
+
+      <Spacer height={36} />
+
+      <View style={styles.divider}>
+        <View style={styles.dividerLine} />
+        <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
+        <View style={styles.dividerLine} />
+      </View>
+
+      <Spacer height={16} />
+
+      <SearchInput
+        value={searchQuery}
+        onChangeText={handleSearchChange}
+        placeholder="Pesquisar cidade, morada..."
+      />
+
       <Spacer height={8} />
 
-      {/* Results area */}
       {isSearching ? (
         <View style={styles.emptyState}>
           <ThemedText style={styles.dimText}>A pesquisar...</ThemedText>
@@ -189,13 +187,13 @@ export default function LocationPage() {
             </BaseCard>
           ))}
         </View>
-      ) : !isManual && searchQuery.length >= 3 && !isSearching ? (
+      ) : searchQuery.length >= 3 && !isSearching ? (
         <View style={styles.emptyState}>
           <ThemedText style={styles.dimText}>
             Sem resultados para &quot;{searchQuery}&quot;
           </ThemedText>
         </View>
-      ) : !isManual ? (
+      ) : (
         <View style={styles.emptyState}>
           <AppIcon name="explore" size={40} style={{ opacity: 0.2 }} />
           <Spacer height={12} />
@@ -203,7 +201,7 @@ export default function LocationPage() {
             Pesquise uma localização para definir manualmente
           </ThemedText>
         </View>
-      ) : null}
+      )}
     </ThemedView>
   );
 }
@@ -228,11 +226,44 @@ const styles = StyleSheet.create({
     color: '#cc475a',
     opacity: 0.6,
   },
-  errorDetail: {
+  locationCard: {
+    padding: 16,
+    alignItems: 'center',
+  },
+  cardFlushBottom: {
+    marginBottom: 0,
+  },
+  cardTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+  },
+  cardName: {
+    flex: 1,
+    fontSize: 15,
+  },
+  cardSplitter: {
+    width: '100%',
+    height: 1,
+    backgroundColor: 'rgba(150, 150, 150, 0.15)',
+    marginVertical: 12,
+  },
+  cardCoords: {
     fontSize: 12,
-    color: '#cc475a',
-    opacity: 0.5,
-    marginTop: 6,
+    opacity: 0.45,
+    textAlign: 'center',
+  },
+  removeButton: {
+    backgroundColor: '#cc475a',
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 0,
+  },
+  removeButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   gpsButton: {
     borderRadius: 10,
@@ -247,27 +278,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 15,
-    fontWeight: '600',
-  },
-  manualCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    gap: 12,
-  },
-  manualInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    flex: 1,
-  },
-  manualName: {
-    fontSize: 14,
-  },
-  changeText: {
-    fontSize: 13,
-    color: '#53B175',
     fontWeight: '600',
   },
   divider: {
