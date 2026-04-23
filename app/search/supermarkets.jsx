@@ -1,10 +1,11 @@
+// app/search/supermarkets.jsx
 import SearchInput from '@/components/SearchInput';
 import SupermarketCard from '@/components/SupermarketCard';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
+import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
-import { useUserLocation } from '@/hooks/useUserLocation';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -12,7 +13,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 export default function SearchSupermarkets() {
   const [query, setQuery] = useState('');
   
-  const { location: userLocation, isLoading: isFetchingLocation } = useUserLocation();
+  const { location: userLocation, isLoading: isFetchingLocation } = useActiveLocation();
   const { supermarkets, loading: isSupermarketsLoading } = useSupermarkets(userLocation);
 
   const filteredData = useMemo(() => {

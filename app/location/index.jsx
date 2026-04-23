@@ -9,14 +9,14 @@ import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
-import { useUserLocation } from '@/hooks/useUserLocation';
+import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { searchLocations } from '@/utils/photon';
 
 export default function LocationPage() {
-  const { location: gpsLocation, isLoading: isGpsLoading, error: gpsError, refreshLocation } = useUserLocation();
+  const { location: gpsLocation, isLoading: isGpsLoading, override, setManualLocation, clearOverride, refreshLocation } = useActiveLocation();
 
   const [mode, setMode] = useState('none');
-  const [manualLocation, setManualLocation] = useState(null);
+  const [manualLocation, setManualLocationState] = useState(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -25,16 +25,19 @@ export default function LocationPage() {
   const debounceRef = useRef(null);
 
   useEffect(() => {
+    if (override) {
+      setManualLocationState({ displayString: override.name, latitude: override.lat, longitude: override.lon });
+      setMode('manual');
+    } else if (gpsLocation) {
+      setMode('gps');
+    }
+  }, [override, gpsLocation]);
+
+  useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
   }, []);
-
-  useEffect(() => {
-    if (gpsLocation && mode === 'none') {
-      setMode('gps');
-    }
-  }, [gpsLocation, mode]);
 
   const handleSearchChange = useCallback((text) => {
     setSearchQuery(text);
@@ -55,20 +58,22 @@ export default function LocationPage() {
     }, 300);
   }, []);
 
-  const handleSelectLocation = useCallback((loc) => {
-    setManualLocation(loc);
+  const handleSelectLocation = useCallback(async (loc) => {
+    await setManualLocation(loc);
+    setManualLocationState(loc);
     setMode('manual');
     setSearchQuery('');
     setSearchResults([]);
-  }, []);
+  }, [setManualLocation]);
 
-  const handleRemoveManual = useCallback(() => {
-    setManualLocation(null);
+  const handleRemoveManual = useCallback(async () => {
+    await clearOverride();
+    setManualLocationState(null);
     setMode(gpsLocation ? 'gps' : 'none');
-  }, [gpsLocation]);
+  }, [clearOverride, gpsLocation]);
 
   const handleGps = useCallback(() => {
-    setManualLocation(null);
+    setManualLocationState(null);
     setMode('gps');
     refreshLocation();
   }, [refreshLocation]);
@@ -76,7 +81,7 @@ export default function LocationPage() {
   const isActive = mode === 'gps' || mode === 'manual';
   const isManual = mode === 'manual';
 
-  const activeCoords = isManual
+  const activeCoords = isManual && manualLocation
     ? `${manualLocation.latitude.toFixed(4)}, ${manualLocation.longitude.toFixed(4)}`
     : gpsLocation
       ? `${gpsLocation.latitude.toFixed(4)}, ${gpsLocation.longitude.toFixed(4)}`
