@@ -1,6 +1,6 @@
 // app/location/index.jsx
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, View } from 'react-native';
 
 import AppIcon from '@/components/AppIcon';
 import BaseCard from '@/components/BaseCard';
@@ -9,13 +9,17 @@ import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
+import { useUserLocation } from '@/hooks/useUserLocation';
 
 export default function LocationPage() {
-  // TODO: states - isUsingGPS, manualLocation, searchQuery, searchResults, isLoading
+  const { location, isLoading, error, refreshLocation } = useUserLocation();
+
+  const locationDisplay = location
+    ? `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`
+    : 'Indisponível';
 
   return (
     <ThemedView safe style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} hitSlop={16}>
           <AppIcon name="back" size={24} />
@@ -28,30 +32,36 @@ export default function LocationPage() {
 
       <Spacer height={24} />
 
-      {/* Current location display */}
       <BaseCard style={styles.currentLocationCard}>
         <AppIcon name="location" size={20} weight="fill" />
         <View style={styles.locationInfo}>
           <ThemedText style={styles.locationLabel}>Localização atual</ThemedText>
           <ThemedText title style={styles.locationValue}>
-            Porto, Portugal
+            {locationDisplay}
           </ThemedText>
         </View>
+        {isLoading && <ActivityIndicator size="small" color="#53B175" />}
       </BaseCard>
+
+      {error && (
+        <ThemedText style={styles.errorText}>{error}</ThemedText>
+      )}
 
       <Spacer height={16} />
 
-      {/* GPS button */}
-      <ThemedButton style={styles.gpsButton}>
+      <ThemedButton
+        style={styles.gpsButton}
+        onPress={refreshLocation}
+        disabled={isLoading}
+      >
         <View style={styles.buttonContent}>
-          <AppIcon name="location" size={18} color="#fff" weight="fill" />
+          <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
           <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
         </View>
       </ThemedButton>
 
       <Spacer height={32} />
 
-      {/* Divider */}
       <View style={styles.divider}>
         <View style={styles.dividerLine} />
         <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
@@ -60,16 +70,14 @@ export default function LocationPage() {
 
       <Spacer height={16} />
 
-      {/* Search */}
-      <SearchInput 
-        value="" 
-        onChangeText={() => {}} 
+      <SearchInput
+        value=""
+        onChangeText={() => {}}
         placeholder="Pesquisar cidade, morada..."
       />
 
       <Spacer height={16} />
 
-      {/* Search results - placeholder empty state */}
       <View style={styles.emptyState}>
         <AppIcon name="explore" size={40} />
         <Spacer height={12} />
@@ -77,8 +85,6 @@ export default function LocationPage() {
           Pesquise uma localização para definir manualmente
         </ThemedText>
       </View>
-
-      {/* TODO: FlashList for search results when query exists */}
     </ThemedView>
   );
 }
@@ -113,9 +119,15 @@ const styles = StyleSheet.create({
   locationValue: {
     fontSize: 15,
   },
+  errorText: {
+    fontSize: 13,
+    color: '#cc475a',
+    marginTop: 8,
+  },
   gpsButton: {
     borderRadius: 10,
     paddingVertical: 14,
+    opacity: undefined,
   },
   buttonContent: {
     flexDirection: 'row',
