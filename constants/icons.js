@@ -4,10 +4,12 @@ import {
   Heart,
   Info,
   List,
+  LockSimpleOpen,
   MagnifyingGlass,
   MapPin,
   PencilSimple,
   Question,
+  Ruler,
   ShoppingCart,
   Storefront,
   User,
@@ -29,4 +31,6 @@ export const ICON_MAP = {
   menu: List,
   back: CaretLeft,
   chevronRight: CaretRight,
+  ruler: Ruler,
+  "lock-simple-open": LockSimpleOpen
 };

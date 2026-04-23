@@ -1,14 +1,9 @@
-<!-- Template file for README.md for LEIC-ES-2025-26 -->
+# CHEAPY Development Report
 
-> [!NOTE] In this file, you will find the structure you should follow to document your mobile app in the README.md file for LEIC-ES-2025-26. It is a single file with guidelines. You can add more sections, but for assessment reasons and automation, please make sure to include all sections of this template. Your professors will clarify about specificities of your app.
+Welcome to the documentation of Cheapy!
 
-# _[your product name]_ Development Report
-
-Welcome to the documentation of _[your product name]_!
-
-This Software Development Report, tailored for LEIC-ES-2025-26, provides comprehensive details about _[your product name]_, starting from an high-level vision and going into low-level implementation decisions.
-
-It is organised by the following activities:
+You can find here details about Cheapy, from a high-level vision to low-level implementation decisions, a kind.
+of Software Development Report, organized by type of activities:
 
 - [Business modeling](#Business-Modelling)
   - [Product Vision](#Product-Vision)
@@ -34,12 +29,6 @@ Please contact us!
 
 Thank you!
 
-- Luís Miguel Branco Sampaio Costa | luismbsampaio@gmail.com
-- José Dinis Rocha Melo Maçorano dos Santos | josedrmsantos1@gmail.com
-- Afonso Sofia de Moura | up202403939@edu.fe.up.pt
-- Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt
-- Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt
-
 ---
 
 ## Business Modelling
@@ -50,7 +39,7 @@ Business modeling in software development involves defining the product's vision
 
 ### Product Vision
 
-E se houvesse uma aplicação que informasse o utilizador de onde o seu cesto de compras é mais barato, ajudando-o a poupar dinheiro? (nome da app) resolve este problema. Dado um cesto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e descobre onde o preço final do cesto é mais barato.
+E se houvesse uma aplicação que informasse o utilizador de onde o seu cesto de compras é mais barato, ajudando-o a poupar dinheiro? Cheapy resolve este problema. Dado um cesto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e descobre onde o preço final do cesto é mais barato.
 
 Além disso, se o utilizador tiver disponibilidade de ir a mais do que um supermercado e quiser poupar ainda mais, tem também a opção de receber a informação da melhor escolha de supermercado relativamente a cada produto selecionado.
 
@@ -60,52 +49,46 @@ Esta aplicação surge na necessidade do consumidor final saber onde o cesto de 
 
 Partindo da ideia inicial, surgem outras funcionalidades potencialmente interessantes, tais como, por exemplo, recomendações de produtos com base no histórico, partilha do cesto de compras entre diversos utilizadores, entre outras.
 
-<!--
-Start by defining a clear and concise product vision for your app, to help members of the team, contributors, and users into focusing their often disparate views into a concise, visual, and short textual form.
-
-The vision should provide a "high concept" of the product for marketers, developers, and managers.
-
-A product vision describes the essential of the product and sets the direction to where a product is headed, and what the product will deliver in the future.
-
-**We favor a catchy and concise statement, ideally one sentence.**
-
-We suggest you use the product vision template described in the following link:
-* [How To Create A Convincing Product Vision To Guide Your Team, by uxstudioteam.com](https://uxstudioteam.com/ux-blog/product-vision/)
-
-To learn more about how to write a good product vision, please read:
-* [Vision, by scrumbook.org](http://scrumbook.org/value-stream/vision.html)
-* [Product Management: Product Vision, by ProductPlan](https://www.productplan.com/glossary/product-vision/)
-* [20 Inspiring Vision Statement Examples (2019 Updated), by lifehack.org](https://www.lifehack.org/articles/work/20-sample-vision-statement-for-the-new-startup.html)
--->
-
 ### Features and Assumptions
 
-- Feature principal - dado um cesto de produtos, a app dá output ao supermercado/loja onde o preço final é mais barato (já com as promoções)
-- Feature secundária - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermercado ou em mais que um, conseguindo preços ainda mais baixos
-- Recomendações - com base no histório de compras, recomendar certos produtos
-- Filtrar a pesquisa por um conjunto de lojas - Utilizador tem liberdade de filtrar em que supermecados a query vai ser feita
-- símbolo pegada de carbono - Se o produto tiver pouca pegada de carbono e for produzido de forma favorável ao ambiente terá um símbolo que o indicará
-- Perfil - Cada utilizador terá um perfil próprio com as suas informações pessoais.
-- Carrinho partilhado - Um carrinho que pode ser partilhado por vários utilizadores.
-- Modo offline - Caso o utilizador não tenha acesso à internet, poderá abrir a aplicação e ver o que tem no carrinho sabendo assim o que precisa comprar.
-- Definições - um menu onde tenha algumas definições da própria aplicação, notificações entre outras.
-- símbolo nutricional - Indicador da qualidade nutricinal de cada produto.
-- Horário - horário da loja onde se vai fazer compras.
+**Implementadas (Protótipo Vertical)**
+- **Pesquisa e Filtro de Lojas** - O utilizador pode pesquisar supermercados pelo nome e filtrar os resultados da sua zona em tempo real.
+- **Horário e Estado** - Indicação em tempo real do estado da loja (Aberto/Fechado) e exibição do horário de funcionamento do dia atual.
+- **Geolocalização (Smart Feature)** - Cálculo da distância real entre a localização atual do utilizador (via GPS/Cache do telemóvel) e os supermercados disponíveis.
+- **Autenticação (UI)** - Ecrã inicial de Login e estrutura base de proteção de rotas preparada.
 
-<!--
-Indicate an  initial/tentative list of high-level features - high-level capabilities or desired services of the system that are necessary to deliver benefits to the users.
- - Feature XPTO - a few words to briefly describe the feature
- - Feature ABCD - ...
-...
-
-Optionally, indicate an initial/tentative list of assumptions that you are doing about the app and dependencies of the app to other systems.
--->
+**Planeadas (Backlog / Próximos Sprints)**
+- **Feature principal** - Dado um cesto de produtos, a app dá output ao supermercado/loja onde o preço final é mais barato (já com as promoções).
+- **Feature secundária (Otimização)** - Utilizador tem liberdade de querer comprar o cesto de compras apenas num supermercado ou em mais que um, conseguindo preços ainda mais baixos.
+- **Recomendações** - Com base no histórico de compras, recomendar certos produtos.
+- **Símbolo pegada de carbono** - Se o produto tiver pouca pegada de carbono e for produzido de forma favorável ao ambiente terá um símbolo ecológico indicador.
+- **Símbolo nutricional** - Indicador da qualidade nutricional de cada produto.
+- **Perfil** - Cada utilizador terá um perfil próprio com as suas informações pessoais e histórico.
+- **Carrinho partilhado** - Um carrinho colaborativo que pode ser partilhado e editado por vários utilizadores ao mesmo tempo.
+- **Modo offline** - Acesso ao carrinho de compras sem necessidade de ligação à internet, permitindo consultar a lista dentro do supermercado.
+- **Definições** - Menu de gestão da aplicação, gestão de notificações e preferências de utilizador.
 
 ## Requirements
 
 ### User Stories
 
-TODO: add concise user stories
+Enquanto utilizador não registado, quero registar uma conta na aplicação, de modo a guardar toda a informação necessária.
+
+Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
+
+Enquanto utilizador registado, quero ver o meu perfil, para que possa saber se estou na minha conta.
+
+Enquanto utilizador, quero seleccionar os supermercados onde a pesquisa vai ser feita, para escolher os meus preferidos.
+
+Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar os que estão abertos agora, para decidir rapidamente onde fazer compras.
+
+Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados, para planear as minhas compras de forma mais eficiente.
+
+Enquanto utilizador, quero ver se os produtos são ecológicos, para diminuir a minha pegada ambiental.
+
+Enquanto utilizador, quero consultar onde o meu carrinho de compras é mais barato, para que possa poupar dinheiro.
+
+Enquanto utilizador, quero esvaziar o carrinho para que não tenha que remover manualmente cada produto do carrinho.
 
 <!--
 In this section you should describe all kinds of requirements for your module: functional and non-functional requirements.
@@ -125,7 +108,6 @@ Name the item with either the full user story or a shorter name (recommended). I
 You may add more details after, but the shorter and complete, the better. In order to decide if the user story is good, please follow the [INVEST guidelines](https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/).
 
 **User interface mockups**.
-After the user story text, you should add a draft of the corresponding user interfaces, a simple mockup or draft, if applicable.
 
 **Acceptance tests**.
 For each user story you should write also the acceptance tests (textually in [Gherkin](https://cucumber.io/docs/gherkin/reference/)), i.e., a description of scenarios (situations) that will help to confirm that the system satisfies the requirements addressed by the user story.
@@ -135,16 +117,19 @@ At the end, it is good to add a rough indication of the value of the user story 
 
 -->
 
+### Functional prototype
+
+O protótipo vertical implementado foca-se na funcionalidade central de pesquisa e localização de supermercados. Através da integração com o hardware do telemóvel (GPS) e a base de dados (Firebase Firestore), o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância em linha reta usando a fórmula de Haversine e verificar em tempo real se a loja se encontra aberta. Esta *slice* vertical prova a viabilidade das integrações nativas usando React Native e Expo.
+
 ### Domain model
 
-
 <p align="center">
-  <img src="docs/uml/domain/domain_model.png"/>
+  <img src="docs/domain/domain_model.png"/>
 </p>
 
-O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o Utilizador, que possui um Carrinho com Produtos, uma lista de Favoritos, uma Conta e recebe Alertas do sistema. A navegação é gerida pela BarraNavegacao, composta por 5 Icones, e o aspeto visual é definido pelo Tema global da aplicação.
+O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o UtilizadorRegistado, que possui um Carrinho com ItemCarrinho e Produtos, uma lista de Favoritos, CarrinhosFavoritos e HistoricoCarrinho. Os Supermercados têm Localizacao, Horarios e praticam preços via PrecoProduto. O UtilizadorAnonimo pode usar o Carrinho mas não tem acesso a funcionalidades exclusivas de utilizadores registados.
 
-Para mais detalhes: [Domain Model PDF](docs/uml/domain/domain_model.pdf)
+Para mais detalhes: [Domain Model PDF](docs/domain/domain_model.pdf)
 
 ## Architecture and Design
 
@@ -153,25 +138,23 @@ A arquitetura da aplicação segue uma organização em camadas, separando a int
 
 ### Logical architecture
 
-
 <p align="center">
-  <img src="docs/uml/architecture/package_diagram.png"/>
+  <img src="docs/architecture/package_diagram.png"/>
 </p>
 
-A arquitetura lógica organiza o sistema em duas camadas principais: Presentation (Navigation, Screens, Components e Assets) e Application Logic (Hooks e Constants). A navegação encaminha para os ecrãs, os ecrãs utilizam os componentes, e tanto os componentes como os ecrãs dependem das constantes e hooks para lógica e estilo.
+A arquitetura lógica organiza o sistema em quatro camadas: Presentation (Navigation, Screens, Components), Logic (Hooks, Utils), Data (Firebase Config, Constants) e External Services (Firebase Firestore, expo-location). Os ecrãs utilizam os componentes e hooks, os hooks utilizam utils e acedem ao Firebase e ao GPS.
 
-Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
+Para mais detalhes: [Architecture PDF](docs/architecture/package_diagram.pdf)
 
 ### Physical architecture
 
-
 <p align="center">
-  <img src="docs/uml/architecture/deployment_diagram.png"/>
+  <img src="docs/architecture/deployment_diagram.png"/>
 </p>
 
-A aplicação é frontend-only, sem backend próprio. Em desenvolvimento, o Expo CLI na Developer Machine serve o bundle via HTTP para o Mobile Device. Em produção, a app é compilada e distribuída através da Apple App Store (iOS) e Google Play Store (Android). A tecnologia escolhida foi React Native com Expo, permitindo desenvolver para iOS e Android com uma única base de código.
+A aplicação corre num dispositivo móvel (iOS/Android) em React Native com Expo, comunicando com o Firebase Cloud (Firestore, Auth, Storage) via HTTPS/REST. O GPS é acedido nativamente via expo-location e os dados são persistidos localmente via AsyncStorage. A distribuição é feita através da App Store (iOS) e Google Play (Android).
 
-Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
+Para mais detalhes: [Architecture PDF](docs/architecture/deployment_diagram.pdf)
 
 ### Functional prototype
 
@@ -207,6 +190,14 @@ You can find below information and references related with the project managemen
 -->
 
 ### Sprint 0
+
+#### Mockups
+
+![Screenshot_20260410_135451_Expo_Go](https://github.com/user-attachments/assets/3b7f33f3-70fb-4801-a752-c7375f5432c8)
+
+![Screenshot_20260410_112341_Expo_Go](https://github.com/user-attachments/assets/3eb2d83a-2b1f-4a3c-abb8-6a7da684bb11)
+
+![Screenshot_20260410_112401_Expo_Go](https://github.com/user-attachments/assets/6ea33589-7b4d-43be-bfef-e5af379c1d89)
 
 ### Sprint 1
 

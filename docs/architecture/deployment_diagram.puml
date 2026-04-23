@@ -1,0 +1,43 @@
+ @startuml
+' === ESTILO ===
+skinparam backgroundColor #FEFEFE
+skinparam node {
+  BackgroundColor #E8F4F8
+  BorderColor #2C3E50
+  FontColor #2C3E50
+}
+skinparam component {
+  BackgroundColor #D5E8D4
+  BorderColor #2C3E50
+  FontColor #2C3E50
+}
+
+' === NÓS FÍSICOS ===
+
+node "Dispositivo Móvel\n(iOS / Android)" {
+  component "Cheapy App\n(React Native / Expo)" as App
+  component "GPS\n(expo-location)" as GPS
+  component "Armazenamento Local\n(AsyncStorage)" as Storage
+}
+
+node "Firebase Cloud\n(Google)" {
+  component "Firestore\n(Base de Dados)" as Firestore
+  component "Firebase Auth\n(Autenticação)" as Auth
+  component "Firebase Storage\n(Imagens)" as FStorage
+}
+
+node "Lojas de Aplicações" {
+  component "App Store\n(iOS)" as AppStore
+  component "Google Play\n(Android)" as PlayStore
+}
+
+' === RELAÇÕES ===
+App --> Firestore : HTTPS / REST
+App --> Auth : HTTPS / REST
+App --> FStorage : HTTPS / REST
+App --> GPS : nativo
+App --> Storage : local
+AppStore --> App : distribui
+PlayStore --> App : distribui
+
+@enduml
