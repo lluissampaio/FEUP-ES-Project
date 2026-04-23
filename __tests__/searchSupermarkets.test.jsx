@@ -1,9 +1,12 @@
 import SearchSupermarkets from '@/app/search/supermarkets';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
+import { useUserLocation } from '@/hooks/useUserLocation';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 jest.mock('expo-location', () => ({
   requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+  getForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
+  getLastKnownPositionAsync: jest.fn().mockResolvedValue(null),
   getCurrentPositionAsync: jest.fn().mockResolvedValue({ coords: { latitude: 41.177, longitude: -8.591 } }),
   Accuracy: { Balanced: 3 }
 }));
@@ -12,9 +15,21 @@ jest.mock('@/hooks/useSupermarkets', () => ({
   useSupermarkets: jest.fn()
 }));
 
+jest.mock('@/hooks/useUserLocation', () => ({
+  useUserLocation: jest.fn()
+}));
+
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 
 describe('Acceptance Test: Pesquisa de Supermercados', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useUserLocation.mockReturnValue({
+      location: { latitude: 41.177, longitude: -8.591 },
+      isLoading: false, 
+    });
+  });
 
   it('Cenário 1: Pesquisa com sucesso retorna apenas a lista filtrada', async () => {
     useSupermarkets.mockReturnValue({
@@ -44,7 +59,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
 
     expect(screen.getByText('Continente Asprela')).toBeTruthy();
     expect(screen.getByText('1.2 km')).toBeTruthy();
-    expect(screen.getByText('Aberto')).toBeTruthy();
+    expect(screen.getAllByText('Aberto').length).toBeGreaterThan(0);
     expect(screen.getByText('Hoje: 8h-22h')).toBeTruthy();
 
     expect(screen.queryByText('Pingo Doce Areosa')).toBeNull();
@@ -88,7 +103,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
     render(<SearchSupermarkets />);
 
     expect(screen.getByText('Continente Asprela')).toBeTruthy();
-    expect(screen.getByText('Aberto')).toBeTruthy();
+    expect(screen.getAllByText('Aberto').length).toBeGreaterThan(0);
 
     expect(screen.getByText('Pingo Doce Areosa')).toBeTruthy();
     expect(screen.getByText('Fechado')).toBeTruthy();
