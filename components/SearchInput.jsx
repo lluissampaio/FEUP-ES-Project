@@ -25,14 +25,15 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 16,
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 8
+    paddingVertical: 16,
+    marginHorizontal: 20,
+    minHeight: 56,
   },
-  input: {
+  input: { 
     flex: 1,
     marginLeft: 10,
-    fontSize: 16
+    fontSize: 16 
   }
 });

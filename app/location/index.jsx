@@ -83,9 +83,7 @@ export default function LocationPage() {
 
   const activeCoords = isManual && manualLocation
     ? `${manualLocation.latitude.toFixed(4)}, ${manualLocation.longitude.toFixed(4)}`
-    : gpsLocation
-      ? `${gpsLocation.latitude.toFixed(4)}, ${gpsLocation.longitude.toFixed(4)}`
-      : '';
+    : '';
 
   return (
     <ThemedView safe style={styles.container}>
@@ -93,11 +91,10 @@ export default function LocationPage() {
 
       <View style={styles.statusArea}>
         <AppIcon
-          name={isActive ? "location" : "warningCircle"}
+          name="map"
           size={52}
           weight="fill"
           color={isActive ? "#53B175" : "#cc475a"}
-          style={{ opacity: isActive ? 0.6 : 0.35 }}
         />
         <Spacer height={16} />
         {isManual ? (
@@ -117,31 +114,32 @@ export default function LocationPage() {
 
       <Spacer height={32} />
 
-      {isActive && activeCoords && (
-        <>
-          <BaseCard style={[styles.locationCard, styles.cardFlushBottom]}>
-            <View style={styles.cardTop}>
+      {isManual && activeCoords && (
+        <View style={styles.cardWrapper}>
+          <View style={styles.cardStack}>
+            <View style={styles.locationCard}>
               <AppIcon
-                name={isManual ? "location" : "crosshair"}
+                name="location"
                 size={22}
                 weight="fill"
                 color="#53B175"
               />
-              <Spacer width={12} />
+              <Spacer height={12} />
               <ThemedText title style={styles.cardName} numberOfLines={2}>
-                {isManual ? manualLocation.displayString : "Localização GPS"}
+                {manualLocation.displayString}
               </ThemedText>
+              <View style={styles.cardSplitter} />
+              <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
             </View>
-            <View style={styles.cardSplitter} />
-            <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
-          </BaseCard>
 
-          {isManual && (
-            <Pressable onPress={handleRemoveManual} style={styles.removeButton}>
+            <Pressable 
+              onPress={handleRemoveManual} 
+              style={({ pressed }) => [styles.removeButton, pressed && styles.removePressed]}
+            >
               <ThemedText style={styles.removeButtonText}>Remover</ThemedText>
             </Pressable>
-          )}
-        </>
+          </View>
+        </View>
       )}
 
       <Spacer height={16} />
@@ -221,31 +219,34 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '600',
   },
   activeText: {
     color: '#53B175',
-    opacity: 0.7,
   },
   inactiveText: {
     color: '#cc475a',
-    opacity: 0.6,
+  },
+  cardWrapper: {
+    alignItems: 'center',
+  },
+  cardStack: {
+    width: '100%',
+    gap: 0,
+    overflow: 'hidden',
+    borderRadius: 12,
+    backgroundColor: 'rgba(150, 150, 150, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(150, 150, 150, 0.1)',
   },
   locationCard: {
     padding: 16,
     alignItems: 'center',
-  },
-  cardFlushBottom: {
-    marginBottom: 0,
-  },
-  cardTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
+    backgroundColor: '#fff',
   },
   cardName: {
-    flex: 1,
     fontSize: 15,
+    textAlign: 'center',
   },
   cardSplitter: {
     width: '100%',
@@ -260,9 +261,10 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     backgroundColor: '#cc475a',
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginTop: 0,
+    paddingVertical: 12,
+  },
+  removePressed: {
+    opacity: 0.7,
   },
   removeButtonText: {
     color: '#fff',

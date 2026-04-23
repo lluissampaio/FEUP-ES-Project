@@ -1,5 +1,6 @@
 import {
   CaretLeft,
+  Crosshair,
   Heart,
   List,
   MagnifyingGlass,
@@ -8,7 +9,7 @@ import {
   Storefront,
   User,
   WarningCircle,
-  Crosshair,
+  MapTrifold,
 } from "phosphor-react-native";
 
 export const ICON_MAP = {
@@ -21,5 +22,6 @@ export const ICON_MAP = {
   location: MapPin,
   crosshair: Crosshair,
   back: CaretLeft,
+  map: MapTrifold,
   warningCircle: WarningCircle,
 };
