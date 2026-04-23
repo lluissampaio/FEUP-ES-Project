@@ -7,6 +7,7 @@ import {
   ShoppingCart,
   Storefront,
   User,
+  WarningCircle,
   Crosshair,
 } from "phosphor-react-native";
 
@@ -18,6 +19,7 @@ export const ICON_MAP = {
   account: User,
   menu: List,
   location: MapPin,
-  back: CaretLeft,
   crosshair: Crosshair,
+  back: CaretLeft,
+  warningCircle: WarningCircle,
 };

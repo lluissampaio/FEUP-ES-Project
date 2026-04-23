@@ -2,7 +2,7 @@ import AppIcon from '@/components/AppIcon';
 import { Colors } from '@/constants/colors';
 import { StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
-export default function SearchInput({ value, onChangeText, placeholder = "Pesquisar..." }) {
+export default function SearchInput({ value, onChangeText, onSubmitEditing, placeholder = "Pesquisar..." }) {
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
@@ -14,6 +14,8 @@ export default function SearchInput({ value, onChangeText, placeholder = "Pesqui
         placeholderTextColor={theme.iconColor}
         value={value}
         onChangeText={onChangeText}
+        onSubmitEditing={onSubmitEditing}
+        returnKeyType="search"
       />
     </View>
   );
@@ -22,15 +24,15 @@ export default function SearchInput({ value, onChangeText, placeholder = "Pesqui
 const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
-    alignItems: 'center', 
-    margin: 16, 
-    borderRadius: 12, 
-    paddingHorizontal: 16, 
-    paddingVertical: 8 
+    alignItems: 'center',
+    margin: 16,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 8
   },
-  input: { 
+  input: {
     flex: 1,
     marginLeft: 10,
-    fontSize: 16 
+    fontSize: 16
   }
 });
