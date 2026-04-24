@@ -201,9 +201,8 @@ You can find below information and references related with the project managemen
 
 #### Project Board
 Start of sprint 0
-#### Project Board
-Start of sprint 0
-<img width="900" height="735" alt="imagem" src="https://github.com/user-attachments/assets/729b6300-764a-42fd-b5cd-263df19352a4" />
+<img width="537" height="638" alt="imagem" src="https://github.com/user-attachments/assets/e2998a46-3ed9-4d1e-95ed-2b9f2bca8401" />
+
 End of sprint 0
 <img width="535" height="642" alt="imagem" src="https://github.com/user-attachments/assets/10d80d9f-aecc-4b83-94a2-e41f0917c993" />
 
