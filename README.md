@@ -199,6 +199,15 @@ You can find below information and references related with the project managemen
 
 ![Screenshot_20260410_112401_Expo_Go](https://github.com/user-attachments/assets/6ea33589-7b4d-43be-bfef-e5af379c1d89)
 
+#### Project Board
+Start of sprint 0
+#### Project Board
+Start of sprint 0
+<img width="900" height="735" alt="imagem" src="https://github.com/user-attachments/assets/729b6300-764a-42fd-b5cd-263df19352a4" />
+End of sprint 0
+<img width="535" height="642" alt="imagem" src="https://github.com/user-attachments/assets/10d80d9f-aecc-4b83-94a2-e41f0917c993" />
+
+
 ### Sprint 1
 
 Retrospective:
@@ -212,10 +221,13 @@ Retrospective:
 	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
 
 #### Project Board
-Start of sprint 0
-<img width="900" height="735" alt="imagem" src="https://github.com/user-attachments/assets/729b6300-764a-42fd-b5cd-263df19352a4" />
+Start of sprint 1
+<img width="892" height="598" alt="imagem" src="https://github.com/user-attachments/assets/cb98a252-7637-4e3f-8416-4e824a064c73" />
 
-	
+End of sprint 1
+<img width="890" height="718" alt="imagem" src="https://github.com/user-attachments/assets/ab155f3f-cc39-499b-8973-756fc6681ab4" />
+
+
 ### Sprint 2
 
 ### Sprint 3
