@@ -1,25 +1,39 @@
+import { auth } from '@/firebaseConfig';
 import { router } from 'expo-router';
-import { Alert, Pressable, StyleSheet, TextInput } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { useState } from 'react';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
-import { useState } from 'react';
+import AppIcon from '@/components/AppIcon';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Verificação email/password
     if (!email || !password) {
       Alert.alert('Erro', 'Por favor preencha todos os campos');
       return;
     }
     
-    // Aqui podemos adicionar a lógica de autenticação
-    router.replace('/(tabs)');
+    setLoading(true);
+
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+      router.replace('/(tabs)');
+    } catch (error) {
+      console.error('Erro login:', error);
+      Alert.alert('Erro', 'Email ou password incorretos');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -27,77 +41,100 @@ export default function Login() {
   };
 
   const handleRegister = () => {
-    Alert.alert('Registo', 'Função ainda não implementada');
+    router.push('/register'); // Vai para o ecrã de registo (register.jsx)
   };
 
   return (
-    <ThemedView safe style={styles.container}>
-      {/* Titulo */}
-      <ThemedText title style={styles.logoText}>Log in</ThemedText>
-      
-      <Spacer height={30} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ThemedView safe style={styles.container}>
+        {/* Titulo */}
+        <ThemedText title style={styles.logoText}>Log in</ThemedText>
+        
+        <Spacer height={30} />
 
-      {/* Subtítulo */}
-      <ThemedText style={styles.subtitle}>Insira as suas credenciais</ThemedText>
+        {/* Subtítulo */}
+        <ThemedText style={styles.subtitle}>Insira as suas credenciais</ThemedText>
 
-      <Spacer height={30} />
+        <Spacer height={30} />
 
-      {/* Email */}
-      <ThemedText style={styles.label}>Email</ThemedText>
-      <TextInput
-        testID='email-input'
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        {/* Email */}
+        <ThemedText style={styles.label}>Email</ThemedText>
+        <TextInput
+          testID='email-input'
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={!loading}
+        />
 
-      <Spacer height={16} />
+        <Spacer height={16} />
 
-      {/* Password */}
-      <ThemedText style={styles.label}>Password</ThemedText>
-      <TextInput
-        testID='password-input'
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholderTextColor="#999"
-        secureTextEntry
-      />
+        {/* Password */}
+        <ThemedText style={styles.label}>Password</ThemedText>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            testID='password-input'
+            style={[styles.input, styles.passwordInput]}
+            value={password}
+            onChangeText={setPassword}
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            editable={!loading}
+          />
+          <Pressable 
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeButton}
+          >
+            <AppIcon 
+              name={showPassword ? "eye" : "eyeSlash"} 
+              size={22} 
+              color="#999" 
+            />
+          </Pressable>
+        </View>
 
-      <Spacer height={12} />
+        <Spacer height={12} />
 
-      {/* Link recuperação da password */}
-      <Pressable
-        testID='forgot-password'
-        onPress={handleForgotPassword}>
-        <ThemedText style={styles.forgotPassword}>
-          Esqueceu-se da sua password?
-        </ThemedText>
-      </Pressable>
+        {/* Link recuperação da password */}
+        <Pressable
+          testID='forgot-password'
+          onPress={handleForgotPassword}>
+          <ThemedText style={styles.forgotPassword}>
+            Esqueceu-se da sua password?
+          </ThemedText>
+        </Pressable>
 
-      <Spacer height={30} />
+        <Spacer height={30} />
 
-      {/* Botão de Log In */}
-      <ThemedButton 
-        testID='login-button'
-        onPress={handleLogin} style={styles.loginButton}>
-        <ThemedText style={styles.buttonText}>Log In</ThemedText>
-      </ThemedButton>
+        {/* Botão de Log In */}
+        <ThemedButton 
+          testID='login-button'
+          onPress={handleLogin}
+          style={styles.loginButton}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <ThemedText style={styles.buttonText}>Log In</ThemedText>
+          )}
+        </ThemedButton>
 
-      <Spacer height={20} />
+        <Spacer height={20} />
 
-      {/* Link Registe-se */}
-      <Pressable 
-        testID='register'
-        onPress={handleRegister}>
-        <ThemedText style={styles.registerText}>
-          Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
-        </ThemedText>
-      </Pressable>
-    </ThemedView>
+        {/* Link Registe-se */}
+        <Pressable 
+          testID='register'
+          onPress={handleRegister}>
+          <ThemedText style={styles.registerText}>
+            Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
+          </ThemedText>
+        </Pressable>
+      </ThemedView>
+    </TouchableWithoutFeedback>   
   );
 }
 
@@ -154,5 +191,18 @@ const styles = StyleSheet.create({
   registerLink: {
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+  },
+  passwordContainer: {
+  position: 'relative',
+  width: '100%',
+  },
+  passwordInput: {
+    paddingRight: 50,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 12,
+    top: 12,
+    padding: 4,
   },
 });
