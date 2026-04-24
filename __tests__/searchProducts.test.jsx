@@ -1,4 +1,4 @@
-import Explore from '@/app/(tabs)/explore'; // 1. Importação correta adicionada
+import Explore from '@/app/(tabs)/explore';
 import useProducts from '@/hooks/useProducts';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
@@ -11,6 +11,23 @@ jest.mock('@/hooks/useProducts', () => {
 });
 
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+// Mock do FlashList para evitar erros de act() com o render assíncrono interno do componente
+jest.mock('@shopify/flash-list', () => {
+  const { View } = require('react-native');
+  const React = require('react');
+  return {
+    FlashList: ({ data, renderItem, ListEmptyComponent }) => (
+      <View>
+        {data && data.length > 0
+          ? data.map((item, index) => (
+              <View key={item.id ?? index}>{renderItem({ item, index })}</View>
+            ))
+          : ListEmptyComponent}
+      </View>
+    ),
+  };
+});
 
 describe('Acceptance Test: Pesquisa de Produtos e Preços no Explore', () => {
 

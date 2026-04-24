@@ -199,9 +199,24 @@ You can find below information and references related with the project managemen
 
 ![Screenshot_20260410_112401_Expo_Go](https://github.com/user-attachments/assets/6ea33589-7b4d-43be-bfef-e5af379c1d89)
 
+#### Project Board
+Start of sprint 0
+<img width="537" height="638" alt="imagem" src="https://github.com/user-attachments/assets/e2998a46-3ed9-4d1e-95ed-2b9f2bca8401" />
+
+End of sprint 0
+<img width="535" height="642" alt="imagem" src="https://github.com/user-attachments/assets/10d80d9f-aecc-4b83-94a2-e41f0917c993" />
+
+#### Retrospective
+- Did well:
+	- Prototype Design: The team was able to design a barebones prototype with a core app feature, being able to showcase the purpose of the app successfully.
+- Do differently:
+	- Work Distribution. The tasks were assgined in a disproportionate manner, with some team members implementing a lot of features and other team members doing less work.	
+- Puzzles:
+	- Product Database: We need to find a way to populate the product database of the app (either manually or via an API), so that the product search functionality works.
+
 ### Sprint 1
 
-Retrospective:
+#### Retrospective:
 
 - Did well:
 	- Parallel Task Implementation: The team successfully implemented 3 features simultaneously and combined them without many problems, progressing greatly in various fronts.
@@ -210,8 +225,15 @@ Retrospective:
 	- Communication: The communication between team elements was sparse which lead to some difficulties in implementing the planned features, impairing productivity.
 - Puzzles:
 	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
-	
-	
+
+#### Project Board
+Start of sprint 1
+<img width="892" height="598" alt="imagem" src="https://github.com/user-attachments/assets/cb98a252-7637-4e3f-8416-4e824a064c73" />
+
+End of sprint 1
+<img width="890" height="718" alt="imagem" src="https://github.com/user-attachments/assets/ab155f3f-cc39-499b-8973-756fc6681ab4" />
+
+
 ### Sprint 2
 
 ### Sprint 3
