@@ -1,14 +1,13 @@
-import { router } from 'expo-router';
-import { StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebaseConfig';
+import { router } from 'expo-router';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
+import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
-import { Colors } from '@/constants/colors';
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -67,92 +66,95 @@ export default function Register() {
     router.back(); // Volta para o ecrã de login
   };
 
+  
   return (
-    <ThemedView safe style={styles.container}>
-      {/* Título */}
-      <ThemedText title style={styles.logoText}>
-        Criar Conta
-      </ThemedText>
-
-      <Spacer height={30} />
-
-      {/* Subtítulo */}
-      <ThemedText style={styles.subtitle}>
-        Registe-se para começar
-      </ThemedText>
-
-      <Spacer height={30} />
-
-      {/* Email */}
-      <ThemedText style={styles.label}>Email</ThemedText>
-      <TextInput
-        testID="email-input"
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        editable={!loading}
-      />
-
-      <Spacer height={16} />
-
-      {/* Password */}
-      <ThemedText style={styles.label}>Password</ThemedText>
-      <TextInput
-        testID="password-input"
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholderTextColor="#999"
-        secureTextEntry
-        editable={!loading}
-      />
-
-      <Spacer height={16} />
-
-      {/* Confirmar Password */}
-      <ThemedText style={styles.label}>Confirmar Password</ThemedText>
-      <TextInput
-        testID="confirm-password-input"
-        style={styles.input}
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        placeholderTextColor="#999"
-        secureTextEntry
-        editable={!loading}
-      />
-
-      <Spacer height={30} />
-
-      {/* Botão de Registo */}
-      <ThemedButton 
-        testID="register-button"
-        onPress={handleRegister} 
-        style={styles.registerButton}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <ThemedText style={styles.buttonText}>Registar</ThemedText>
-        )}
-      </ThemedButton>
-
-      <Spacer height={20} />
-
-      {/* Link para voltar ao Login */}
-      <Pressable 
-        testID="login-redirect"
-        onPress={handleLoginRedirect}
-      >
-        <ThemedText style={styles.loginText}>
-          Já tem uma conta?{' '}
-          <ThemedText style={styles.loginLink}>Faça login</ThemedText>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ThemedView safe style={styles.container}>
+        {/* Título */}
+        <ThemedText title style={styles.logoText}>
+          Criar Conta
         </ThemedText>
-      </Pressable>
-    </ThemedView>
+
+        <Spacer height={30} />
+
+        {/* Subtítulo */}
+        <ThemedText style={styles.subtitle}>
+          Registe-se para começar
+        </ThemedText>
+
+        <Spacer height={30} />
+
+        {/* Email */}
+        <ThemedText style={styles.label}>Email</ThemedText>
+        <TextInput
+          testID="email-input"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={!loading}
+        />
+
+        <Spacer height={16} />
+
+        {/* Password */}
+        <ThemedText style={styles.label}>Password</ThemedText>
+        <TextInput
+          testID="password-input"
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholderTextColor="#999"
+          secureTextEntry
+          editable={!loading}
+        />
+
+        <Spacer height={16} />
+
+        {/* Confirmar Password */}
+        <ThemedText style={styles.label}>Confirmar Password</ThemedText>
+        <TextInput
+          testID="confirm-password-input"
+          style={styles.input}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          placeholderTextColor="#999"
+          secureTextEntry
+          editable={!loading}
+        />
+
+        <Spacer height={30} />
+
+        {/* Botão de Registo */}
+        <ThemedButton 
+          testID="register-button"
+          onPress={handleRegister} 
+          style={styles.registerButton}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <ThemedText style={styles.buttonText}>Registar</ThemedText>
+          )}
+        </ThemedButton>
+
+        <Spacer height={20} />
+
+        {/* Link para voltar ao Login */}
+        <Pressable 
+          testID="login-redirect"
+          onPress={handleLoginRedirect}
+        >
+          <ThemedText style={styles.loginText}>
+            Já tem uma conta?{' '}
+            <ThemedText style={styles.loginLink}>Faça login</ThemedText>
+          </ThemedText>
+        </Pressable>
+      </ThemedView>
+    </TouchableWithoutFeedback>
   );
 }
 

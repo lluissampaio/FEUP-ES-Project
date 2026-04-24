@@ -1,7 +1,7 @@
-import { router } from 'expo-router';
-import { StyleSheet, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/firebaseConfig';
+import { router } from 'expo-router';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback } from 'react-native';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
@@ -43,82 +43,84 @@ export default function Login() {
   };
 
   return (
-    <ThemedView safe style={styles.container}>
-      {/* Titulo */}
-      <ThemedText title style={styles.logoText}>Log in</ThemedText>
-      
-      <Spacer height={30} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ThemedView safe style={styles.container}>
+        {/* Titulo */}
+        <ThemedText title style={styles.logoText}>Log in</ThemedText>
+        
+        <Spacer height={30} />
 
-      {/* Subtítulo */}
-      <ThemedText style={styles.subtitle}>Insira as suas credenciais</ThemedText>
+        {/* Subtítulo */}
+        <ThemedText style={styles.subtitle}>Insira as suas credenciais</ThemedText>
 
-      <Spacer height={30} />
+        <Spacer height={30} />
 
-      {/* Email */}
-      <ThemedText style={styles.label}>Email</ThemedText>
-      <TextInput
-        testID='email-input'
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        editable={!loading}
-      />
+        {/* Email */}
+        <ThemedText style={styles.label}>Email</ThemedText>
+        <TextInput
+          testID='email-input'
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          editable={!loading}
+        />
 
-      <Spacer height={16} />
+        <Spacer height={16} />
 
-      {/* Password */}
-      <ThemedText style={styles.label}>Password</ThemedText>
-      <TextInput
-        testID='password-input'
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholderTextColor="#999"
-        secureTextEntry
-        editable={!loading}
-      />
+        {/* Password */}
+        <ThemedText style={styles.label}>Password</ThemedText>
+        <TextInput
+          testID='password-input'
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholderTextColor="#999"
+          secureTextEntry
+          editable={!loading}
+        />
 
-      <Spacer height={12} />
+        <Spacer height={12} />
 
-      {/* Link recuperação da password */}
-      <Pressable
-        testID='forgot-password'
-        onPress={handleForgotPassword}>
-        <ThemedText style={styles.forgotPassword}>
-          Esqueceu-se da sua password?
-        </ThemedText>
-      </Pressable>
+        {/* Link recuperação da password */}
+        <Pressable
+          testID='forgot-password'
+          onPress={handleForgotPassword}>
+          <ThemedText style={styles.forgotPassword}>
+            Esqueceu-se da sua password?
+          </ThemedText>
+        </Pressable>
 
-      <Spacer height={30} />
+        <Spacer height={30} />
 
-      {/* Botão de Log In */}
-      <ThemedButton 
-        testID='login-button'
-        onPress={handleLogin}
-        style={styles.loginButton}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <ThemedText style={styles.buttonText}>Log In</ThemedText>
-        )}
-      </ThemedButton>
+        {/* Botão de Log In */}
+        <ThemedButton 
+          testID='login-button'
+          onPress={handleLogin}
+          style={styles.loginButton}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <ThemedText style={styles.buttonText}>Log In</ThemedText>
+          )}
+        </ThemedButton>
 
-      <Spacer height={20} />
+        <Spacer height={20} />
 
-      {/* Link Registe-se */}
-      <Pressable 
-        testID='register'
-        onPress={handleRegister}>
-        <ThemedText style={styles.registerText}>
-          Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
-        </ThemedText>
-      </Pressable>
-    </ThemedView>
+        {/* Link Registe-se */}
+        <Pressable 
+          testID='register'
+          onPress={handleRegister}>
+          <ThemedText style={styles.registerText}>
+            Não tem uma conta? <ThemedText style={styles.registerLink}>Registe-se</ThemedText>
+          </ThemedText>
+        </Pressable>
+      </ThemedView>
+    </TouchableWithoutFeedback>   
   );
 }
 
