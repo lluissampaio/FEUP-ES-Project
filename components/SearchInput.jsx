@@ -2,11 +2,11 @@ import AppIcon from '@/components/AppIcon';
 import { Colors } from '@/constants/colors';
 import { StyleSheet, TextInput, useColorScheme, View } from 'react-native';
 
-export default function SearchInput({ value, onChangeText, onSubmitEditing, placeholder = "Pesquisar..." }) {
+export default function SearchInput({ value, onChangeText, onSubmitEditing, placeholder = "Pesquisar...", style }) {
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
-    <View style={[styles.searchBox, { backgroundColor: theme.searchBackground }]}>
+    <View style={[styles.searchBox, { backgroundColor: theme.searchBackground }, style]}>
       <AppIcon name="explore" size={20} color={theme.iconColor} weight="bold" />
       <TextInput
         style={[styles.input, { color: theme.text }]}
@@ -24,12 +24,11 @@ export default function SearchInput({ value, onChangeText, onSubmitEditing, plac
 const styles = StyleSheet.create({
   searchBox: {
     flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    marginHorizontal: 20,
-    minHeight: 56,
+    alignItems: 'center', 
+    margin: 16, 
+    borderRadius: 12, 
+    paddingHorizontal: 16, 
+    paddingVertical: 8 
   },
   input: { 
     flex: 1,
