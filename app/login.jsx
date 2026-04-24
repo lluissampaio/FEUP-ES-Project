@@ -34,6 +34,17 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+    setLoading(true);
+
+    try{
+      await signInWithEmailAndPassword(auth, email, password);
+      router.replace('/(tabs)');
+    } catch (error) {
+      console.error('Erro login:', error);
+      Alert.alert('Erro', 'Email ou password incorretos');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
@@ -41,6 +52,7 @@ export default function Login() {
   };
 
   const handleRegister = () => {
+    router.push('/register'); // Vai para o ecrã de registo (register.jsx)
     router.push('/register'); // Vai para o ecrã de registo (register.jsx)
   };
 
