@@ -45,3 +45,5 @@ app-example
 .vscode/
 
 repomix-output.xml
+
+shell.nix

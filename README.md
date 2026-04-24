@@ -123,14 +123,13 @@ O protótipo vertical implementado foca-se na funcionalidade central de pesquisa
 
 ### Domain model
 
-
 <p align="center">
-  <img src="docs/uml/domain/domain_model.png"/>
+  <img src="docs/domain/domain_model.png"/>
 </p>
 
-O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o Utilizador, que possui um Carrinho com Produtos, uma lista de Favoritos, uma Conta e recebe Alertas do sistema. A navegação é gerida pela BarraNavegacao, composta por 5 Icones, e o aspeto visual é definido pelo Tema global da aplicação.
+O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o UtilizadorRegistado, que possui um Carrinho com ItemCarrinho e Produtos, uma lista de Favoritos, CarrinhosFavoritos e HistoricoCarrinho. Os Supermercados têm Localizacao, Horarios e praticam preços via PrecoProduto. O UtilizadorAnonimo pode usar o Carrinho mas não tem acesso a funcionalidades exclusivas de utilizadores registados.
 
-Para mais detalhes: [Domain Model PDF](docs/uml/domain/domain_model.pdf)
+Para mais detalhes: [Domain Model PDF](docs/domain/domain_model.pdf)
 
 ## Architecture and Design
 
@@ -139,25 +138,23 @@ A arquitetura da aplicação segue uma organização em camadas, separando a int
 
 ### Logical architecture
 
-
 <p align="center">
-  <img src="docs/uml/architecture/package_diagram.png"/>
+  <img src="docs/architecture/package_diagram.png"/>
 </p>
 
-A arquitetura lógica organiza o sistema em duas camadas principais: Presentation (Navigation, Screens, Components e Assets) e Application Logic (Hooks e Constants). A navegação encaminha para os ecrãs, os ecrãs utilizam os componentes, e tanto os componentes como os ecrãs dependem das constantes e hooks para lógica e estilo.
+A arquitetura lógica organiza o sistema em quatro camadas: Presentation (Navigation, Screens, Components), Logic (Hooks, Utils), Data (Firebase Config, Constants) e External Services (Firebase Firestore, expo-location). Os ecrãs utilizam os componentes e hooks, os hooks utilizam utils e acedem ao Firebase e ao GPS.
 
-Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
+Para mais detalhes: [Architecture PDF](docs/architecture/package_diagram.pdf)
 
 ### Physical architecture
 
-
 <p align="center">
-  <img src="docs/uml/architecture/deployment_diagram.png"/>
+  <img src="docs/architecture/deployment_diagram.png"/>
 </p>
 
-A aplicação é frontend-only, sem backend próprio. Em desenvolvimento, o Expo CLI na Developer Machine serve o bundle via HTTP para o Mobile Device. Em produção, a app é compilada e distribuída através da Apple App Store (iOS) e Google Play Store (Android). A tecnologia escolhida foi React Native com Expo, permitindo desenvolver para iOS e Android com uma única base de código.
+A aplicação corre num dispositivo móvel (iOS/Android) em React Native com Expo, comunicando com o Firebase Cloud (Firestore, Auth, Storage) via HTTPS/REST. O GPS é acedido nativamente via expo-location e os dados são persistidos localmente via AsyncStorage. A distribuição é feita através da App Store (iOS) e Google Play (Android).
 
-Para mais detalhes: [Architecture PDF](docs/uml/architecture/architecture.pdf)
+Para mais detalhes: [Architecture PDF](docs/architecture/deployment_diagram.pdf)
 
 ### Functional prototype
 
@@ -204,6 +201,17 @@ You can find below information and references related with the project managemen
 
 ### Sprint 1
 
+Retrospective:
+
+- Did well:
+	- Parallel Task Implementation: The team successfully implemented 3 features simultaneously and combined them without many problems, progressing greatly in various fronts.
+	- Work Distribution: The workload was fairly distributed between the team elements, which caused an increase in productive development in comparison with the previous sprint.
+- Do differently:
+	- Communication: The communication between team elements was sparse which lead to some difficulties in implementing the planned features, impairing productivity.
+- Puzzles:
+	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
+	
+	
 ### Sprint 2
 
 ### Sprint 3

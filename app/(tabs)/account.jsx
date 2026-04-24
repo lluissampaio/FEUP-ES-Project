@@ -1,21 +1,69 @@
-import ThemedText from "@/components/ThemedText";
+import AccountHeader from "@/components/AccountHeader";
+import AccountMenuItem from "@/components/AccountMenuItem";
+import LogoutButton from "@/components/LogoutButton";
 import ThemedView from "@/components/ThemedView";
-import { StyleSheet } from "react-native";
+import { router } from "expo-router";
+import React from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
 
-const Home = () => {
+const AccountScreen = () => {
+  const menuItems = [
+    { 
+      title: "Localização", 
+      icon: "location", 
+      onPress: () => router.push('/location')
+    },
+    { 
+      title: "Ajuda", 
+      icon: "help", 
+      onPress: () => console.log("Ajuda pressed") 
+    },
+    { 
+      title: "Sobre nós", 
+      icon: "about", 
+      onPress: () => console.log("Sobre nós pressed") 
+    },
+  ];
+
+  const handleLogout = () => {
+    router.replace('/login');
+  };
+
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText>Account</ThemedText>
+    <ThemedView style={styles.container} safe>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <AccountHeader
+          name="User123"
+          email="user123@email.com"
+          avatarUrl=""
+        />
+
+        <View style={styles.menuContainer}>
+          {menuItems.map((item, index) => (
+            <AccountMenuItem
+              key={index}
+              title={item.title}
+              iconName={item.icon}
+              onPress={item.onPress}
+            />
+          ))}
+        </View>
+
+        <LogoutButton onPress={handleLogout} />
+      </ScrollView>
     </ThemedView>
   );
 };
 
-export default Home;
+export default AccountScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  },
+  menuContainer: {
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E2E2E233",
   },
 });
