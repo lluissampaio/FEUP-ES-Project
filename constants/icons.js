@@ -16,6 +16,9 @@ import {
   User,
   WarningCircle,
   MapTrifold,
+  Eye,
+  EyeSlash,
+  EyeSlashIcon,
 } from "phosphor-react-native";
 
 export const ICON_MAP = {
@@ -39,4 +42,7 @@ export const ICON_MAP = {
   "lock-simple-open": LockSimpleOpen,
   map: MapTrifold,
   warningCircle: WarningCircle,
+  // Eye icon
+  eye: Eye,
+  eyeSlash: EyeSlash,
 };

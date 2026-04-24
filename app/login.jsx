@@ -1,18 +1,20 @@
 import { auth } from '@/firebaseConfig';
 import { router } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
+import { useState } from 'react';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
-import { useState } from 'react';
+import AppIcon from '@/components/AppIcon';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async () => {
     // Verificação email/password
@@ -72,15 +74,27 @@ export default function Login() {
 
         {/* Password */}
         <ThemedText style={styles.label}>Password</ThemedText>
-        <TextInput
-          testID='password-input'
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          placeholderTextColor="#999"
-          secureTextEntry
-          editable={!loading}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            testID='password-input'
+            style={[styles.input, styles.passwordInput]}
+            value={password}
+            onChangeText={setPassword}
+            placeholderTextColor="#999"
+            secureTextEntry={!showPassword}
+            editable={!loading}
+          />
+          <Pressable 
+            onPress={() => setShowPassword(!showPassword)}
+            style={styles.eyeButton}
+          >
+            <AppIcon 
+              name={showPassword ? "eye" : "eyeSlash"} 
+              size={22} 
+              color="#999" 
+            />
+          </Pressable>
+        </View>
 
         <Spacer height={12} />
 
@@ -177,5 +191,18 @@ const styles = StyleSheet.create({
   registerLink: {
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+  },
+  passwordContainer: {
+  position: 'relative',
+  width: '100%',
+  },
+  passwordInput: {
+    paddingRight: 50,
+  },
+  eyeButton: {
+    position: 'absolute',
+    right: 12,
+    top: 12,
+    padding: 4,
   },
 });
