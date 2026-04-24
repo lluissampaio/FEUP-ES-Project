@@ -1,0 +1,46 @@
+@startuml
+skinparam backgroundColor #FEFEFE
+skinparam package {
+  BackgroundColor #E8F4F8
+  BorderColor #2C3E50
+  FontColor #2C3E50
+}
+skinparam component {
+  BackgroundColor #D5E8D4
+  BorderColor #2C3E50
+  FontColor #2C3E50
+}
+
+package "Presentation Layer" {
+  component "Screens\n(index, cart, explore,\nfavourite, account, ...)" as Screens
+  component "Components\n(SupermarketCard, CartItemRow,\nFakeSearchBar, SearchInput,\nBaseCard, AppIcon, ...)" as Components
+  component "Navigation\n(TabsLayout, RootLayout)" as Navigation
+}
+
+package "Logic Layer" {
+  component "Hooks\n(useCart, useSupermarkets,\nuseUserLocation, ...)" as Hooks
+  component "Utils\n(calculateDistance,\nformatTime)" as Utils
+}
+
+package "Data Layer" {
+  component "Firebase Config\n(firebaseConfig)" as FirebaseConfig
+  component "Constants\n(colors, icons, images)" as Constants
+}
+
+package "External Services" {
+  component "Firebase Firestore" as Firestore
+  component "Firebase Auth\n(Autenticação)" as Auth
+  component "expo-location\n(GPS)" as Location
+}
+
+Screens --> Components : usa
+Screens --> Hooks : usa
+Navigation --> Screens : organiza
+Hooks --> Utils : usa
+Hooks --> FirebaseConfig : usa
+Hooks --> Location : usa
+FirebaseConfig --> Firestore : conecta
+FirebaseConfig --> Auth : conecta
+Components --> Constants : usa
+
+@enduml

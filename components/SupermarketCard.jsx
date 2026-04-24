@@ -1,5 +1,6 @@
 import ThemedText from "@/components/ThemedText";
-import { getLogoForSupermarket } from "@/constants/logos";
+import { Colors } from "@/constants/colors";
+import { getImageForSupermarket } from "@/constants/images";
 import { Image, StyleSheet } from "react-native";
 import BaseCard from "./BaseCard";
 
@@ -7,14 +8,14 @@ const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress }) => 
   return (
     <BaseCard onPress={onPress}>
       <Image 
-        source={getLogoForSupermarket(name)} 
+        source={getImageForSupermarket(name)} 
         style={styles.logo} 
         resizeMode="contain" 
       />
       <ThemedText title style={styles.name} numberOfLines={2}>
         {name}
       </ThemedText>
-      <ThemedText title style={[styles.status, { color: isOpen ? '#53B175' : '#cc475a' }]}>
+      <ThemedText title style={[styles.status, { color: isOpen ? Colors.primary : '#cc475a' }]}>
         {isOpen ? "Aberto" : "Fechado"}
       </ThemedText>
       {scheduleToday && (
