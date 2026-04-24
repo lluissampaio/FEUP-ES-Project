@@ -1,21 +1,27 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import React from "react";
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Alert } from 'react-native';
 
 /*------------Mocks------------*/
 
+// Mock do Firebase para evitar a importação dos módulos reais
+jest.mock('firebase/auth', () => ({
+    signInWithEmailAndPassword: jest.fn(() => Promise.resolve({ user: {} })),
+}));
+
+jest.mock('@/firebaseConfig', () => ({ auth: {} }));
+
 // Mock do router (navegação entre abas)
-jest.mock('expo-router',() => ({
+jest.mock('expo-router', () => ({
     router: {
         replace: jest.fn(),
+        push: jest.fn(),
     },
 }));
 
-
 // Mock ThemedText - versão que retira contexto
 jest.mock('@/components/ThemedText', () => {
-    const { Text, Alert } = require('react-native');       // Importa os componentes nativos do react native
+    const { Text } = require('react-native');
     return ({ children, ...props }) => <Text {...props}>{children}</Text>;
 });
 
@@ -25,26 +31,20 @@ jest.mock('@/components/ThemedView', () => {
     return ({ children, ...props }) => <View {...props}>{children}</View>;
 });
 
-
-import Login from '../app/login.jsx';   // Apenas pode ser importado aqui por causa dos mocks
+import Login from '../app/login.jsx';
 
 /*------------Testes------------*/
 
 describe('Login screen', () => {
-    // Antes de cada testes resetar os mocks
     beforeEach(() => {
         jest.clearAllMocks();
-        // Mock do Alert
-        jest.spyOn(Alert, 'alert').mockImplementation(() => {});       // Tem de ser apenas spyOn desta forma porque é nativo e não pode ser substituido
-        render(
-            <Login />      /* Renderiza a componente Login antes de cada teste (importante!!!)*/
-        );
+        jest.spyOn(Alert, 'alert').mockImplementation(() => {}); 
+        render(<Login />);
     });
 
     /*------------Texto no ecrã------------*/
 
     describe('Text', () => {
-
         it('Título', () => {
             expect(screen.getByText('Log in')).toBeTruthy();
         });
@@ -69,7 +69,7 @@ describe('Login screen', () => {
             expect(screen.getByText('Esqueceu-se da sua password?')).toBeTruthy();
         });
         
-        it('Registar-se', () => {
+        it('Registe-se', () => {
             expect(screen.getByText('Registe-se')).toBeTruthy();
         });
     });
@@ -77,7 +77,6 @@ describe('Login screen', () => {
     /*------------Testes de aceitação------------*/
 
     describe('Testes de aceitação', () => {
-
         it('Login com sucesso', async () => {
             const emailInput = screen.getByTestId('email-input');
             const passwordInput = screen.getByTestId('password-input');
@@ -90,7 +89,7 @@ describe('Login screen', () => {
             fireEvent.press(loginButton);
 
             await waitFor(() => {
-                expect(router.replace).toHaveBeenCalledWith('/(tabs)'); // Esperar para ver se a troca de ecrã é feita pelo router
+                expect(router.replace).toHaveBeenCalledWith('/(tabs)');
             });
         });
 
@@ -101,40 +100,31 @@ describe('Login screen', () => {
 
             expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Por favor preencha todos os campos');
         });
-
     });
 
-
     /*------------Testes de integração------------*/
-    // Verificar se as PARTES INTERNAS funcionam
+
     describe('Testes de integração', () => {
-
-        it('Login chama as funções corretamente', async () => {
-
+        it('Login chama as funções corretamente quando os campos estão vazios', async () => {
             const loginButton = screen.getByTestId('login-button');
             const { router } = require('expo-router');
 
             fireEvent.press(loginButton);
             
-            expect(Alert.alert).toHaveBeenCalled();      // Alert foi chamado?
-            expect(router.replace).not.toHaveBeenCalled(); // Router NÃO foi chamado?
-
+            expect(Alert.alert).toHaveBeenCalled();
+            expect(router.replace).not.toHaveBeenCalled();
         });
     
-
         it('Preenchimento dos campos atualiza o estado corretamente', () => {
             const emailInput = screen.getByTestId('email-input');
             const passwordInput = screen.getByTestId('password-input');
 
-            // Simular utilizador a escrever
             fireEvent.changeText(emailInput, 'exemplo@email.com');
             fireEvent.changeText(passwordInput, 'exemplo123');
 
-            // Verificar se o estado interno foi atualizado
             expect(emailInput.props.value).toBe('exemplo@email.com');
             expect(passwordInput.props.value).toBe('exemplo123');
             
-            // Verificar que NÃO houve chamadas ao router ou alert (só atualizou estado)
             const { router } = require('expo-router');
             expect(router.replace).not.toHaveBeenCalled();
             expect(Alert.alert).not.toHaveBeenCalled();
