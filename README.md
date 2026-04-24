@@ -210,7 +210,11 @@ Retrospective:
 	- Communication: The communication between team elements was sparse which lead to some difficulties in implementing the planned features, impairing productivity.
 - Puzzles:
 	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
-	
+
+#### Project Board
+Start of sprint 0
+<img width="900" height="735" alt="imagem" src="https://github.com/user-attachments/assets/729b6300-764a-42fd-b5cd-263df19352a4" />
+
 	
 ### Sprint 2
 
