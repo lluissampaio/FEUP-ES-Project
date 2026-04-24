@@ -1,33 +1,52 @@
 import SearchSupermarkets from '@/app/search/supermarkets';
+import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
-import { useUserLocation } from '@/hooks/useUserLocation';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
-jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-  getForegroundPermissionsAsync: jest.fn().mockResolvedValue({ status: 'granted' }),
-  getLastKnownPositionAsync: jest.fn().mockResolvedValue(null),
-  getCurrentPositionAsync: jest.fn().mockResolvedValue({ coords: { latitude: 41.177, longitude: -8.591 } }),
-  Accuracy: { Balanced: 3 }
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(() => Promise.resolve(null)),
+  setItem: jest.fn(() => Promise.resolve()),
+  removeItem: jest.fn(() => Promise.resolve()),
 }));
 
 jest.mock('@/hooks/useSupermarkets', () => ({
   useSupermarkets: jest.fn()
 }));
 
-jest.mock('@/hooks/useUserLocation', () => ({
-  useUserLocation: jest.fn()
+// FIX: o ecrã usa useActiveLocation, não useUserLocation
+jest.mock('@/hooks/useActiveLocation', () => ({
+  useActiveLocation: jest.fn()
 }));
 
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
+
+jest.mock('@/constants/images', () => ({
+  getImageForSupermarket: jest.fn(() => null),
+}));
+
+jest.mock('@shopify/flash-list', () => {
+  const { View } = require('react-native');
+  const React = require('react');
+  return {
+    FlashList: ({ data, renderItem, ListEmptyComponent }) => (
+      <View>
+        {data && data.length > 0
+          ? data.map((item, index) => (
+              <View key={item.id ?? index}>{renderItem({ item, index })}</View>
+            ))
+          : ListEmptyComponent}
+      </View>
+    ),
+  };
+});
 
 describe('Acceptance Test: Pesquisa de Supermercados', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useUserLocation.mockReturnValue({
+    useActiveLocation.mockReturnValue({
       location: { latitude: 41.177, longitude: -8.591 },
-      isLoading: false, 
+      isLoading: false,
     });
   });
 
@@ -39,6 +58,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
           id: '1', 
           name: 'Continente Asprela', 
           formattedDistance: '1.2 km',
+          rawDistance: 1.2,
           isOpen: true,
           scheduleToday: '8h-22h'
         },
@@ -46,6 +66,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
           id: '2', 
           name: 'Pingo Doce Areosa', 
           formattedDistance: '3.0 km',
+          rawDistance: 3.0,
           isOpen: false,
           scheduleToday: 'Fechado'
         }
@@ -87,6 +108,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
           id: '1', 
           name: 'Continente Asprela', 
           formattedDistance: '1.2 km',
+          rawDistance: 1.2,
           isOpen: true,
           scheduleToday: '8h-22h'
         },
@@ -94,6 +116,7 @@ describe('Acceptance Test: Pesquisa de Supermercados', () => {
           id: '2', 
           name: 'Pingo Doce Areosa', 
           formattedDistance: '3.0 km',
+          rawDistance: 3.0,
           isOpen: false,
           scheduleToday: 'Fechado'
         }

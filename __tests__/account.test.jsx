@@ -1,14 +1,16 @@
-import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react-native";
+import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
 import LogoutButton from "@/components/LogoutButton";
-import AccountScreen from "@/app/(tabs)/account";
+import { fireEvent, render, screen } from "@testing-library/react-native";
+import React from "react";
 
-// Mocking dependencies
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 jest.mock('expo-image', () => ({
   Image: 'Image',
+}));
+jest.mock('expo-router', () => ({
+  router: { push: jest.fn(), replace: jest.fn() },
 }));
 
 describe("Account Feature Tests", () => {
@@ -71,8 +73,8 @@ describe("Account Feature Tests", () => {
 
     it("renders user profile information", () => {
       render(<AccountScreen />);
-      expect(screen.getByText("Luís Sampaio")).toBeTruthy();
-      expect(screen.getByText("luismbsampaio@gmail.com")).toBeTruthy();
+      expect(screen.getByText("User123")).toBeTruthy();
+      expect(screen.getByText("user123@email.com")).toBeTruthy();
     });
   });
 });
