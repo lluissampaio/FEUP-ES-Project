@@ -1,0 +1,139 @@
+@startuml
+' === ESTILO ===
+skinparam classAttributeIconSize 0
+skinparam backgroundColor #FEFEFE
+skinparam class {
+  BackgroundColor #E8F4F8
+  BorderColor #2C3E50
+  FontColor #2C3E50
+}
+
+' === CLASSES ===
+
+class UtilizadorRegistado {
+  - id : String
+  - nome : String
+  - email : String
+  - fotoPerfil : String
+  - dataRegisto : Date
+  + login() : void
+  + logout() : void
+  + recuperarPassword() : void
+  + editarPerfil() : void
+  + verPerfil() : void
+}
+
+class UtilizadorAnonimo {
+  - sessaoId : String
+}
+
+class Sessao {
+  - autenticado : Boolean
+  - dataInicio : DateTime
+  + iniciar() : void
+  + terminar() : void
+}
+
+class Carrinho {
+  - total : Float
+  - estado : String
+  + adicionarProduto() : void
+  + removerProduto() : void
+  + limpar() : void
+  + finalizar() : void
+}
+
+class ItemCarrinho {
+  - quantidade : Integer { > 0 }
+  - precototalitem : Float
+}
+
+class Produto {
+  - id : String
+  - nome : String
+  - descricao : String
+}
+
+class Supermercado {
+  - id : String
+  - nome : String
+  - isOpen : Boolean
+}
+
+class PrecoProduto {
+  - precoAtual : Float
+  - precoOriginal : Float
+  - desconto : Integer
+}
+
+class Localizacao {
+  - latitude : Float
+  - longitude : Float
+  - endereco : String
+  + calcularDistancia() : Float
+}
+
+class Horario {
+  - diaSemana : Integer
+  - abertura : Integer
+  - fecho : Integer
+  + estaAberto() : Boolean
+}
+
+class CarrinhoFavorito {
+  - nome : String
+  - dataGuardado : DateTime
+  + guardar(carrinho: Carrinho) : void
+  + reutilizar() : Carrinho
+}
+
+class Favoritos {
+  + adicionarProduto(produto: Produto) : void
+  + removerProduto(produto: Produto) : void
+  + listarFavoritos() : List<Produto>
+}
+
+class HistoricoCarrinho {
+  - data : DateTime
+  - estado : String
+  + registar() : void
+}
+
+' === RELAÇÕES ===
+
+' Conversão de anónimo para registado
+UtilizadorAnonimo ..> UtilizadorRegistado : <<converte para>>
+
+' Sessao apenas para registados
+UtilizadorRegistado "1" -- "0..*" Sessao : inicia
+
+' Carrinhos
+UtilizadorAnonimo "1" -- "1" Carrinho : possui
+UtilizadorRegistado "1" -- "1" Carrinho : possui ativo
+
+' Carrinho contém Itens
+Carrinho "1" *-- "1..*" ItemCarrinho : contém
+
+' ItemCarrinho refere-se a Produto
+ItemCarrinho "1..*" -- "1" Produto : refere-se a
+
+' CarrinhoFavorito guarda um Carrinho completo
+CarrinhoFavorito "1" -- "1" Carrinho : guarda cópia de
+
+' Relações do registado
+UtilizadorRegistado "1" -- "0..*" CarrinhoFavorito : guarda
+UtilizadorRegistado "1" -- "1" Favoritos : tem
+UtilizadorRegistado "1" -- "0..*" HistoricoCarrinho : consulta
+
+' PrecoProduto liga Produto e Supermercado
+Produto "1" -- "0..*" PrecoProduto
+Supermercado "1" -- "1..*" PrecoProduto
+
+' Supermercado tem Localizacao e Horarios
+Supermercado "1" -- "1" Localizacao : tem
+Supermercado "1" -- "1..*" Horario : funciona
+
+' Favoritos guarda Produtos
+Favoritos "1" -- "0..*" Produto : contém
+
+@enduml

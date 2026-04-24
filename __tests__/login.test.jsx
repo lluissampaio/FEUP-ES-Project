@@ -26,7 +26,7 @@ jest.mock('@/components/ThemedView', () => {
 });
 
 
-import Login from '../app/index.jsx';   // Apenas pode ser importado aqui por causa dos mocks
+import Login from '../app/login.jsx';   // Apenas pode ser importado aqui por causa dos mocks
 
 /*------------Testes------------*/
 

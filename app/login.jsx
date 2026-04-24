@@ -1,11 +1,10 @@
 import { router } from 'expo-router';
-import { StyleSheet, TextInput, Pressable, Alert } from 'react-native';
+import { Alert, Pressable, StyleSheet, TextInput } from 'react-native';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
-import { Colors } from '@/constants/colors'
 import { useState } from 'react';
 
 export default function Login() {

@@ -1,19 +1,20 @@
-// app/location/index.jsx
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
 
 import AppIcon from '@/components/AppIcon';
-import BaseCard from '@/components/BaseCard';
 import SearchInput from '@/components/SearchInput';
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
+import { Colors } from '@/constants/colors';
 import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { searchLocations } from '@/utils/photon';
 
 export default function LocationPage() {
   const { location: gpsLocation, isLoading: isGpsLoading, override, setManualLocation, clearOverride, refreshLocation } = useActiveLocation();
+  
+  const theme = Colors[useColorScheme()] ?? Colors.light;
 
   const [mode, setMode] = useState('none');
   const [manualLocation, setManualLocationState] = useState(null);
@@ -87,124 +88,128 @@ export default function LocationPage() {
 
   return (
     <ThemedView safe style={styles.container}>
-      <Spacer height={80} />
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled" 
+      >
+        <Spacer height={40} />
 
-      <View style={styles.statusArea}>
-        <AppIcon
-          name="map"
-          size={52}
-          weight="fill"
-          color={isActive ? "#53B175" : "#cc475a"}
-        />
-        <Spacer height={16} />
-        {isManual ? (
-          <ThemedText style={[styles.statusText, styles.activeText]}>
-            Localização manual ativa
-          </ThemedText>
-        ) : isActive ? (
-          <ThemedText style={[styles.statusText, styles.activeText]}>
-            Localização GPS ativa
-          </ThemedText>
-        ) : (
-          <ThemedText style={[styles.statusText, styles.inactiveText]}>
-            Sem localização definida
-          </ThemedText>
-        )}
-      </View>
+        <View style={styles.statusArea}>
+          <AppIcon
+            name="map"
+            size={52}
+            weight="fill"
+            color={isActive ? "#53B175" : "#cc475a"}
+          />
+          <Spacer height={16} />
+          {isManual ? (
+            <ThemedText style={[styles.statusText, styles.activeText]}>
+              Localização manual ativa
+            </ThemedText>
+          ) : isActive ? (
+            <ThemedText style={[styles.statusText, styles.activeText]}>
+              Localização GPS ativa
+            </ThemedText>
+          ) : (
+            <ThemedText style={[styles.statusText, styles.inactiveText]}>
+              Sem localização definida
+            </ThemedText>
+          )}
+        </View>
 
-      <Spacer height={32} />
+        <Spacer height={32} />
 
-      {isManual && activeCoords && (
-        <View style={styles.cardWrapper}>
-          <View style={styles.cardStack}>
-            <View style={styles.locationCard}>
-              <AppIcon
-                name="location"
-                size={22}
-                weight="fill"
-                color="#53B175"
-              />
-              <Spacer height={12} />
-              <ThemedText title style={styles.cardName} numberOfLines={2}>
-                {manualLocation.displayString}
-              </ThemedText>
-              <View style={styles.cardSplitter} />
-              <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
+        {isManual && activeCoords && (
+          <View style={styles.cardWrapper}>
+            <View style={styles.cardStack}>
+              <View style={[styles.locationCard, { backgroundColor: theme.uiBackground }]}>
+                <AppIcon name="location" size={22} weight="fill" color="#53B175" />
+                <Spacer height={12} />
+                <ThemedText title style={styles.cardName} numberOfLines={2}>
+                  {manualLocation.displayString}
+                </ThemedText>
+                <View style={[styles.cardSplitter, { backgroundColor: theme.searchBackground }]} />
+                <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
+              </View>
+
+              <Pressable 
+                onPress={handleRemoveManual} 
+                style={({ pressed }) => [styles.removeButton, pressed && styles.removePressed]}
+              >
+                <ThemedText style={styles.removeButtonText}>Remover</ThemedText>
+              </Pressable>
             </View>
-
-            <Pressable 
-              onPress={handleRemoveManual} 
-              style={({ pressed }) => [styles.removeButton, pressed && styles.removePressed]}
-            >
-              <ThemedText style={styles.removeButtonText}>Remover</ThemedText>
-            </Pressable>
           </View>
+        )}
+
+        <Spacer height={16} />
+
+        <ThemedButton onPress={handleGps} style={styles.gpsButton}>
+          <View style={styles.buttonContent}>
+            <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
+            <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
+          </View>
+        </ThemedButton>
+
+        <Spacer height={36} />
+
+        <View style={styles.divider}>
+          <View style={styles.dividerLine} />
+          <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
+          <View style={styles.dividerLine} />
         </View>
-      )}
 
-      <Spacer height={16} />
+        <Spacer height={16} />
 
-      <ThemedButton onPress={handleGps} style={styles.gpsButton}>
-        <View style={styles.buttonContent}>
-          <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
-          <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
-        </View>
-      </ThemedButton>
+        <SearchInput
+          value={searchQuery}
+          onChangeText={handleSearchChange}
+          placeholder="Pesquisar cidade, morada..."
+          style={{ marginHorizontal: 0 }}
+        />
 
-      <Spacer height={36} />
+        <Spacer height={12} />
 
-      <View style={styles.divider}>
-        <View style={styles.dividerLine} />
-        <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
-        <View style={styles.dividerLine} />
-      </View>
-
-      <Spacer height={16} />
-
-      <SearchInput
-        value={searchQuery}
-        onChangeText={handleSearchChange}
-        placeholder="Pesquisar cidade, morada..."
-      />
-
-      <Spacer height={8} />
-
-      {isSearching ? (
-        <View style={styles.emptyState}>
-          <ThemedText style={styles.dimText}>A pesquisar...</ThemedText>
-        </View>
-      ) : searchResults.length > 0 ? (
-        <View style={styles.resultsList}>
-          {searchResults.map((loc) => (
-            <BaseCard
-              key={loc.id}
-              style={styles.resultCard}
-              onPress={() => handleSelectLocation(loc)}
-            >
-              <View style={styles.resultContent}>
-                <AppIcon name="location" size={16} style={{ opacity: 0.35 }} />
-                <ThemedText title style={styles.resultTitle} numberOfLines={1}>
+        {isSearching ? (
+          <View style={styles.emptyState}>
+            <ThemedText style={styles.dimText}>A pesquisar...</ThemedText>
+          </View>
+        ) : searchResults.length > 0 ? (
+          <View style={[styles.resultsListWrapper, { backgroundColor: theme.uiBackground }]}>
+            {searchResults.map((loc, index) => (
+              <Pressable
+                key={loc.id}
+                style={({ pressed }) => [
+                  styles.resultRow,
+                  index !== searchResults.length - 1 && styles.resultSeparator,
+                  pressed && { backgroundColor: theme.searchBackground }
+                ]}
+                onPress={() => handleSelectLocation(loc)}
+              >
+                <AppIcon name="location" size={18} color={theme.iconColor} weight="light" />
+                <ThemedText style={styles.resultTitle} numberOfLines={2}>
                   {loc.displayString}
                 </ThemedText>
-              </View>
-            </BaseCard>
-          ))}
-        </View>
-      ) : searchQuery.length >= 3 && !isSearching ? (
-        <View style={styles.emptyState}>
-          <ThemedText style={styles.dimText}>
-            Sem resultados para &quot;{searchQuery}&quot;
-          </ThemedText>
-        </View>
-      ) : (
-        <View style={styles.emptyState}>
-          <AppIcon name="explore" size={40} style={{ opacity: 0.2 }} />
-          <Spacer height={12} />
-          <ThemedText style={styles.dimText}>
-            Pesquise uma localização para definir manualmente
-          </ThemedText>
-        </View>
-      )}
+              </Pressable>
+            ))}
+          </View>
+        ) : searchQuery.length >= 3 && !isSearching ? (
+          <View style={styles.emptyState}>
+            <ThemedText style={styles.dimText}>
+              Sem resultados para {searchQuery}
+            </ThemedText>
+          </View>
+        ) : (
+          <View style={styles.emptyState}>
+            <AppIcon name="explore" size={40} style={{ opacity: 0.2 }} />
+            <Spacer height={12} />
+            <ThemedText style={styles.dimText}>
+              Pesquise uma localização para definir manualmente
+            </ThemedText>
+          </View>
+        )}
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -212,7 +217,10 @@ export default function LocationPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  scrollContent: {
     paddingHorizontal: 20,
+    paddingBottom: 40,
   },
   statusArea: {
     alignItems: 'center',
@@ -232,43 +240,41 @@ const styles = StyleSheet.create({
   },
   cardStack: {
     width: '100%',
-    gap: 0,
     overflow: 'hidden',
     borderRadius: 12,
-    backgroundColor: 'rgba(150, 150, 150, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(150, 150, 150, 0.1)',
   },
   locationCard: {
-    padding: 16,
+    padding: 20,
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
   cardName: {
-    fontSize: 15,
+    fontSize: 16,
     textAlign: 'center',
+    fontWeight: '500',
+    lineHeight: 22,
   },
   cardSplitter: {
     width: '100%',
     height: 1,
-    backgroundColor: 'rgba(150, 150, 150, 0.15)',
-    marginVertical: 12,
+    marginVertical: 14,
   },
   cardCoords: {
-    fontSize: 12,
-    opacity: 0.45,
+    fontSize: 13,
+    opacity: 0.5,
     textAlign: 'center',
   },
   removeButton: {
     backgroundColor: '#cc475a',
-    paddingVertical: 12,
+    paddingVertical: 14,
   },
   removePressed: {
     opacity: 0.7,
   },
   removeButtonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
     textAlign: 'center',
   },
@@ -313,21 +319,26 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     textAlign: 'center',
   },
-  resultsList: {
-    gap: 0,
+  resultsListWrapper: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(150, 150, 150, 0.1)',
   },
-  resultCard: {
-    marginVertical: 4,
-    marginHorizontal: 0,
-    padding: 12,
-  },
-  resultContent: {
+  resultRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  resultSeparator: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(150, 150, 150, 0.1)',
   },
   resultTitle: {
-    fontSize: 14,
+    fontSize: 15,
     flex: 1,
+    lineHeight: 22,
   },
 });
