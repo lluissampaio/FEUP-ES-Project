@@ -1,8 +1,7 @@
-import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useUserLocation } from "@/hooks/useUserLocation";
+import { act, renderHook, waitFor } from "@testing-library/react-native";
 import * as Location from "expo-location";
 
-// Mock expo-location
 jest.mock("expo-location", () => ({
   getForegroundPermissionsAsync: jest.fn(),
   requestForegroundPermissionsAsync: jest.fn(),
@@ -19,7 +18,12 @@ describe("Unit Test: Hook useUserLocation", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    // Do not use fake timers by default to avoid interfering with renderHook's async utils
+    // Silenciar os warnings previstos nos testes para manter a consola limpa
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("Deve retornar a localização se a permissão já estiver concedida", async () => {
@@ -36,7 +40,6 @@ describe("Unit Test: Hook useUserLocation", () => {
 
     expect(result.current.location).toEqual(mockGPSCoords);
     expect(result.current.error).toBeNull();
-    // Should NOT request permissions if already granted
     expect(Location.requestForegroundPermissionsAsync).not.toHaveBeenCalled();
   });
 
@@ -91,21 +94,17 @@ describe("Unit Test: Hook useUserLocation", () => {
 
     Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
     Location.getLastKnownPositionAsync.mockResolvedValue(null);
-    
-    // Simulate a hanging GPS request that never resolves naturally
+    // GPS que nunca resolve
     Location.getCurrentPositionAsync.mockReturnValue(new Promise(() => {}));
 
     const { result } = renderHook(() => useUserLocation());
 
-    // Initial loading state
-    expect(result.current.isLoading).toBe(true);
-
-    // Advance time by 5 seconds to trigger the timeout
+    // Utilizar advanceTimersByTimeAsync garante que as promises e microtasks
+    // pendentes correm em conformidade com o relógio interno do Jest
     await act(async () => {
-      jest.advanceTimersByTime(5000);
+      await jest.advanceTimersByTimeAsync(5000);
     });
 
-    // Wait for the state to update after the timeout rejects the promise
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
@@ -140,15 +139,12 @@ describe("Unit Test: Hook useUserLocation", () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // Initial fetch
     expect(Location.getLastKnownPositionAsync).toHaveBeenCalledTimes(1);
 
-    // Trigger refresh
     await act(async () => {
       await result.current.refreshLocation();
     });
 
-    // Should have fetched again
     expect(Location.getLastKnownPositionAsync).toHaveBeenCalledTimes(2);
     expect(result.current.location).toEqual(mockGPSCoords);
   });

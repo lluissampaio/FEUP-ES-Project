@@ -1,42 +1,36 @@
-import { renderHook, waitFor, act } from "@testing-library/react-native";
 import { useActiveLocation } from "@/hooks/useActiveLocation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { act, renderHook, waitFor } from "@testing-library/react-native";
 
-// Mock useUserLocation
 const mockRefreshLocation = jest.fn();
 jest.mock("@/hooks/useUserLocation", () => ({
   useUserLocation: jest.fn(),
 }));
 
-// Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),
   setItem: jest.fn(() => Promise.resolve()),
   removeItem: jest.fn(() => Promise.resolve()),
 }));
 
-// Import the mocked module so we can control its implementation in tests
 const { useUserLocation } = require("@/hooks/useUserLocation");
 
 describe("Unit Test: Hook useActiveLocation", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Default mock for useUserLocation
     useUserLocation.mockReturnValue({
       location: null,
       isLoading: false,
       refreshLocation: mockRefreshLocation,
     });
 
-    // Default mock for AsyncStorage.getItem (no override stored)
     AsyncStorage.getItem.mockResolvedValue(null);
   });
 
   it("Deve iniciar sem localização e sem override", async () => {
     const { result } = renderHook(() => useActiveLocation());
 
-    // Initial state before AsyncStorage resolves
     expect(result.current.isLoading).toBe(true);
     expect(result.current.override).toBeNull();
 
@@ -84,7 +78,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // Location should be derived from the override, not GPS
     expect(result.current.location).toEqual({
       latitude: 38.72,
       longitude: -9.13,
@@ -102,7 +95,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
 
     AsyncStorage.getItem.mockResolvedValue(storedOverride);
 
-    // GPS is also active and returning Porto
     useUserLocation.mockReturnValue({
       location: { latitude: 41.15, longitude: -8.61 },
       isLoading: false,
@@ -115,7 +107,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // Should ignore GPS and use Override
     expect(result.current.location).toEqual({
       latitude: 38.72,
       longitude: -9.13,
@@ -139,7 +130,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
       await result.current.setManualLocation(newLocation);
     });
 
-    // Check if AsyncStorage.setItem was called correctly
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       "@location_override",
       JSON.stringify({
@@ -150,7 +140,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
       })
     );
 
-    // Check if the state updated correctly
     expect(result.current.location).toEqual({
       latitude: 37.01,
       longitude: -7.93,
@@ -164,7 +153,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
   });
 
   it("Deve limpar o override e reverter para o GPS", async () => {
-    // Start with an override
     const storedOverride = JSON.stringify({
       type: "manual",
       lat: 38.72,
@@ -173,7 +161,6 @@ describe("Unit Test: Hook useActiveLocation", () => {
     });
     AsyncStorage.getItem.mockResolvedValue(storedOverride);
 
-    // GPS is active
     useUserLocation.mockReturnValue({
       location: { latitude: 41.15, longitude: -8.61 },
       isLoading: false,
@@ -186,21 +173,17 @@ describe("Unit Test: Hook useActiveLocation", () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // Verify it starts on override
     expect(result.current.location).toEqual({
       latitude: 38.72,
       longitude: -9.13,
     });
 
-    // Clear the override
     await act(async () => {
       await result.current.clearOverride();
     });
 
-    // Should remove from storage
     expect(AsyncStorage.removeItem).toHaveBeenCalledWith("@location_override");
 
-    // Should revert to GPS
     expect(result.current.location).toEqual({
       latitude: 41.15,
       longitude: -8.61,
@@ -211,11 +194,10 @@ describe("Unit Test: Hook useActiveLocation", () => {
   it("Deve combinar os estados de loading do GPS e do AsyncStorage", async () => {
     useUserLocation.mockReturnValue({
       location: null,
-      isLoading: true, // GPS is still loading
+      isLoading: true, // GPS ainda a carregar
       refreshLocation: mockRefreshLocation,
     });
 
-    // AsyncStorage hasn't resolved yet
     let resolveStorage;
     AsyncStorage.getItem.mockReturnValue(
       new Promise((resolve) => {
@@ -223,27 +205,29 @@ describe("Unit Test: Hook useActiveLocation", () => {
       })
     );
 
-    const { result } = renderHook(() => useActiveLocation());
+    const { result, rerender } = renderHook(() => useActiveLocation());
 
-    // Both are loading
+    // Ambos a carregar
     expect(result.current.isLoading).toBe(true);
 
-    // Resolve AsyncStorage
+    // Resolver AsyncStorage
     await act(async () => {
       resolveStorage(null);
     });
 
-    // Storage is done, but GPS is still loading
+    // Storage terminou, GPS ainda carregando → isLoading ainda true
     expect(result.current.isLoading).toBe(true);
 
-    // Simulate GPS finishing loading
+    // Simular GPS a terminar atualizar o mock E forçar re-render
     useUserLocation.mockReturnValue({
       location: { latitude: 41.15, longitude: -8.61 },
       isLoading: false,
       refreshLocation: mockRefreshLocation,
     });
 
-    // Re-render to pick up the mock change (renderHook handles this automatically on next interaction)
+    // rerender() força o hook a executar novamente e apanhar o novo mock
+    rerender({});
+
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });

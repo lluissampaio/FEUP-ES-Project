@@ -18,8 +18,8 @@ export function useSupermarketFilters(supermarkets) {
       .filter((s) => s.name.toLowerCase().includes(query.trim().toLowerCase()))
       .filter((s) => (isOpenFilter ? s.isOpen : true))
       .filter((s) =>
-        distanceFilter !== null && s.rawDistance !== null
-          ? s.rawDistance <= distanceFilter
+        distanceFilter !== null
+          ? s.rawDistance !== null && s.rawDistance <= distanceFilter
           : true,
       );
   }, [supermarkets, query, isOpenFilter, distanceFilter]);

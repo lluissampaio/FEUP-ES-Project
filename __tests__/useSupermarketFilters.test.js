@@ -1,8 +1,14 @@
 import SearchSupermarkets from '@/app/search/supermarkets';
+import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
-import { useUserLocation } from '@/hooks/useUserLocation';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  getItem: jest.fn(() => Promise.resolve(null)),
+  setItem: jest.fn(() => Promise.resolve()),
+  removeItem: jest.fn(() => Promise.resolve()),
+}));
 
 jest.mock('react-native-safe-area-context', () => require('react-native-safe-area-context/jest/mock').default);
 
@@ -10,16 +16,36 @@ jest.mock('@/hooks/useSupermarkets', () => ({
   useSupermarkets: jest.fn()
 }));
 
-jest.mock('@/hooks/useUserLocation', () => ({
-  useUserLocation: jest.fn()
+jest.mock('@/hooks/useActiveLocation', () => ({
+  useActiveLocation: jest.fn()
 }));
+
+jest.mock('@/constants/images', () => ({
+  getImageForSupermarket: jest.fn(() => null),
+}));
+
+jest.mock('@shopify/flash-list', () => {
+  const { View } = require('react-native');
+  const React = require('react');
+  return {
+    FlashList: ({ data, renderItem, ListEmptyComponent }) => (
+      <View>
+        {data && data.length > 0
+          ? data.map((item, index) => (
+              <View key={item.id ?? index}>{renderItem({ item, index })}</View>
+            ))
+          : ListEmptyComponent}
+      </View>
+    ),
+  };
+});
 
 describe('Acceptance Test: Filtros de Supermercados (Aberto e Distância)', () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
 
-    useUserLocation.mockReturnValue({
+    useActiveLocation.mockReturnValue({
       location: { latitude: 41.15, longitude: -8.61 },
       isLoading: false,
     });

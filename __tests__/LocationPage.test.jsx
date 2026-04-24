@@ -1,7 +1,7 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
 import LocationPage from '@/app/location/index';
-import { searchLocations } from '@/utils/photon';
 import { useActiveLocation } from '@/hooks/useActiveLocation';
+import { searchLocations } from '@/utils/photon';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 
 // Mock expo-router
 jest.mock('expo-router', () => ({
@@ -24,8 +24,6 @@ jest.mock('@/utils/photon', () => ({
 
 // Mock SafeAreaContext
 jest.mock('react-native-safe-area-context', () => {
-  const React = require('react');
-  const { View } = require('react-native');
   return {
     ...require('react-native-safe-area-context/jest/mock').default,
     useSafeAreaInsets: jest.fn(() => ({ top: 0, bottom: 0, left: 0, right: 0 })),
@@ -36,18 +34,21 @@ jest.mock('react-native-safe-area-context', () => {
 jest.mock('@/components/AppIcon', () => {
   const React = require('react');
   const { Text } = require('react-native');
-  return ({ name, color, weight }) => (
-    <Text testID={`icon-${name}`} color={color} weight={weight}>
-      Icon: {name}
-    </Text>
-  );
+  
+  function MockAppIcon({ name, color, weight }) {
+    return (
+      <Text testID={`icon-${name}`} color={color} weight={weight}>
+        Icon: {name}
+      </Text>
+    );
+  }
+  return MockAppIcon;
 });
 
 describe('Acceptance Test: Página de Localização', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Default mock state: No location defined
     useActiveLocation.mockReturnValue({
       location: null,
       isLoading: false,
@@ -59,6 +60,10 @@ describe('Acceptance Test: Página de Localização', () => {
 
     // Default mock for Photon API: no results
     searchLocations.mockResolvedValue([]);
+    
+    // mockSetManualLocation precisa de resolver para não bloquear act()
+    mockSetManualLocation.mockResolvedValue(undefined);
+    mockClearOverride.mockResolvedValue(undefined);
   });
 
   describe('Estados de Status', () => {
@@ -67,7 +72,6 @@ describe('Acceptance Test: Página de Localização', () => {
 
       expect(screen.getByText('Sem localização definida')).toBeTruthy();
       expect(screen.getByTestId('icon-map')).toBeTruthy();
-      // Check if icon has warning color
       expect(screen.getByTestId('icon-map').props.color).toBe('#cc475a');
     });
 
@@ -102,7 +106,6 @@ describe('Acceptance Test: Página de Localização', () => {
       expect(screen.getByText('Localização manual ativa')).toBeTruthy();
       expect(screen.getByTestId('icon-map').props.color).toBe('#53B175');
       
-      // Card details
       expect(screen.getByText('Lisboa, Portugal')).toBeTruthy();
       expect(screen.getByText('38.7200, -9.1300')).toBeTruthy();
       expect(screen.getByText('Remover')).toBeTruthy();
@@ -119,7 +122,7 @@ describe('Acceptance Test: Página de Localização', () => {
       expect(mockRefreshLocation).toHaveBeenCalledTimes(1);
     });
 
-    it('Deve chamar clearOverride ao pressionar o botão Remover', () => {
+    it('Deve chamar clearOverride ao pressionar o botão Remover', async () => {
       useActiveLocation.mockReturnValue({
         location: { latitude: 38.72, longitude: -9.13 },
         isLoading: false,
@@ -131,8 +134,9 @@ describe('Acceptance Test: Página de Localização', () => {
 
       render(<LocationPage />);
 
-      const removeButton = screen.getByText('Remover');
-      fireEvent.press(removeButton);
+      await act(async () => {
+        fireEvent.press(screen.getByText('Remover'));
+      });
 
       expect(mockClearOverride).toHaveBeenCalledTimes(1);
     });
@@ -149,15 +153,12 @@ describe('Acceptance Test: Página de Localização', () => {
         fireEvent.changeText(searchInput, 'Porto');
       });
 
-      // Should NOT have called the API yet (debounce)
       expect(searchLocations).not.toHaveBeenCalled();
 
-      // Advance time by 300ms
       await act(async () => {
         jest.advanceTimersByTime(300);
       });
 
-      // Now it should have called the API
       expect(searchLocations).toHaveBeenCalledWith('Porto');
 
       jest.useRealTimers();
@@ -193,7 +194,6 @@ describe('Acceptance Test: Página de Localização', () => {
         fireEvent.changeText(searchInput, 'Porto');
       });
 
-      // Wait for the API mock to resolve and UI to update
       await waitFor(() => {
         expect(screen.getByText('Porto, Portugal')).toBeTruthy();
         expect(screen.getByText('Porto União, Brasil')).toBeTruthy();
@@ -212,13 +212,12 @@ describe('Acceptance Test: Página de Localização', () => {
         fireEvent.changeText(searchInput, 'Porto');
       });
 
-      // Wait for result to appear
       const resultItem = await waitFor(() => screen.getByText('Porto, Portugal'));
       
-      // Press the result
-      fireEvent.press(resultItem);
+      await act(async () => {
+        fireEvent.press(resultItem);
+      });
 
-      // Verify it called the hook with the correct location data
       expect(mockSetManualLocation).toHaveBeenCalledWith(mockResult);
     });
 
@@ -234,12 +233,11 @@ describe('Acceptance Test: Página de Localização', () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText('Sem resultados para "xyz"')).toBeTruthy();
+        expect(screen.getByText('Sem resultados para xyz')).toBeTruthy();
       });
     });
 
     it('Deve exibir "A pesquisar..." durante a chamada à API', async () => {
-      // Create a promise that we control, so it stays pending
       let resolveApi;
       searchLocations.mockReturnValue(new Promise((resolve) => {
         resolveApi = resolve;
@@ -255,10 +253,8 @@ describe('Acceptance Test: Página de Localização', () => {
         jest.advanceTimersByTime(300);
       });
 
-      // While the API is pending, we should see the loading text
       expect(screen.getByText('A pesquisar...')).toBeTruthy();
 
-      // Resolve the API to clean up
       await act(async () => {
         resolveApi([]);
       });
