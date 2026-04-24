@@ -207,7 +207,7 @@ Retrospective:
 	- Parallel Task Implementation: The team successfully implemented 3 features simultaneously and combined them without many problems, progressing greatly in various fronts.
 	- Work Distribution: The workload was fairly distributed between the team elements, which caused an increase in productive development in comparison with the previous sprint.
 - Do differently:
-	- Communication: The communication between team elements was sparse which lead to some difficulties in implementing the planned features, decreasing productivity by a significant amount.
+	- Communication: The communication between team elements was sparse which lead to some difficulties in implementing the planned features, impairing productivity.
 - Puzzles:
 	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
 	
