@@ -19,14 +19,14 @@ describe("Account Feature Tests", () => {
     it("renders user name and email correctly", () => {
       render(
         <AccountHeader 
-          name="Luís Sampaio" 
-          email="luis@teste.com" 
+          name="user123" 
+          email="user123@email.com" 
           avatarUrl="https://example.com/avatar.png" 
         />
       );
       
-      expect(screen.getByText("Luís Sampaio")).toBeTruthy();
-      expect(screen.getByText("luis@teste.com")).toBeTruthy();
+      expect(screen.getByText("user123")).toBeTruthy();
+      expect(screen.getByText("user123@email.com")).toBeTruthy();
     });
   });
 
