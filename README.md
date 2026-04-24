@@ -206,10 +206,17 @@ Start of sprint 0
 End of sprint 0
 <img width="535" height="642" alt="imagem" src="https://github.com/user-attachments/assets/10d80d9f-aecc-4b83-94a2-e41f0917c993" />
 
+#### Retrospective
+- Did well:
+	- Prototype Design: The team was able to design a barebones prototype with a core app feature, being able to showcase the purpose of the app successfully.
+- Do differently:
+	- Work Distribution. The tasks were assgined in a disproportionate manner, with some team members implementing a lot of features and other team members doing less work.	
+- Puzzles:
+	- Product Database: We need to find a way to populate the product database of the app (either manually or via an API), so that the product search functionality works.
 
 ### Sprint 1
 
-Retrospective:
+#### Retrospective:
 
 - Did well:
 	- Parallel Task Implementation: The team successfully implemented 3 features simultaneously and combined them without many problems, progressing greatly in various fronts.
