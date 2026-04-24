@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   card: {
+    flex: 1,
     borderRadius: 12,
     padding: 16,
     shadowColor: "#000",
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    alignItems: "center",
     borderWidth: 1,
     borderColor: "rgba(150, 150, 150, 0.1)",
     flexDirection: "column",

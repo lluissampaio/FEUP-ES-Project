@@ -27,8 +27,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 16,
     marginHorizontal: 20,
+    minHeight: 56,
   },
   placeholder: {
     marginLeft: 10,
