@@ -68,6 +68,12 @@ Partindo da ideia inicial, surgem outras funcionalidades potencialmente interess
 - **Modo offline** - Acesso ao carrinho de compras sem necessidade de ligação à internet, permitindo consultar a lista dentro do supermercado.
 - **Definições** - Menu de gestão da aplicação, gestão de notificações e preferências de utilizador.
 
+## Happiness Meters
+
+<p aling="center">
+  <img src="docs/happinessMeters/happiness.png>
+</p>
+
 ## Requirements
 
 ### User Stories
