@@ -1,19 +1,25 @@
 import { useState } from "react";
 
 export default function useCart(initialProducts = []) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState(
+    initialProducts.map(p => ({ ...p, quantity: p.quantity || 1 }))
+  );
   const [error, setError] = useState(null);
 
-  const clear = () => {
-    if (products.length === 0) {
-      setError("Impossível limpar carrinho vazio");
-      return;
-    }
-    setProducts([]);
+  const remove = (id) => {
+    setProducts((prev) => prev.filter((p) => p.id !== id));
     setError(null);
   };
 
-  const total = products.reduce((sum, p) => sum + p.price, 0);
+  const updateQuantity = (id, delta) => {
+    setProducts((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p
+      )
+    );
+  };
 
-  return { products, total, error, clear };
+  const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+
+  return { products, total, error, remove, updateQuantity };
 }
