@@ -71,7 +71,7 @@ Partindo da ideia inicial, surgem outras funcionalidades potencialmente interess
 ## Happiness Meters
 
 <p align="center">
-  <img src="docs/happinessMeters/happiness.png>
+  <img src="docs/happinessMeters/happiness.png"/>
 </p>
 
 ## Requirements
