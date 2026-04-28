@@ -220,7 +220,22 @@ End of sprint 0
 - Puzzles:
 	- Product Database: We need to find a way to populate the product database of the app (either manually or via an API), so that the product search functionality works.
 
+ #### Features Implemented
+
+- Navbar by @dcl674
+- Ability to search supermarkets by @dcl674
+- Base for register page by @JoseSantos56
+- Base for login page by @JoseSantos56
+- DependaBot and scripts for DevOps by @bcdtrak
+
 ### Sprint 1
+
+#### Project Board
+Start of sprint 1
+<img width="892" height="598" alt="imagem" src="https://github.com/user-attachments/assets/cb98a252-7637-4e3f-8416-4e824a064c73" />
+
+End of sprint 1
+<img width="890" height="718" alt="imagem" src="https://github.com/user-attachments/assets/ab155f3f-cc39-499b-8973-756fc6681ab4" />
 
 #### Retrospective:
 
@@ -232,13 +247,14 @@ End of sprint 0
 - Puzzles:
 	- Implementation of the Cart-Database: We need to find a way to connect the user's cart to the database in order to fetch the metadata required for the price calculations.
 
-#### Project Board
-Start of sprint 1
-<img width="892" height="598" alt="imagem" src="https://github.com/user-attachments/assets/cb98a252-7637-4e3f-8416-4e824a064c73" />
+#### Features Implemented
 
-End of sprint 1
-<img width="890" height="718" alt="imagem" src="https://github.com/user-attachments/assets/ab155f3f-cc39-499b-8973-756fc6681ab4" />
-
+- Ability to search Products by @dcl674
+- Ability to choose a location by @bcdtrak
+- Added filters by distance and by state (aberto / fechado) by @dcl674
+- Simple personal page by @lluissampaio
+- Login page by @JoseSantos56
+- Register page by @JoseSantos56
 
 ### Sprint 2
 
