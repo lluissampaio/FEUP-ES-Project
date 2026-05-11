@@ -47,3 +47,5 @@ app-example
 repomix-output.xml
 
 shell.nix
+
+expo-env.d.ts
