@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "cheapy",
-    "slug": "cheapy",
+    "name": "Cents",
+    "slug": "cents",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
