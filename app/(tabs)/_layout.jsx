@@ -45,7 +45,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Shop",
+          title: "Ínicio",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <AppIcon name="shop" color={color} weight="regular" />
@@ -55,7 +55,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: "Explore",
+          title: "Explorar",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <AppIcon name="explore" color={color} weight="regular" />
@@ -65,27 +65,17 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="cart"
         options={{
-          title: "Cart",
+          title: "Lista",
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AppIcon name="cart" color={color} weight="regular" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="favourite"
-        options={{
-          title: "Favourite",
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <AppIcon name="favourite" color={color} weight="regular" />
+            <AppIcon name="notepad" color={color} weight="regular" />
           ),
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
-          title: "Account",
+          title: "Perfil",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <AppIcon name="account" color={color} weight="regular" />

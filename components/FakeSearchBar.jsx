@@ -15,7 +15,7 @@ const FakeSearchBar = () => {
     >
       <AppIcon name="explore" size={18} color={Colors.searchPlaceholder} weight = "bold" />
       <ThemedText style={[styles.placeholder, { color: Colors.searchPlaceholder }]}>
-        Search Supermarket
+        Procurar Supermercado ...
       </ThemedText>
     </Pressable>
   );

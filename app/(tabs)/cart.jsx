@@ -1,12 +1,11 @@
 import CartItemRow from "@/components/CartItemRow";
 import Spacer from "@/components/Spacer";
-import ThemedButton from "@/components/ThemedButton";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import useCart from "@/hooks/useCart";
-import { FlatList, Alert, StyleSheet, View, TouchableOpacity } from "react-native";
-import { Trash, ShoppingCartSimple } from "phosphor-react-native";
 import { Colors } from "@/constants/colors";
+import useCart from "@/hooks/useCart";
+import { ShoppingCartSimple } from "phosphor-react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function Cart() {
   const { products, total, error, clear, remove, updateQuantity } = useCart([
@@ -58,7 +57,7 @@ export default function Cart() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <ThemedText style={styles.headerTitle}>My Cart</ThemedText>
+        <ThemedText style={styles.headerTitle}>Lista de Compras</ThemedText>
       </View>
 
       <View style={styles.divider} />
