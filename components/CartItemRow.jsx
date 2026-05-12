@@ -35,11 +35,19 @@ const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, 
             <ThemedText style={styles.currentPrice}>{price.toFixed(2)}€</ThemedText>
             
             <View style={styles.quantityControls}>
-              <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
+              <TouchableOpacity 
+                onPress={onDecrement} 
+                style={styles.qtyButton}
+                testID="decrement-button"
+              >
                 <Minus size={14} color="#181725" />
               </TouchableOpacity>
-              <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
-              <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
+              <ThemedText style={styles.qtyText} testID="item-quantity">{quantity}</ThemedText>
+              <TouchableOpacity 
+                onPress={onIncrement} 
+                style={styles.qtyButton}
+                testID="increment-button"
+              >
                 <Plus size={14} color="#53B175" />
               </TouchableOpacity>
             </View>
