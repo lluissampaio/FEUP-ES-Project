@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { ActivityIndicator, Alert, Keyboard, Pressable, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { useState } from 'react';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 import Spacer from '@/components/Spacer';
 import ThemedButton from '@/components/ThemedButton';
@@ -34,25 +35,13 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
-    setLoading(true);
-
-    try{
-      await signInWithEmailAndPassword(auth, email, password);
-      router.replace('/(tabs)');
-    } catch (error) {
-      console.error('Erro login:', error);
-      Alert.alert('Erro', 'Email ou password incorretos');
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleForgotPassword = () => {
-    Alert.alert('Recuperar password', 'Função ainda não implementada');
+    router.push('reset-password');
   };
 
   const handleRegister = () => {
-    router.push('/register'); // Vai para o ecrã de registo (register.jsx)
     router.push('/register'); // Vai para o ecrã de registo (register.jsx)
   };
 
