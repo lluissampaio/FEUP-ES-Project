@@ -1,49 +1,54 @@
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import ThemedText from "./ThemedText";
 import { Minus, Plus } from "phosphor-react-native";
+import { getImageForProductCategory } from "@/constants/images";
 
-const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, bestStore, onRemove, onIncrement, onDecrement, image }) => (
-  <View style={styles.card} testID="cart-item">
-    <View style={styles.imageContainer}>
-      <Image
-        source={image?.uri ? image : { uri: 'https://cdn-icons-png.flaticon.com/512/3721/3721818.png' }}
-        style={styles.image}
-      />
-    </View>
+const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, bestStore, onRemove, onIncrement, onDecrement, image_ref }) => {
+  const productImage = getImageForProductCategory(image_ref);
 
-    <View style={styles.mainContent}>
-      <View style={styles.headerRow}>
-        <View style={styles.infoColumn}>
-          <ThemedText style={styles.name}>{name}</ThemedText>
-          <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
-          
-          <View style={styles.badgeContainer}>
-            <View style={styles.badge}>
-              <ThemedText style={styles.badgeText}>{bestStore || "Continente"}</ThemedText>
+  return (
+    <View style={styles.card} testID="cart-item">
+      <View style={styles.imageContainer}>
+        <Image
+          source={productImage}
+          style={styles.image}
+        />
+      </View>
+
+      <View style={styles.mainContent}>
+        <View style={styles.headerRow}>
+          <View style={styles.infoColumn}>
+            <ThemedText style={styles.name}>{name}</ThemedText>
+            <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
+            
+            <View style={styles.badgeContainer}>
+              <View style={styles.badge}>
+                <ThemedText style={styles.badgeText}>{bestStore || "Continente"}</ThemedText>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.priceColumn}>
-          {isPromo && originalPrice && (
-            <ThemedText style={styles.originalPrice}>{originalPrice.toFixed(2)}€</ThemedText>
-          )}
-          <ThemedText style={styles.currentPrice}>{price.toFixed(2)}€</ThemedText>
-          
-          <View style={styles.quantityControls}>
-            <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
-              <Minus size={14} color="#181725" />
-            </TouchableOpacity>
-            <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
-            <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
-              <Plus size={14} color="#53B175" />
-            </TouchableOpacity>
+          <View style={styles.priceColumn}>
+            {isPromo && originalPrice && (
+              <ThemedText style={styles.originalPrice}>{originalPrice.toFixed(2)}€</ThemedText>
+            )}
+            <ThemedText style={styles.currentPrice}>{price.toFixed(2)}€</ThemedText>
+            
+            <View style={styles.quantityControls}>
+              <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
+                <Minus size={14} color="#181725" />
+              </TouchableOpacity>
+              <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
+              <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
+                <Plus size={14} color="#53B175" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   card: {

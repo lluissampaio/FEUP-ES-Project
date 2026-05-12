@@ -2,6 +2,7 @@ import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/colors";
 import { getImageForProductCategory } from "@/constants/images";
 import { Image, Pressable, StyleSheet, View, useColorScheme } from "react-native";
+import { Plus } from "phosphor-react-native";
 import BaseCard from "./BaseCard";
 
 const ProductCard = ({ 
@@ -12,13 +13,13 @@ const ProductCard = ({
   isPromo, 
   bestStore, 
   image_ref,
-  onPress
+  onPress,
+  onAdd
 }) => {
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
     <BaseCard onPress={onPress} style>
-      
       <Image 
         source={getImageForProductCategory(image_ref)} 
         style={styles.image} 
@@ -34,16 +35,27 @@ const ProductCard = ({
           {formattedCapacity}
         </ThemedText>
 
-        <View style={styles.priceRow}>
-          <ThemedText style={[styles.currentPrice, { color: Colors.primary }]}>
-            {currentPrice.toFixed(2)}€
-          </ThemedText>
-          
-          {isPromo && originalPrice && (
-            <ThemedText style={styles.originalPrice}>
-              {originalPrice.toFixed(2)}€
+        <View style={styles.priceAndAddRow}>
+          <View style={styles.priceColumn}>
+            {isPromo && originalPrice && (
+              <ThemedText style={styles.originalPrice}>
+                {originalPrice.toFixed(2)}€
+              </ThemedText>
+            )}
+            <ThemedText style={[styles.currentPrice, { color: Colors.primary }]}>
+              {currentPrice.toFixed(2)}€
             </ThemedText>
-          )}
+          </View>
+
+          <Pressable 
+            style={({ pressed }) => [
+              styles.addButton, 
+              pressed && styles.buttonPressed
+            ]} 
+            onPress={onAdd}
+          >
+            <Plus size={18} color="#fff" weight="bold" />
+          </Pressable>
         </View>
 
         {bestStore ? (
@@ -55,17 +67,6 @@ const ProductCard = ({
             </ThemedText>
           </View>
         ) : null}
-
-        <Pressable 
-          style={({ pressed }) => [
-            styles.button, 
-            { backgroundColor: Colors.primary },
-            pressed && styles.buttonPressed
-          ]} 
-          onPress={onPress}
-        >
-          <ThemedText style={styles.buttonText}>Ver Ofertas</ThemedText>
-        </Pressable>
       </View>
     </BaseCard>
   );
@@ -94,26 +95,41 @@ const styles = StyleSheet.create({
     opacity: 0.6,
     marginBottom: 8,
   },
-  priceRow: {
+  priceAndAddRow: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
     marginBottom: 12,
   },
+  priceColumn: {
+    flex: 1,
+  },
   currentPrice: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
-    marginRight: 8,
   },
   originalPrice: {
-    fontSize: 14,
+    fontSize: 12,
     opacity: 0.5,
     textDecorationLine: 'line-through',
+    marginBottom: 2,
+  },
+  addButton: {
+    backgroundColor: Colors.primary,
+    width: 40,
+    height: 40,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 8,
+  },
+  buttonPressed: {
+    opacity: 0.8,
   },
   badge: {
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 6,
-    marginBottom: 12,
     alignSelf: 'flex-start',
   },
   badgeText: {
@@ -124,20 +140,6 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: 'bold',
   },
-  button: {
-    paddingVertical: 10,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonPressed: {
-    opacity: 0.8,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    fontSize: 14,
-  }
 });
 
 export default ProductCard;

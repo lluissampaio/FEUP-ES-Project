@@ -4,6 +4,7 @@ import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
 import { Colors } from '@/constants/colors';
 import useProducts from '@/hooks/useProducts';
+import useCart from '@/hooks/useCart';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
@@ -12,6 +13,7 @@ export default function SearchProducts() {
   const [query, setQuery] = useState('');
   
   const { products, loading, loadMore, loadingMore } = useProducts(query);
+  const { addProduct } = useCart();
 
   const renderItem = useCallback(({ item }) => (
     <ProductCard 
@@ -23,8 +25,9 @@ export default function SearchProducts() {
       bestStore={item.bestStore}
       image_ref={item.image_ref}
       onPress={() => {}}
+      onAdd={() => addProduct(item)}
     />
-  ), []);
+  ), [addProduct]);
 
   return (
     <ThemedView safe style={styles.container}>

@@ -6,9 +6,11 @@ import { Colors } from "@/constants/colors";
 import useCart from "@/hooks/useCart";
 import { ShoppingCartSimple } from "phosphor-react-native";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Cart() {
   const { products, total, loading, error, remove, updateQuantity } = useCart();
+  const insets = useSafeAreaInsets();
 
   if (loading) {
     return (
@@ -62,14 +64,14 @@ export default function Cart() {
             onRemove={() => remove(item.id)}
             onIncrement={() => updateQuantity(item.id, 1)}
             onDecrement={() => updateQuantity(item.id, -1)}
-            image={{ uri: item.image_ref }}
+            image_ref={item.image_ref}
           />
         )}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, { paddingBottom: 150 + insets.bottom }]}
         showsVerticalScrollIndicator={false}
       />
 
-      <View style={styles.footer}>
+      <View style={[styles.footer, { paddingBottom: 85 + insets.bottom }]}>
         {error && (
           <ThemedText style={styles.errorText}>{error}</ThemedText>
         )}
@@ -103,8 +105,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "700",
     color: "#181725",
-    // To match the serif look in the image, we'd need a specific font. 
-    // For now, we use system bold.
   },
   divider: {
     height: 1,
@@ -112,13 +112,17 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
   },
   footer: {
     paddingHorizontal: 20,
-    paddingTop: 10,
-    paddingBottom: 30,
+    paddingTop: 15,
     backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderTopColor: "#F2F3F2",
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   totalButton: {
     backgroundColor: "#53B175",
