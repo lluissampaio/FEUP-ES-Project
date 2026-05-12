@@ -1,39 +1,45 @@
 import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import ThemedText from "./ThemedText";
-import { Colors } from "@/constants/colors";
-import { X, Minus, Plus } from "phosphor-react-native";
+import { Minus, Plus } from "phosphor-react-native";
 
-const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, onDecrement, image }) => (
+const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, bestStore, onRemove, onIncrement, onDecrement, image }) => (
   <View style={styles.card} testID="cart-item">
     <View style={styles.imageContainer}>
       <Image
-        source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/3721/3721818.png' }}
+        source={image?.uri ? image : { uri: 'https://cdn-icons-png.flaticon.com/512/3721/3721818.png' }}
         style={styles.image}
       />
     </View>
 
     <View style={styles.mainContent}>
       <View style={styles.headerRow}>
-        <View>
+        <View style={styles.infoColumn}>
           <ThemedText style={styles.name}>{name}</ThemedText>
           <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
+          
+          <View style={styles.badgeContainer}>
+            <View style={styles.badge}>
+              <ThemedText style={styles.badgeText}>{bestStore || "Continente"}</ThemedText>
+            </View>
+          </View>
         </View>
-        <TouchableOpacity onPress={onRemove} style={styles.closeButton} testID="remove-item">
-          <X size={20} color="#b1b1b1" />
-        </TouchableOpacity>
-      </View>
 
-      <View style={styles.bottomRow}>
-        <View style={styles.quantityControls}>
-          <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
-            <Minus size={16} color={Colors.primary} />
-          </TouchableOpacity>
-          <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
-          <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
-            <Plus size={16} color={Colors.primary} />
-          </TouchableOpacity>
+        <View style={styles.priceColumn}>
+          {isPromo && originalPrice && (
+            <ThemedText style={styles.originalPrice}>{originalPrice.toFixed(2)}€</ThemedText>
+          )}
+          <ThemedText style={styles.currentPrice}>{price.toFixed(2)}€</ThemedText>
+          
+          <View style={styles.quantityControls}>
+            <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
+              <Minus size={14} color="#181725" />
+            </TouchableOpacity>
+            <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
+            <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
+              <Plus size={14} color="#53B175" />
+            </TouchableOpacity>
+          </View>
         </View>
-        <ThemedText style={styles.price}>{(price * quantity).toFixed(2)} €</ThemedText>
       </View>
     </View>
   </View>
@@ -42,10 +48,11 @@ const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, o
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    paddingVertical: 20,
+    paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
+    borderBottomColor: "#F2F3F2",
     backgroundColor: "#fff",
+    alignItems: "center",
   },
   imageContainer: {
     width: 80,
@@ -65,51 +72,72 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
+  },
+  infoColumn: {
+    flex: 1,
   },
   name: {
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
     color: "#181725",
   },
   subtitle: {
     fontSize: 14,
     color: "#7C7C7C",
-    marginTop: 4,
+    marginTop: 2,
   },
-  closeButton: {
-    padding: 4,
-  },
-  bottomRow: {
+  badgeContainer: {
+    marginTop: 8,
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 15,
+  },
+  badge: {
+    backgroundColor: "#F2F3F2",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  badgeText: {
+    fontSize: 12,
+    color: "#7C7C7C",
+    fontWeight: "500",
+  },
+  priceColumn: {
+    alignItems: "flex-end",
+  },
+  originalPrice: {
+    fontSize: 14,
+    color: "#B1B1B1",
+    textDecorationLine: "line-through",
+    marginBottom: 2,
+  },
+  currentPrice: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#53B175",
   },
   quantityControls: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#F2F3F2",
+    borderRadius: 15,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginTop: 10,
   },
   qtyButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "#E2E2E2",
+    width: 30,
+    height: 30,
     justifyContent: "center",
     alignItems: "center",
   },
   qtyText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
-    marginHorizontal: 15,
+    marginHorizontal: 10,
+    color: "#181725",
     width: 20,
     textAlign: "center",
-  },
-  price: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#181725",
   },
 });
 
