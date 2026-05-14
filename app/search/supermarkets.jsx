@@ -11,6 +11,7 @@ import { useSupermarkets } from '@/hooks/useSupermarkets';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 
 export default function SearchSupermarkets() {
   const { location: userLocation, isLoading: isFetchingLocation } = useActiveLocation();
@@ -33,6 +34,7 @@ export default function SearchSupermarkets() {
         distance={item.formattedDistance}
         isOpen={item.isOpen}
         scheduleToday={item.scheduleToday}
+        onPress={() => router.push(`/search/${item.id}`)}
       />
     ),
     [],
