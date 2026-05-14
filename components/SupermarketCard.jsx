@@ -21,7 +21,9 @@ const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress }) => 
       {scheduleToday && (
         <ThemedText style={styles.details}>Hoje: {scheduleToday}</ThemedText>
       )}
-      <ThemedText style={styles.details}>{distance}</ThemedText>
+      {distance && distance !== "N/A" && (
+        <ThemedText style={styles.details}>{distance}</ThemedText>
+      )}
       <ThemedText style={styles.seeMore}>Ver mais</ThemedText>
     </BaseCard>
   );
