@@ -79,6 +79,7 @@ export default function ResetPassword() {
           keyboardType="email-address"
           autoCapitalize="none"
           editable={!loading}
+          testID="email-input"
         />
 
         <Spacer height={40} />
