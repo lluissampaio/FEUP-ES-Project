@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function useCart(initialProducts = []) {
   const [products, setProducts] = useState(
-    initialProducts.map(p => ({ ...p, quantity: p.quantity || 1 }))
+    initialProducts.map((p) => ({ ...p, quantity: p.quantity || 1 })),
   );
   const [error, setError] = useState(null);
 
@@ -14,8 +14,8 @@ export default function useCart(initialProducts = []) {
   const updateQuantity = (id, delta) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p
-      )
+        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p,
+      ),
     );
   };
 

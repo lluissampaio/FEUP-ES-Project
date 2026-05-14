@@ -1,7 +1,7 @@
 import { useSupermarkets } from "@/hooks/useSupermarkets";
 import { renderHook, waitFor } from "@testing-library/react-native";
 
-// Helpers 
+// Helpers
 
 const getDayOfWeek = () => new Date().getDay();
 const getCurrentMinutes = () => {
@@ -27,7 +27,7 @@ const makeStore = (id, name, coords, scheduleOverride = null) => {
   };
 };
 
-//  Mocks Firebase 
+//  Mocks Firebase
 
 const mockGetDocs = jest.fn();
 
@@ -38,7 +38,7 @@ jest.mock("firebase/firestore", () => ({
 
 jest.mock("@/firebaseConfig", () => ({ db: {} }));
 
-//  Testes 
+//  Testes
 
 describe("Unit Test: Hook useSupermarkets (extended)", () => {
   const userLocation = { latitude: 41.15, longitude: -8.61 };
@@ -47,7 +47,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     jest.clearAllMocks();
   });
 
-  //  Estado de loading 
+  //  Estado de loading
 
   it("Deve iniciar com loading=true e supermercados vazios", () => {
     mockGetDocs.mockReturnValue(new Promise(() => {})); // pending forever
@@ -58,7 +58,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     expect(result.current.supermarkets).toHaveLength(0);
   });
 
-  //  Cálculo de distância 
+  //  Cálculo de distância
 
   it("Deve calcular e formatar a distância corretamente", async () => {
     mockGetDocs.mockResolvedValue({
@@ -68,7 +68,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     });
 
     const { result } = renderHook(() =>
-      useSupermarkets({ latitude: 41.15, longitude: -8.61 })
+      useSupermarkets({ latitude: 41.15, longitude: -8.61 }),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -82,9 +82,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
 
   it("Deve retornar formattedDistance='N/A' e rawDistance=null quando userLocation é null", async () => {
     mockGetDocs.mockResolvedValue({
-      docs: [
-        makeStore("s1", "Aldi", { latitude: 41.16, longitude: -8.62 }),
-      ],
+      docs: [makeStore("s1", "Aldi", { latitude: 41.16, longitude: -8.62 })],
     });
 
     const { result } = renderHook(() => useSupermarkets(null));
@@ -98,39 +96,43 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
   it("Deve recalcular a distância quando userLocation muda", async () => {
     mockGetDocs.mockResolvedValue({
       docs: [
-        makeStore("s1", "Mercadona", { latitude: 41.20, longitude: -8.61 }),
+        makeStore("s1", "Mercadona", { latitude: 41.2, longitude: -8.61 }),
       ],
     });
 
-    const { result, rerender } = renderHook(
-      ({ loc }) => useSupermarkets(loc),
-      { initialProps: { loc: { latitude: 41.15, longitude: -8.61 } } }
-    );
+    const { result, rerender } = renderHook(({ loc }) => useSupermarkets(loc), {
+      initialProps: { loc: { latitude: 41.15, longitude: -8.61 } },
+    });
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     const distanciaInicial = result.current.supermarkets[0].rawDistance;
 
     // Mover o utilizador para perto da loja
-    rerender({ loc: { latitude: 41.20, longitude: -8.61 } });
+    rerender({ loc: { latitude: 41.2, longitude: -8.61 } });
 
     const distanciaAtualizada = result.current.supermarkets[0].rawDistance;
 
     expect(distanciaAtualizada).toBeLessThan(distanciaInicial);
   });
 
-  //  Estado aberto/fechado 
+  //  Estado aberto/fechado
 
   it("Deve marcar loja como aberta quando o horário atual está dentro do schedule", async () => {
     const agora = getCurrentMinutes();
-    const abertura = Math.max(0, agora - 60);    // 1h antes
-    const fecho   = Math.min(1439, agora + 60);  // 1h depois
+    const abertura = Math.max(0, agora - 60); // 1h antes
+    const fecho = Math.min(1439, agora + 60); // 1h depois
 
     mockGetDocs.mockResolvedValue({
       docs: [
-        makeStore("s1", "Loja Aberta", { latitude: 41.15, longitude: -8.60 }, {
-          [getDayOfWeek()]: { opening: abertura, closing: fecho },
-        }),
+        makeStore(
+          "s1",
+          "Loja Aberta",
+          { latitude: 41.15, longitude: -8.6 },
+          {
+            [getDayOfWeek()]: { opening: abertura, closing: fecho },
+          },
+        ),
       ],
     });
 
@@ -151,9 +153,14 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
 
     mockGetDocs.mockResolvedValue({
       docs: [
-        makeStore("s1", "Loja Fechada", { latitude: 41.15, longitude: -8.60 }, {
-          [getDayOfWeek()]: { opening: 0, closing: 1 }, // Fechou à 00h01
-        }),
+        makeStore(
+          "s1",
+          "Loja Fechada",
+          { latitude: 41.15, longitude: -8.6 },
+          {
+            [getDayOfWeek()]: { opening: 0, closing: 1 }, // Fechou à 00h01
+          },
+        ),
       ],
     });
 
@@ -170,7 +177,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
           id: "s1",
           data: () => ({
             name: "Loja Sem Horário",
-            location: { latitude: 41.15, longitude: -8.60 },
+            location: { latitude: 41.15, longitude: -8.6 },
             schedule: null,
           }),
         },
@@ -184,14 +191,19 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     expect(result.current.supermarkets[0].isOpen).toBe(false);
   });
 
-  // Formatação de scheduleToday 
+  // Formatação de scheduleToday
 
   it("Deve formatar scheduleToday corretamente (ex: 8h-22h)", async () => {
     mockGetDocs.mockResolvedValue({
       docs: [
-        makeStore("s1", "Loja Com Horário", { latitude: 41.15, longitude: -8.60 }, {
-          [getDayOfWeek()]: { opening: 480, closing: 1320 }, // 8h - 22h
-        }),
+        makeStore(
+          "s1",
+          "Loja Com Horário",
+          { latitude: 41.15, longitude: -8.6 },
+          {
+            [getDayOfWeek()]: { opening: 480, closing: 1320 }, // 8h - 22h
+          },
+        ),
       ],
     });
 
@@ -201,7 +213,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     expect(result.current.supermarkets[0].scheduleToday).toBe("8h-22h");
   });
 
-  // Nome por omissão 
+  // Nome por omissão
 
   it("Deve usar 'Sem Nome' quando o documento não tem campo name", async () => {
     mockGetDocs.mockResolvedValue({
@@ -222,14 +234,14 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     expect(result.current.supermarkets[0].name).toBe("Sem Nome");
   });
 
-  // Múltiplas lojas 
+  // Múltiplas lojas
 
   it("Deve mapear corretamente múltiplas lojas com diferentes distâncias", async () => {
     mockGetDocs.mockResolvedValue({
       docs: [
         makeStore("s1", "Continente", { latitude: 41.16, longitude: -8.61 }),
-        makeStore("s2", "Pingo Doce",  { latitude: 41.20, longitude: -8.65 }),
-        makeStore("s3", "Mercadona",   { latitude: 41.14, longitude: -8.60 }),
+        makeStore("s2", "Pingo Doce", { latitude: 41.2, longitude: -8.65 }),
+        makeStore("s3", "Mercadona", { latitude: 41.14, longitude: -8.6 }),
       ],
     });
 
@@ -249,7 +261,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     });
   });
 
-  // Erro do Firebase 
+  // Erro do Firebase
 
   it("Deve lidar com erro do Firebase sem crashar e ter loading=false", async () => {
     mockGetDocs.mockRejectedValue(new Error("Network error"));
@@ -260,7 +272,7 @@ describe("Unit Test: Hook useSupermarkets (extended)", () => {
     expect(result.current.supermarkets).toHaveLength(0);
   });
 
-  // Firebase vazio 
+  // Firebase vazio
 
   it("Deve retornar lista vazia quando não há lojas na BD", async () => {
     mockGetDocs.mockResolvedValue({ docs: [] });

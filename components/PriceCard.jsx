@@ -1,15 +1,21 @@
-import ThemedText from '@/components/ThemedText';
-import { Colors } from '@/constants/colors';
-import { getImageForSupermarket } from '@/constants/images';
-import { memo } from 'react';
-import { Image, Pressable, StyleSheet, View, useColorScheme } from 'react-native';
+import ThemedText from "@/components/ThemedText";
+import { Colors } from "@/constants/colors";
+import { getImageForSupermarket } from "@/constants/images";
+import { memo } from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
 /* Wrapped in React.memo: re-renders only when its own props change.
 Combined with a stable `onPress` ref in the parent (useCallback with empty
 deps), this ensures only the two cards that gain/lose `isSelected` are
 processed by the JS thread on each selection tap.
 */
- 
+
 const PriceCard = memo(function PriceCard({
   storeKey,
   currentPrice,
@@ -24,23 +30,23 @@ const PriceCard = memo(function PriceCard({
   const theme = Colors[colorScheme] ?? Colors.light;
 
   const storeName = storeKey
-    .split('_')
+    .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(" ");
 
   const borderColor = isSelected
     ? theme.iconColorFocused
     : isBestChoice
-    ? Colors.primary
-    : theme.searchBackground;
+      ? Colors.primary
+      : theme.searchBackground;
 
   const borderWidth = isSelected || isBestChoice ? 2 : 1;
 
   const backgroundColor =
     isBestChoice && !isSelected
-      ? colorScheme === 'dark'
-        ? '#1a2e1a'
-        : '#F4FBF4'
+      ? colorScheme === "dark"
+        ? "#1a2e1a"
+        : "#F4FBF4"
       : theme.uiBackground;
 
   return (
@@ -97,8 +103,8 @@ export default PriceCard;
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingTop: 20,
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   bestBanner: {
-    position: 'absolute',
+    position: "absolute",
     top: -11,
     left: 16,
     backgroundColor: Colors.primary,
@@ -118,15 +124,15 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   bestBannerText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: 0.5,
   },
   storeRow: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
   },
   logo: {
@@ -140,22 +146,22 @@ const styles = StyleSheet.create({
   },
   storeName: {
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   unitPrice: {
     fontSize: 12,
   },
   priceBlock: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     gap: 2,
   },
   price: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   strikePrice: {
     fontSize: 13,
-    color: '#9E9E9E',
-    textDecorationLine: 'line-through',
+    color: "#9E9E9E",
+    textDecorationLine: "line-through",
   },
 });

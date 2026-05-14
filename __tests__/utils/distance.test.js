@@ -8,7 +8,7 @@ describe("Unit Test: Utils de Distância (Haversine)", () => {
 
   it("Deve calcular a distância correta entre dois pontos conhecidos (ex: Porto a Lisboa)", () => {
     const dist = calculateDistance(41.1579, -8.6291, 38.7223, -9.1393);
-    
+
     expect(dist).toBeCloseTo(274, -1);
   });
 });

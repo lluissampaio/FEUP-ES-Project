@@ -3,11 +3,24 @@ import ThemedText from "./ThemedText";
 import { Colors } from "@/constants/colors";
 import { X, Minus, Plus } from "phosphor-react-native";
 
-const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, onDecrement, image }) => (
+const CartItemRow = ({
+  name,
+  price,
+  quantity,
+  subtitle,
+  onRemove,
+  onIncrement,
+  onDecrement,
+  image,
+}) => (
   <View style={styles.card} testID="cart-item">
     <View style={styles.imageContainer}>
       <Image
-        source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/3721/3721818.png' }}
+        source={
+          image || {
+            uri: "https://cdn-icons-png.flaticon.com/512/3721/3721818.png",
+          }
+        }
         style={styles.image}
       />
     </View>
@@ -18,7 +31,11 @@ const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, o
           <ThemedText style={styles.name}>{name}</ThemedText>
           <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
         </View>
-        <TouchableOpacity onPress={onRemove} style={styles.closeButton} testID="remove-item">
+        <TouchableOpacity
+          onPress={onRemove}
+          style={styles.closeButton}
+          testID="remove-item"
+        >
           <X size={20} color="#b1b1b1" />
         </TouchableOpacity>
       </View>
@@ -33,7 +50,9 @@ const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, o
             <Plus size={16} color={Colors.primary} />
           </TouchableOpacity>
         </View>
-        <ThemedText style={styles.price}>{(price * quantity).toFixed(2)} €</ThemedText>
+        <ThemedText style={styles.price}>
+          {(price * quantity).toFixed(2)} €
+        </ThemedText>
       </View>
     </View>
   </View>

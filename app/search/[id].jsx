@@ -27,17 +27,28 @@ export default function SupermarketDetail() {
     <ThemedView safe style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <AppIcon name="back" size={22} color={theme.iconColorFocused} weight="bold" />
+          <AppIcon
+            name="back"
+            size={22}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
         </Pressable>
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color={Colors.primary} style={styles.loader} />
+        <ActivityIndicator
+          size="large"
+          color={Colors.primary}
+          style={styles.loader}
+        />
       ) : error || !store ? (
         <View style={styles.errorContainer}>
           <AppIcon name="warningCircle" size={48} color={Colors.warning} />
           <Spacer height={16} />
-          <ThemedText style={styles.errorText}>Indisponível no momento</ThemedText>
+          <ThemedText style={styles.errorText}>
+            Indisponível no momento
+          </ThemedText>
         </View>
       ) : (
         <View style={styles.content}>
@@ -108,7 +119,8 @@ export default function SupermarketDetail() {
                 key={day.dayName}
                 style={[
                   styles.scheduleRow,
-                  index < store.weeklySchedule.length - 1 && styles.scheduleRowBorder,
+                  index < store.weeklySchedule.length - 1 &&
+                    styles.scheduleRowBorder,
                   { borderBottomColor: theme.searchBackground },
                 ]}
               >

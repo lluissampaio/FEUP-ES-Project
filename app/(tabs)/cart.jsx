@@ -14,28 +14,28 @@ export default function Cart() {
       name: "Morangos",
       price: 4.99,
       subtitle: "1kg, Price",
-      image: { uri: '' }
+      image: { uri: "" },
     },
     {
       id: "2",
       name: "Ovos",
       price: 1.99,
       subtitle: "6un, Price",
-      image: { uri: '' }
+      image: { uri: "" },
     },
     {
       id: "3",
       name: "Banana",
-      price: 3.00,
+      price: 3.0,
       subtitle: "1kg, Price",
-      image: { uri: '' }
+      image: { uri: "" },
     },
     {
       id: "4",
       name: "Couve-flor",
       price: 2.99,
       subtitle: "250g, Price",
-      image: { uri: '' }
+      image: { uri: "" },
     },
   ]);
 
@@ -45,7 +45,9 @@ export default function Cart() {
         <View style={styles.emptyState}>
           <ShoppingCartSimple size={80} color={Colors.primary} weight="thin" />
           <Spacer height={24} />
-          <ThemedText style={styles.emptyTitle}>O carrinho está vazio</ThemedText>
+          <ThemedText style={styles.emptyTitle}>
+            O carrinho está vazio
+          </ThemedText>
           <ThemedText style={styles.emptySubtitle}>
             Adiciona produtos para começares a poupar!
           </ThemedText>
@@ -82,9 +84,7 @@ export default function Cart() {
       />
 
       <View style={styles.footer}>
-        {error && (
-          <ThemedText style={styles.errorText}>{error}</ThemedText>
-        )}
+        {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
 
         <TouchableOpacity style={styles.checkoutButton} activeOpacity={0.8}>
           <ThemedText style={styles.checkoutText}>Checkout</ThemedText>

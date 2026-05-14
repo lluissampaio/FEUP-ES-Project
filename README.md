@@ -32,8 +32,8 @@ Obrigado!
 ## Membros da Equipa
 
 | Nome | Email |
-|------|-------|
-|  |  |
+| ---- | ----- |
+|      |       |
 
 ---
 
@@ -139,7 +139,7 @@ Para mais detalhes: [Diagrama de Deployment PDF](docs/architecture/deployment_di
 
 ### Protótipo Vertical
 
-O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta *thin vertical slice* prova a viabilidade das integrações nativas com React Native e Expo.
+O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 
 Através da integração com o GPS do dispositivo e a base de dados Firebase Firestore, o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância usando a fórmula de Haversine e verificar se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
 
@@ -198,12 +198,15 @@ Fim do Sprint 0
 #### Retrospetiva
 
 **O que correu bem**
+
 - Desenho do Protótipo: A equipa conseguiu implementar um protótipo funcional centrado na funcionalidade principal da app, demonstrando com sucesso o propósito do produto.
 
 **O que fazer de forma diferente**
+
 - Distribuição de Trabalho: A distribuição de tarefas foi desequilibrada, com alguns elementos a implementar significativamente mais do que outros. A equipa irá abordar este ponto no próximo sprint.
 
 **Questões em aberto**
+
 - Base de Dados de Produtos: É necessário definir uma estratégia para popular a base de dados de produtos, manualmente ou via API, de modo a que a funcionalidade de pesquisa de produtos funcione corretamente.
 
 ---
@@ -232,29 +235,32 @@ Fim do Sprint 1
 #### Retrospetiva
 
 **O que correu bem**
+
 - Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
 - Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
 
 **O que fazer de forma diferente**
+
 - Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
 
 **Questões em aberto**
+
 - Integração Carrinho-Base de Dados: É necessário definir como ligar o carrinho do utilizador à base de dados, de modo a obter os metadados necessários para os cálculos de preço.
 
 ---
 
 ### Sprint 2
 
-*A preencher no final do sprint.*
+_A preencher no final do sprint._
 
 ---
 
 ### Sprint 3
 
-*A preencher no final do sprint.*
+_A preencher no final do sprint._
 
 ---
 
 ### Entrega Final
 
-*A preencher na entrega final.*
+_A preencher na entrega final._

@@ -4,7 +4,15 @@ import { formatScheduleTime } from "@/utils/time";
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
 
-const DAY_NAMES = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+const DAY_NAMES = [
+  "Domingo",
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado",
+];
 const DISPLAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
 export function useSupermarketDetail(storeId, userLocation) {
@@ -29,15 +37,21 @@ export function useSupermarketDetail(storeId, userLocation) {
         const today = new Date();
         const currentMinutes = today.getHours() * 60 + today.getMinutes();
         const todayDayIndex = today.getDay();
-        const todaySchedule = dbData.schedule ? dbData.schedule[todayDayIndex] : null;
+        const todaySchedule = dbData.schedule
+          ? dbData.schedule[todayDayIndex]
+          : null;
 
         let isOpen = false;
         if (todaySchedule) {
-          isOpen = currentMinutes >= todaySchedule.opening && currentMinutes <= todaySchedule.closing;
+          isOpen =
+            currentMinutes >= todaySchedule.opening &&
+            currentMinutes <= todaySchedule.closing;
         }
 
         const weeklySchedule = DISPLAY_ORDER.map((dayIndex) => {
-          const daySchedule = dbData.schedule ? dbData.schedule[dayIndex] : null;
+          const daySchedule = dbData.schedule
+            ? dbData.schedule[dayIndex]
+            : null;
           return {
             dayName: DAY_NAMES[dayIndex],
             isToday: dayIndex === todayDayIndex,

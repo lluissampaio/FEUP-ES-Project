@@ -13,7 +13,12 @@ const AccountMenuItem = ({ title, iconName, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
       <ThemedView style={styles.container}>
-        <AppIcon name={iconName} size={24} weight="regular" color={theme.iconColorFocused} />
+        <AppIcon
+          name={iconName}
+          size={24}
+          weight="regular"
+          color={theme.iconColorFocused}
+        />
         <ThemedText style={styles.title}>{title}</ThemedText>
         <AppIcon name="chevronRight" size={18} color={theme.iconColorFocused} />
       </ThemedView>
