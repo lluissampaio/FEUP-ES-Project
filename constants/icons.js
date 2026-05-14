@@ -4,6 +4,7 @@ import {
   Crosshair,
   Eye,
   EyeSlash,
+  Gear,
   Heart,
   Info,
   List,
@@ -11,17 +12,18 @@ import {
   MagnifyingGlass,
   MapPin,
   MapTrifold,
+  Moon,
   NotepadIcon,
   PencilSimple,
   Question,
   Ruler,
   Storefront,
+  Sun,
   User,
   WarningCircle,
 } from "phosphor-react-native";
 
 export const ICON_MAP = {
-  // Tab Bar
   shop: Storefront,
   explore: MagnifyingGlass,
   notepad: NotepadIcon,
@@ -43,4 +45,8 @@ export const ICON_MAP = {
   warningCircle: WarningCircle,
   eye: Eye,
   eyeSlash: EyeSlash,
+  
+  sun: Sun,
+  moon: Moon,
+  gear: Gear,
 };
