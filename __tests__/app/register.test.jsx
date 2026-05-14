@@ -1,7 +1,7 @@
+import Register from '@/app/register';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react-native';
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
-import Register from '../app/register';
 
 // Mocks
 jest.mock('expo-router', () => ({

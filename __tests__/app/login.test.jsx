@@ -31,7 +31,7 @@ jest.mock('@/components/ThemedView', () => {
     return ({ children, ...props }) => <View {...props}>{children}</View>;
 });
 
-import Login from '../app/login.jsx';
+import Login from '@/app/login';
 
 /*------------Testes------------*/
 
