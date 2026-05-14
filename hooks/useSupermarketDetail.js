@@ -2,13 +2,13 @@ import { db } from "@/firebaseConfig";
 import { calculateDistance, formatDistance } from "@/utils/distance";
 import { formatScheduleTime } from "@/utils/time";
 import { doc, getDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const DAY_NAMES = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
 const DISPLAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
 export function useSupermarketDetail(storeId, userLocation) {
-  const [store, setStore] = useState(null);
+  const [rawStore, setRawStore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -47,21 +47,12 @@ export function useSupermarketDetail(storeId, userLocation) {
           };
         });
 
-        const dist =
-          dbData.location && userLocation?.latitude && userLocation?.longitude
-            ? calculateDistance(
-                userLocation.latitude,
-                userLocation.longitude,
-                dbData.location.latitude,
-                dbData.location.longitude,
-              )
-            : null;
-
-        setStore({
+        setRawStore({
           id: docSnap.id,
           name: dbData.name || "Sem Nome",
           isOpen,
-          formattedDistance: formatDistance(dist),
+          address: dbData.address || dbData.endereco || dbData.morada || null,
+          location: dbData.location,
           weeklySchedule,
         });
       } catch (err) {
@@ -73,7 +64,26 @@ export function useSupermarketDetail(storeId, userLocation) {
     }
 
     fetchStore();
-  }, [storeId, userLocation]);
+  }, [storeId]);
+
+  const store = useMemo(() => {
+    if (!rawStore) return null;
+
+    const dist =
+      rawStore.location && userLocation?.latitude && userLocation?.longitude
+        ? calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            rawStore.location.latitude,
+            rawStore.location.longitude,
+          )
+        : null;
+
+    return {
+      ...rawStore,
+      formattedDistance: formatDistance(dist),
+    };
+  }, [rawStore, userLocation]);
 
   return { store, loading, error };
 }
