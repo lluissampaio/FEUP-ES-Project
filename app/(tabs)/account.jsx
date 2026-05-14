@@ -1,12 +1,16 @@
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
+import AccountThemeToggle from "@/components/AccountThemeToggle";
 import LogoutButton from "@/components/LogoutButton";
 import ThemedView from "@/components/ThemedView";
+import { useThemeStore } from "@/store/useThemeStore";
 import { router } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const AccountScreen = () => {
+  const { theme, setTheme } = useThemeStore();
+
   const menuItems = [
     { 
       title: "Localização", 
@@ -39,6 +43,8 @@ const AccountScreen = () => {
         />
 
         <View style={styles.menuContainer}>
+          <AccountThemeToggle currentTheme={theme} onSelectTheme={setTheme} />
+          
           {menuItems.map((item, index) => (
             <AccountMenuItem
               key={index}
