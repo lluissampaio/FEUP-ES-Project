@@ -1,5 +1,7 @@
 import AppIcon from '@/components/AppIcon';
 import PriceCard from '@/components/PriceCard';
+import QuantitySelector from '@/components/QuantitySelector';
+import ScoreBadge from '@/components/ScoreBadge';
 import Spacer from '@/components/Spacer';
 import ThemedText from '@/components/ThemedText';
 import ThemedView from '@/components/ThemedView';
@@ -17,7 +19,7 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import { useProductDetail } from '@/hooks/useProductDetails';
+import { formatUnitPrice, useProductDetail } from '@/hooks/useProductDetails';
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
@@ -27,9 +29,12 @@ export default function ProductDetail() {
   const {
     product,
     loading,
+    quantity,
     selectedStoreKey,
     sortedPrices,
     totalPrice,
+    handleDecrement,
+    handleIncrement,
     handleSelectStore,
   } = useProductDetail(id);
 
@@ -53,6 +58,9 @@ export default function ProductDetail() {
     );
   }
 
+  const hasNutri = product.nutri_score != null;
+  const hasEco = product.eco_score != null;
+  const showScoresRow = hasNutri || hasEco;
   const metaSegments = [capitalizeFirstLetter(product.category), product.formattedCapacity].filter(Boolean);
 
   return (
@@ -93,7 +101,24 @@ export default function ProductDetail() {
           </ThemedText>
         )}
 
+        {/* Avaliações Nutri/Eco */}
+        {showScoresRow && (
+          <View style={styles.scoresRow}>
+            {hasNutri && <ScoreBadge type="nutri" grade={product.nutri_score} />}
+            {hasEco && <ScoreBadge type="eco" grade={product.eco_score} />}
+          </View>
+        )}
+
         <Spacer height={24} />
+
+        {/*  Quantity selector  */}
+        <QuantitySelector
+          value={quantity}
+          onDecrement={handleDecrement}
+          onIncrement={handleIncrement}
+        />
+
+        <Spacer height={28} />
 
         {/*  Price comparison  */}
         {sortedPrices.length > 0 && (
@@ -110,6 +135,11 @@ export default function ProductDetail() {
                 currentPrice={priceData.current_price}
                 originalPrice={priceData.original_price}
                 isPromo={priceData.is_promo}
+                pricePerUnit={formatUnitPrice(
+                  priceData,
+                  product.capacity,
+                  product.measurement_unit
+                )}
                 isBestChoice={index === 0}
                 isSelected={selectedStoreKey === storeKey}
                 onPress={handleSelectStore}
@@ -131,9 +161,10 @@ export default function ProductDetail() {
         <Pressable
           style={({ pressed }) => [styles.addButton, pressed && styles.pressedOpacity]}
           accessibilityRole="button"
+          accessibilityLabel={`Adicionar ${quantity} à lista, total ${totalPrice.toFixed(2)} euros`}
         >
           <ThemedText style={styles.addButtonLabel}>
-            {'Adicionar à Lista'}
+            {quantity > 1 ? `Adicionar ${quantity} à Lista` : 'Adicionar à Lista'}
           </ThemedText>
 
           <ThemedText style={styles.addButtonPrice}>
@@ -145,10 +176,6 @@ export default function ProductDetail() {
     </ThemedView>
   );
 }
-
-// ---------------------------------------------------------------------------
-// Styles
-// ---------------------------------------------------------------------------
 
 const styles = StyleSheet.create({
   container: {

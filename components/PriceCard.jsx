@@ -15,6 +15,7 @@ const PriceCard = memo(function PriceCard({
   currentPrice,
   originalPrice,
   isPromo,
+  pricePerUnit,
   isBestChoice = false,
   isSelected = false,
   onPress,
@@ -68,6 +69,11 @@ const PriceCard = memo(function PriceCard({
         />
         <View style={styles.storeInfo}>
           <ThemedText style={styles.storeName}>{storeName}</ThemedText>
+          {pricePerUnit != null && (
+            <ThemedText style={[styles.unitPrice, { color: theme.iconColor }]}>
+              {pricePerUnit}
+            </ThemedText>
+          )}
         </View>
       </View>
 
