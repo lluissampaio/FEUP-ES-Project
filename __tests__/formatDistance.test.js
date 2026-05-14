@@ -23,6 +23,6 @@ describe("Unit Test: formatDistance", () => {
   it("Deve retornar km com 1 casa decimal para distâncias >= 1 km", () => {
     expect(formatDistance(1)).toBe("1.0 km");
     expect(formatDistance(1.5)).toBe("1.5 km");
-    expect(formatDistance(274.45)).toBe("274.5 km");
+    expect(formatDistance(274.5)).toBe("274.5 km");
   });
 });

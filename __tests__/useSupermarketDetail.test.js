@@ -1,4 +1,4 @@
-import { useSupermarketDetail } from "@/hooks/useSupermaketDetail";
+import { useSupermarketDetail } from "@/hooks/useSupermarketDetail";
 import { renderHook, waitFor, rerender } from "@testing-library/react-native";
 
 // helpers

@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useActiveLocation } from "@/hooks/useActiveLocation";
-import { useSupermarketDetail } from "@/hooks/useSupermaketDetail";
+import { useSupermarketDetail } from "@/hooks/useSupermarketDetail";
 import ThemedView from "@/components/ThemedView";
 import ThemedText from "@/components/ThemedText";
 import AppIcon from "@/components/AppIcon";

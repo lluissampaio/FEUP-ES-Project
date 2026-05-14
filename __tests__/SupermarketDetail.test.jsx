@@ -4,10 +4,8 @@ import React from "react";
 
 // mocks
 
-const mockRouterBack = jest.fn();
-
 jest.mock("expo-router", () => ({
-  router: { back: mockRouterBack },
+  router: { back: jest.fn() },
   useLocalSearchParams: jest.fn(),
 }));
 
@@ -15,7 +13,7 @@ jest.mock("@/hooks/useActiveLocation", () => ({
   useActiveLocation: jest.fn(),
 }));
 
-jest.mock("@/hooks/useSupermaketDetail", () => ({
+jest.mock("@/hooks/useSupermarketDetail", () => ({
   useSupermarketDetail: jest.fn(),
 }));
 
@@ -53,7 +51,7 @@ jest.mock("@/components/Spacer", () => {
 
 const { useLocalSearchParams } = require("expo-router");
 const { useActiveLocation } = require("@/hooks/useActiveLocation");
-const { useSupermarketDetail } = require("@/hooks/useSupermaketDetail");
+const { useSupermarketDetail } = require("@/hooks/useSupermarketDetail");
 
 const fullWeeklySchedule = [
   { dayName: "Segunda", isToday: false, timeRange: "08:00 - 22:00" },
@@ -154,8 +152,7 @@ describe("Acceptance Test: Página de Detalhe do Supermercado", () => {
 
       render(<SupermarketDetail />);
 
-      expect(screen.getByText("Fechado")).toBeTruthy(); // status badge
-      // Domingo also shows "Fechado", there will be 2 instances in total
+      // status badge shows "Fechado" and Domingo shows "Fechado", 2 instances
       const fechadoTexts = screen.getAllByText("Fechado");
       expect(fechadoTexts.length).toBe(2);
     });
@@ -210,7 +207,8 @@ describe("Acceptance Test: Página de Detalhe do Supermercado", () => {
       const backButton = screen.getByTestId("icon-back");
       fireEvent.press(backButton);
 
-      expect(mockRouterBack).toHaveBeenCalledTimes(1);
+      const { router } = require("expo-router");
+      expect(router.back).toHaveBeenCalledTimes(1);
     });
   });
 
