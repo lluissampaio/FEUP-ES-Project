@@ -21,7 +21,10 @@ const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress }) => 
       {scheduleToday && (
         <ThemedText style={styles.details}>Hoje: {scheduleToday}</ThemedText>
       )}
-      <ThemedText style={styles.details}>{distance}</ThemedText>
+      {distance && distance !== "N/A" && (
+        <ThemedText style={styles.details}>{distance}</ThemedText>
+      )}
+      <ThemedText style={styles.seeMore}>Ver mais</ThemedText>
     </BaseCard>
   );
 };
@@ -47,6 +50,13 @@ const styles = StyleSheet.create({
   },
   status: { 
     fontSize: 13, fontWeight: "bold", textAlign: "center", marginBottom: 2 
+  },
+  seeMore: {
+    fontSize: 12,
+    color: Colors.primary,
+    fontWeight: "600",
+    textAlign: "center",
+    marginTop: 8,
   },
 });
 
