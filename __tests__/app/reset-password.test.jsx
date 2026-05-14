@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
-import ResetPassword from '../app/reset-password';
+import ResetPassword from '../../app/reset-password';
 import { sendPasswordResetEmail } from 'firebase/auth';
 
 jest.mock('firebase/auth', () => ({
