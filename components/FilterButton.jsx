@@ -17,7 +17,7 @@ export default function DropdownPill({ options, selectedValue, onSelect, icon })
 
   const active = selectedValue !== null && selectedValue !== undefined;
   const selectedLabel =
-    options.find((o) => o.value === selectedValue)?.label ?? options[0].label;
+    options?.find((o) => o.value === selectedValue)?.label ?? options?.[0]?.label ?? "Carregando...";
 
   const contentColor = active ? '#FFFFFF' : theme.text;
 

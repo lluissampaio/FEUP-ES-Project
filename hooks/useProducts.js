@@ -36,6 +36,7 @@ const mapDocToProduct = (doc) => {
     isPromo,
     bestStore,
     image_ref: dbData.image_ref,
+    prices: dbData.prices,
   };
 };
 

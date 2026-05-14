@@ -86,12 +86,31 @@ export default function useCart() {
     });
   };
 
+  const updateItemStore = async (id, storeId) => {
+    setProducts((prev) => {
+      const next = prev.map((p) => {
+        if (p.id === id) {
+          return { ...p, selectedStoreId: storeId };
+        }
+        return p;
+      });
+      saveToFirestore(next);
+      return next;
+    });
+  };
+
   const clear = async () => {
     setProducts([]);
     saveToFirestore([]);
   };
 
-  const total = products.reduce((sum, p) => sum + p.currentPrice * p.quantity, 0);
+  const total = products.reduce((sum, p) => {
+    let price = p.currentPrice;
+    if (p.selectedStoreId && p.prices && p.prices[p.selectedStoreId]) {
+      price = p.prices[p.selectedStoreId].current_price;
+    }
+    return sum + price * p.quantity;
+  }, 0);
 
-  return { products, total, loading, error, addProduct, remove, updateQuantity, clear };
+  return { products, total, loading, error, addProduct, remove, updateQuantity, updateItemStore, clear };
 }

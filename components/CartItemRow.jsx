@@ -3,7 +3,24 @@ import ThemedText from "./ThemedText";
 import { Minus, Plus } from "phosphor-react-native";
 import { getImageForProductCategory } from "@/constants/images";
 
-const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, bestStore, onRemove, onIncrement, onDecrement, image_ref }) => {
+import DropdownPill from "./FilterButton";
+
+const CartItemRow = ({ 
+  name, 
+  price, 
+  originalPrice, 
+  isPromo, 
+  quantity, 
+  subtitle, 
+  bestStore, 
+  onRemove, 
+  onIncrement, 
+  onDecrement, 
+  image_ref,
+  storeOptions,
+  selectedStoreId,
+  onStoreSelect
+}) => {
   const productImage = getImageForProductCategory(image_ref);
 
   return (
@@ -22,9 +39,11 @@ const CartItemRow = ({ name, price, originalPrice, isPromo, quantity, subtitle, 
             <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
             
             <View style={styles.badgeContainer}>
-              <View style={styles.badge}>
-                <ThemedText style={styles.badgeText}>{bestStore || "Continente"}</ThemedText>
-              </View>
+              <DropdownPill
+                options={storeOptions}
+                selectedValue={selectedStoreId}
+                onSelect={onStoreSelect}
+              />
             </View>
           </View>
 

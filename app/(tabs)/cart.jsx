@@ -3,14 +3,55 @@ import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
+import { useSupermarkets } from "@/hooks/useSupermarkets";
 import useCart from "@/hooks/useCart";
 import { ShoppingCartSimple } from "phosphor-react-native";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { useMemo, useState } from "react";
+import { ActivityIndicator, FlatList, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Cart() {
-  const { products, total, loading, error, remove, updateQuantity } = useCart();
+  const { products, total, loading, error, remove, updateQuantity, updateItemStore } = useCart();
+  const { supermarkets } = useSupermarkets();
   const insets = useSafeAreaInsets();
+
+  const processedProducts = useMemo(() => {
+    return products.map((product) => {
+      let price = product.currentPrice;
+      let originalPrice = product.originalPrice;
+      let isPromo = product.isPromo;
+      let storeId = product.bestStore;
+
+      if (product.selectedStoreId && product.prices && product.prices[product.selectedStoreId]) {
+        const storeData = product.prices[product.selectedStoreId];
+        price = storeData.current_price;
+        isPromo = storeData.is_promo === true && storeData.original_price != null;
+        originalPrice = isPromo ? storeData.original_price : null;
+        storeId = product.selectedStoreId;
+      }
+
+      const foundStore = supermarkets.find((s) => s.id === storeId);
+      const storeName = foundStore?.name || storeId.charAt(0).toUpperCase() + storeId.slice(1).replace(/-/g, " ");
+
+      const storeOptions = Object.keys(product.prices || {}).map((id) => {
+        const supermarket = supermarkets.find((s) => s.id === id);
+        return {
+          label: supermarket?.name || id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " "),
+          value: id,
+        };
+      });
+
+      return {
+        ...product,
+        displayPrice: price,
+        displayOriginalPrice: originalPrice,
+        displayIsPromo: isPromo,
+        displayStore: storeName,
+        storeOptions: storeOptions,
+        activeStoreId: storeId,
+      };
+    });
+  }, [products, supermarkets]);
 
   if (loading) {
     return (
@@ -50,21 +91,24 @@ export default function Cart() {
       <View style={styles.divider} />
 
       <FlatList
-        data={products}
+        data={processedProducts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CartItemRow
             name={item.name}
-            price={item.currentPrice}
-            originalPrice={item.originalPrice}
-            isPromo={item.isPromo}
+            price={item.displayPrice}
+            originalPrice={item.displayOriginalPrice}
+            isPromo={item.displayIsPromo}
             quantity={item.quantity}
             subtitle={item.formattedCapacity}
-            bestStore={item.bestStore}
+            bestStore={item.displayStore}
             onRemove={() => remove(item.id)}
             onIncrement={() => updateQuantity(item.id, 1)}
             onDecrement={() => updateQuantity(item.id, -1)}
             image_ref={item.image_ref}
+            storeOptions={item.storeOptions}
+            selectedStoreId={item.activeStoreId}
+            onStoreSelect={(storeId) => updateItemStore(item.id, storeId)}
           />
         )}
         contentContainerStyle={[styles.listContent, { paddingBottom: 150 + insets.bottom }]}
@@ -112,6 +156,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     paddingHorizontal: 20,
+    paddingTop: 10,
   },
   footer: {
     paddingHorizontal: 20,
