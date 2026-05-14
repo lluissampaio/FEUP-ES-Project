@@ -94,8 +94,13 @@ describe('Testes de Integração - Componente com Firebase', () => {
     
     await waitFor(() => {
       expect(sendPasswordResetEmail).toHaveBeenCalledWith(expect.anything(), 'teste@email.com');
-      expect(Alert.alert).toHaveBeenCalledWith('Email enviado!', expect.any(String));
     });
+    
+    expect(Alert.alert).toHaveBeenCalledWith(
+      'Email enviado!', 
+      expect.stringContaining('teste@email.com'),
+      expect.any(Array)
+    );
   });
 
   it('deve mostrar erro quando Firebase retorna muitas tentativas', async () => {
@@ -115,9 +120,13 @@ describe('Testes de Integração - Componente com Firebase', () => {
 
 describe('Testes de Aceitação - Fluxo do utilizador', () => {
   
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+  });
+
   it('Cenário: Utilizador recupera senha com sucesso', async () => {
     sendPasswordResetEmail.mockResolvedValueOnce();
-    
     render(<ResetPassword />);
     
     expect(screen.getByText('Recuperar Senha')).toBeTruthy();
@@ -129,8 +138,14 @@ describe('Testes de Aceitação - Fluxo do utilizador', () => {
     fireEvent.press(botao);
     
     await waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalledWith('Email enviado!', expect.stringContaining('meuemail@teste.com'));
+      expect(sendPasswordResetEmail).toHaveBeenCalled();
     });
+    
+    expect(Alert.alert).toHaveBeenCalledWith(
+      'Email enviado!', 
+      expect.stringContaining('meuemail@teste.com'),
+      expect.any(Array)
+    );
   });
 
   it('Cenário: Utilizador tenta recuperar com email inválido', async () => {
@@ -142,10 +157,7 @@ describe('Testes de Aceitação - Fluxo do utilizador', () => {
     const botao = screen.getByText('Enviar email de recuperação');
     fireEvent.press(botao);
     
-    await waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Email inválido');
-    });
-    
+    expect(Alert.alert).toHaveBeenCalledWith('Erro', 'Email inválido');
     expect(sendPasswordResetEmail).not.toHaveBeenCalled();
   });
 });

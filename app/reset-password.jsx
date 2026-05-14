@@ -19,6 +19,12 @@ export default function ResetPassword() {
       Alert.alert('Erro', 'Por favor insira o seu email');
       return;
     }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert('Erro', 'Email inválido');
+      return;
+    }
 
     setLoading(true);
     try {
