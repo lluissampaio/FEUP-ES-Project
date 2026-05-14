@@ -1,6 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useActiveLocation } from "@/hooks/useActiveLocation";
-import { useSupermarketDetail } from "@/hooks/useSupermarketDetail";
+import { useSupermarketDetail } from "@/hooks/useSupermaketDetail";
 import ThemedView from "@/components/ThemedView";
 import ThemedText from "@/components/ThemedText";
 import AppIcon from "@/components/AppIcon";
@@ -27,12 +27,8 @@ export default function SupermarketDetail() {
     <ThemedView safe style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <AppIcon name="back" size={24} color={theme.text} />
+          <AppIcon name="back" size={22} color={theme.iconColorFocused} weight="bold" />
         </Pressable>
-        <ThemedText title style={styles.headerTitle}>
-          Supermercado
-        </ThemedText>
-        <View style={{ width: 40 }} />
       </View>
 
       {loading ? (
@@ -75,13 +71,21 @@ export default function SupermarketDetail() {
                   {store.isOpen ? "Aberto" : "Fechado"}
                 </ThemedText>
               </View>
-              <View style={styles.distanceRow}>
-                <AppIcon name="location" size={14} color={theme.iconColor} />
+              {store.formattedDistance !== "N/A" && (
                 <ThemedText style={styles.distanceText}>
                   {store.formattedDistance}
                 </ThemedText>
-              </View>
+              )}
             </View>
+
+            {store.address && (
+              <View style={styles.addressRow}>
+                <AppIcon name="location" size={14} color={theme.iconColor} />
+                <ThemedText style={styles.addressText} numberOfLines={2}>
+                  {store.address}
+                </ThemedText>
+              </View>
+            )}
           </View>
 
           <Spacer height={24} />
@@ -129,15 +133,14 @@ export default function SupermarketDetail() {
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    flexDirection: "row",
+  header: { paddingHorizontal: 16, paddingTop: 8 },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    justifyContent: "center",
   },
-  backButton: { padding: 8 },
-  headerTitle: { fontSize: 18, fontWeight: "700" },
   loader: { marginTop: 40 },
   errorContainer: {
     flex: 1,
@@ -166,12 +169,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   statusText: { fontSize: 14, fontWeight: "700" },
-  distanceRow: {
+  distanceText: { fontSize: 14, opacity: 0.7 },
+  addressRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
+    marginTop: 8,
+    maxWidth: "80%",
   },
-  distanceText: { fontSize: 14, opacity: 0.7 },
+  addressText: { fontSize: 13, opacity: 0.6 },
   scheduleCard: {
     borderRadius: 12,
     padding: 20,
