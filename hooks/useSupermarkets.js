@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { calculateDistance } from "@/utils/distance";
+import { calculateDistance, formatDistance } from "@/utils/distance";
 import { formatTime } from "@/utils/time";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
@@ -57,7 +57,7 @@ export function useSupermarkets(userLocation) {
       return {
         ...store,
         rawDistance: dist,
-        formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A"
+        formattedDistance: formatDistance(dist),
       };
     });
   }, [rawSupermarkets, userLocation]);
