@@ -12,6 +12,16 @@ const sortPrices = (prices) => {
   );
 };
 
+// Returns a formatted unit-price string or null when any input is missing.
+export const formatUnitPrice = (priceData, capacity, measurementUnit) => {
+  if (!capacity || !measurementUnit || !priceData?.current_price) return null;
+
+  const displayUnit =
+    measurementUnit.toLowerCase() === "g" ? "kg" : measurementUnit;
+
+  return `${priceData.unit_price.toFixed(2)}€ / ${displayUnit}`;
+};
+
 export function useProductDetail(id) {
   const activeProduct = useProductStore((state) => state.activeProduct);
   const [fetchedProduct, setFetchedProduct] = useState(null);
@@ -44,7 +54,17 @@ export function useProductDetail(id) {
     };
   }, [id, activeProduct]);
 
+  const [quantity, setQuantity] = useState(1);
   const [selectedStoreKey, setSelectedStoreKey] = useState(null);
+
+  const handleDecrement = useCallback(
+    () => setQuantity((q) => Math.max(1, q - 1)),
+    [],
+  );
+  const handleIncrement = useCallback(
+    () => setQuantity((q) => Math.min(99, q + 1)),
+    [],
+  );
 
   // Stable identity for the lifetime of the hook instance.
 
@@ -68,13 +88,21 @@ export function useProductDetail(id) {
     return (entry ?? sortedPrices[0])[1].current_price;
   }, [sortedPrices, selectedStoreKey]);
 
+  const totalPrice = useMemo(
+    () => selectedPrice * quantity,
+    [selectedPrice, quantity],
+  );
+
   return {
     product,
     loading,
+    quantity,
     selectedStoreKey,
     sortedPrices,
     selectedPrice,
-    totalPrice: selectedPrice,
+    totalPrice,
+    handleDecrement,
+    handleIncrement,
     handleSelectStore,
   };
 }

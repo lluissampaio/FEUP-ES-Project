@@ -29,7 +29,7 @@ export default function useProducts(searchQuery) {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const debouncedQuery = useDebounce(searchQuery, 2000);
+  const debouncedQuery = useDebounce(searchQuery, 500);
   const normalizedQuery = debouncedQuery
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
