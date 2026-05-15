@@ -68,6 +68,31 @@ npx expo start --go -c
 
 Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code exibido no terminal.
 
+### Build Local com EAS
+
+    Instalar o EAS CLI globalmente:
+    Bash
+
+    npm install -g eas-cli
+
+    Fazer login na conta da Expo:
+    Bash
+
+    eas login
+
+
+3. **Executar o build localmente**:
+   - Para **Android** (Gera um ficheiro `.apk`):
+     ```bash
+     eas build --profile development --platform android --local
+     ```
+   - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
+     ```bash
+     eas build --profile development --platform ios --local
+     
+
+Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
+
 ---
 
 ## Modelação de Negócio
