@@ -1,14 +1,17 @@
 import AppIcon from "@/components/AppIcon";
 import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/colors";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
+  Dimensions,
   Modal,
   Pressable,
   StyleSheet,
   useColorScheme,
   View,
 } from "react-native";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function DropdownPill({
   options,
@@ -17,31 +20,57 @@ export default function DropdownPill({
   icon,
 }) {
   const [open, setOpen] = useState(false);
+  const [dropdownLayout, setDropdownLayout] = useState(null);
+  const pillRef = useRef(null);
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
 
   const active = selectedValue !== null && selectedValue !== undefined;
+  const safeOptions = options?.length > 0 ? options : [{ label: "Sem Opções", value: "none" }];
   const selectedLabel =
-    options?.find((o) => o.value === selectedValue)?.label ?? options?.[0]?.label ?? "Carregando...";
+    safeOptions.find((o) => o.value === selectedValue)?.label ??
+    safeOptions[0].label;
 
   const contentColor = active ? "#FFFFFF" : theme.text;
+
+  const handleOpen = () => {
+    if (pillRef.current) {
+      pillRef.current.measureInWindow((x, y, width, height) => {
+        const dropdownWidth = Math.max(width, 160);
+        const maxLeft = SCREEN_WIDTH - dropdownWidth - 16;
+        const safeX = Math.min(x, maxLeft);
+
+        setDropdownLayout({ x: safeX, y: y + height + 6, width: dropdownWidth });
+        setOpen(true);
+      });
+    } else {
+      setOpen(true);
+    }
+  };
 
   return (
     <>
       <Pressable
-        onPress={() => setOpen(true)}
+        ref={pillRef}
+        onPress={handleOpen}
+        disabled={!options || options.length === 0}
         style={[
           styles.pill,
           {
             backgroundColor: active ? Colors.primary : theme.searchBackground,
             borderColor: active ? Colors.primary : "transparent",
+            opacity: (!options || options.length === 0) ? 0.5 : 1,
           },
         ]}
       >
         {icon && (
           <AppIcon name={icon} size={16} color={contentColor} weight="bold" />
         )}
-        <ThemedText style={[styles.pillLabel, { color: contentColor }]}>
+        <ThemedText
+          style={[styles.pillLabel, { color: contentColor }]}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+        >
           {selectedLabel}
         </ThemedText>
         <ThemedText style={[styles.pillChevron, { color: contentColor }]}>
@@ -60,15 +89,23 @@ export default function DropdownPill({
             style={[
               styles.dropdownMenu,
               { backgroundColor: theme.uiBackground },
+              dropdownLayout && {
+                position: "absolute",
+                top: dropdownLayout.y,
+                left: dropdownLayout.x,
+                width: dropdownLayout.width,
+              },
             ]}
           >
-            {options.map((option) => {
+            {safeOptions.map((option) => {
               const isSelected = option.value === selectedValue;
               return (
                 <Pressable
                   key={String(option.value)}
                   onPress={() => {
-                    onSelect(option.value);
+                    if (option.value !== "none") {
+                      onSelect(option.value);
+                    }
                     setOpen(false);
                   }}
                   style={[
@@ -84,6 +121,7 @@ export default function DropdownPill({
                         fontWeight: "700",
                       },
                     ]}
+                    numberOfLines={1}
                   >
                     {option.label}
                   </ThemedText>
@@ -110,6 +148,9 @@ const styles = StyleSheet.create({
   pillLabel: {
     fontSize: 13,
     fontWeight: "600",
+    minWidth: 70,
+    maxWidth: 130,
+    textAlign: "center",
   },
   pillChevron: {
     fontSize: 11,
@@ -119,9 +160,6 @@ const styles = StyleSheet.create({
   modalBackdrop: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.25)",
-    justifyContent: "flex-start",
-    paddingTop: 160,
-    paddingHorizontal: 16,
   },
   dropdownMenu: {
     borderRadius: 12,
@@ -130,9 +168,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
-    elevation: 6,
-    alignSelf: "flex-start",
-    minWidth: 140,
+    elevation: 8,
   },
   dropdownItem: {
     paddingVertical: 12,
