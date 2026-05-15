@@ -1,6 +1,11 @@
 import { Colors } from "@/constants/colors";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View, useColorScheme } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from "react-native";
 import AppIcon from "./AppIcon";
 import ThemedText from "./ThemedText";
 
@@ -10,14 +15,24 @@ const AccountThemeToggle = ({ currentTheme, onSelectTheme }) => {
 
   return (
     <View style={styles.container}>
-      <AppIcon name="sun" size={24} weight="regular" color={themeColors.iconColorFocused} />
+      <AppIcon
+        name="sun"
+        size={24}
+        weight="regular"
+        color={themeColors.iconColorFocused}
+      />
       <ThemedText style={styles.title}>Tema</ThemedText>
 
-      <View style={[styles.toggleGroup, { backgroundColor: themeColors.searchBackground }]}>
+      <View
+        style={[
+          styles.toggleGroup,
+          { backgroundColor: themeColors.searchBackground },
+        ]}
+      >
         {["light", "dark", "system"].map((t) => {
           const iconMap = { light: "sun", dark: "moon", system: "gear" };
           const isActive = currentTheme === t;
-          
+
           return (
             <TouchableOpacity
               key={t}
@@ -25,10 +40,10 @@ const AccountThemeToggle = ({ currentTheme, onSelectTheme }) => {
               activeOpacity={0.7}
               style={[
                 styles.toggleBtn,
-                isActive && { 
+                isActive && {
                   backgroundColor: themeColors.uiBackground,
-                  shadowOpacity: 0.1 
-                }
+                  shadowOpacity: 0.1,
+                },
               ]}
             >
               <AppIcon

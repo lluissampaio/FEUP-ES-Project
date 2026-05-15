@@ -47,7 +47,7 @@ const AccountScreen = () => {
 
         <View style={styles.menuContainer}>
           <AccountThemeToggle currentTheme={theme} onSelectTheme={setTheme} />
-          
+
           {menuItems.map((item, index) => (
             <AccountMenuItem
               key={index}

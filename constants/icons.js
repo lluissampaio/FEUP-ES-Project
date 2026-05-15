@@ -46,7 +46,7 @@ export const ICON_MAP = {
   warningCircle: WarningCircle,
   eye: Eye,
   eyeSlash: EyeSlash,
-  
+
   sun: Sun,
   moon: Moon,
   gear: Gear,
