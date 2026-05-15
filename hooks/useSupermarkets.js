@@ -1,5 +1,5 @@
 import { db } from "@/firebaseConfig";
-import { calculateDistance } from "@/utils/distance";
+import { calculateDistance, formatDistance } from "@/utils/distance";
 import { formatTime } from "@/utils/time";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useMemo, useState } from "react";
@@ -16,13 +16,17 @@ export function useSupermarkets(userLocation) {
           const dbData = doc.data();
           const today = new Date();
           const currentMinutes = today.getHours() * 60 + today.getMinutes();
-          const todaySchedule = dbData.schedule ? dbData.schedule[today.getDay()] : null;
-          
+          const todaySchedule = dbData.schedule
+            ? dbData.schedule[today.getDay()]
+            : null;
+
           let isOpen = false;
           let scheduleToday = "Indisponível";
 
           if (todaySchedule) {
-            isOpen = currentMinutes >= todaySchedule.opening && currentMinutes <= todaySchedule.closing;
+            isOpen =
+              currentMinutes >= todaySchedule.opening &&
+              currentMinutes <= todaySchedule.closing;
             scheduleToday = `${formatTime(todaySchedule.opening)}-${formatTime(todaySchedule.closing)}`;
           }
 
@@ -30,8 +34,8 @@ export function useSupermarkets(userLocation) {
             id: doc.id,
             name: dbData.name || "Sem Nome",
             location: dbData.location, // Guardamos as coordenadas brutas para cálculo posterior
-            isOpen, 
-            scheduleToday 
+            isOpen,
+            scheduleToday,
           };
         });
         setRawSupermarkets(data);
@@ -46,18 +50,20 @@ export function useSupermarkets(userLocation) {
 
   // 2. Processamento Local: Recalcula a distância síncronamente sempre que o GPS atualizar
   const supermarkets = useMemo(() => {
-    return rawSupermarkets.map(store => {
+    return rawSupermarkets.map((store) => {
       let dist = null;
       if (store.location && userLocation?.latitude && userLocation?.longitude) {
         dist = calculateDistance(
-          userLocation.latitude, userLocation.longitude, 
-          store.location.latitude, store.location.longitude
+          userLocation.latitude,
+          userLocation.longitude,
+          store.location.latitude,
+          store.location.longitude,
         );
       }
       return {
         ...store,
         rawDistance: dist,
-        formattedDistance: dist ? `${dist.toFixed(1)} km` : "N/A"
+        formattedDistance: formatDistance(dist),
       };
     });
   }, [rawSupermarkets, userLocation]);

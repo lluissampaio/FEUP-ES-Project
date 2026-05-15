@@ -2,7 +2,6 @@ import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import ThemedText from "./ThemedText";
 import { Minus, Plus } from "phosphor-react-native";
 import { getImageForProductCategory } from "@/constants/images";
-
 import DropdownPill from "./FilterButton";
 
 const CartItemRow = ({ 
@@ -12,7 +11,6 @@ const CartItemRow = ({
   isPromo, 
   quantity, 
   subtitle, 
-  bestStore, 
   onRemove, 
   onIncrement, 
   onDecrement, 
@@ -122,17 +120,6 @@ const styles = StyleSheet.create({
   badgeContainer: {
     marginTop: 8,
     flexDirection: "row",
-  },
-  badge: {
-    backgroundColor: "#F2F3F2",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-  },
-  badgeText: {
-    fontSize: 12,
-    color: "#7C7C7C",
-    fontWeight: "500",
   },
   priceColumn: {
     alignItems: "flex-end",

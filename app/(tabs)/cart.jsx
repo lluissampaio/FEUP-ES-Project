@@ -8,7 +8,7 @@ import { useSupermarkets } from "@/hooks/useSupermarkets";
 import useCart from "@/hooks/useCart";
 import { ShoppingCartSimple } from "phosphor-react-native";
 import { useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Cart() {
@@ -18,7 +18,6 @@ export default function Cart() {
   const insets = useSafeAreaInsets();
 
   const globalStoreOptions = useMemo(() => {
-    // Collect all unique store IDs from all products in the cart
     const allStoreIds = new Set();
     products.forEach((p) => {
       if (p.prices) {

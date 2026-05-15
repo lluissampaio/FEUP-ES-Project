@@ -18,7 +18,12 @@ const AccountHeader = ({ name, email, avatarUrl }) => {
         <View style={styles.nameRow}>
           <ThemedText style={styles.name}>{name}</ThemedText>
           <TouchableOpacity>
-            <AppIcon name="edit" size={18} color={Colors.primary} weight="bold" />
+            <AppIcon
+              name="edit"
+              size={18}
+              color={Colors.primary}
+              weight="bold"
+            />
           </TouchableOpacity>
         </View>
         <ThemedText style={styles.email}>{email}</ThemedText>

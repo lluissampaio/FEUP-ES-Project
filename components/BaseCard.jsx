@@ -3,13 +3,15 @@ import { Pressable, StyleSheet } from "react-native";
 
 const BaseCard = ({ children, onPress, style }) => {
   return (
-    <Pressable 
-      onPress={onPress} 
-      style={({ pressed }) => [styles.wrapper, pressed && styles.pressed, style]}
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        styles.wrapper,
+        pressed && styles.pressed,
+        style,
+      ]}
     >
-      <ThemedView style={styles.card}>
-        {children}
-      </ThemedView>
+      <ThemedView style={styles.card}>{children}</ThemedView>
     </Pressable>
   );
 };

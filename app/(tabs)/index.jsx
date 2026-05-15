@@ -1,11 +1,11 @@
-import { Colors } from '@/constants/colors';
-import { StyleSheet, View, useColorScheme } from 'react-native';
+import { Colors } from "@/constants/colors";
+import { StyleSheet, View, useColorScheme } from "react-native";
 
-import AppIcon from '@/components/AppIcon';
-import FakeSearchBar from '@/components/FakeSearchBar';
-import Spacer from '@/components/Spacer';
-import ThemedText from '@/components/ThemedText';
-import ThemedView from '@/components/ThemedView';
+import AppIcon from "@/components/AppIcon";
+import FakeSearchBar from "@/components/FakeSearchBar";
+import Spacer from "@/components/Spacer";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
 
 export default function Home() {
   const colorScheme = useColorScheme();
@@ -24,7 +24,7 @@ export default function Home() {
 
       <FakeSearchBar />
     </ThemedView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 10,
   },
   locationText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
     marginLeft: 8,
   },
-})
+});

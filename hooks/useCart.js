@@ -79,7 +79,7 @@ export default function useCart() {
         return p;
       });
 
-      // REMOÇÃO AUTOMÁTICA: Se a quantidade chegar a 0, removemos o produto
+      // Se a quantidade chegar a 0, removemos o produto
       next = next.filter(p => p.quantity > 0);
 
       saveToFirestore(next);
@@ -116,15 +116,11 @@ export default function useCart() {
     saveToFirestore([]);
   };
 
-  // Cálculo do total considerando o supermercado selecionado ou o melhor preço
   const total = products.reduce((sum, p) => {
     let price = p.currentPrice;
-    
-    // Se houver um supermercado selecionado manualmente e ele tiver preço para este produto
     if (p.selectedStoreId && p.prices && p.prices[p.selectedStoreId]) {
       price = p.prices[p.selectedStoreId].current_price;
     }
-    
     return sum + (price * p.quantity);
   }, 0);
 

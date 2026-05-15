@@ -1,7 +1,7 @@
 export const Colors = {
-  primary: "#53B175",
+  primary: "#4CAF50",
   warning: "#cc475a",
-  
+
   searchPlaceholder: "#7C7C7C",
 
   dark: {
@@ -12,7 +12,7 @@ export const Colors = {
     iconColor: "#9591a5",
     iconColorFocused: "#fff",
     uiBackground: "#2f2b3d",
-    searchBackground: "#3a3649", 
+    searchBackground: "#3a3649",
   },
   light: {
     text: "#625f72",
