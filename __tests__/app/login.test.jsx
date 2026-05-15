@@ -79,7 +79,7 @@ describe("Login screen", () => {
     });
   });
 
-  /*------------Testes de aceitação------------*/
+  /*-----------Testes de aceitação-----------*/
 
   describe("Testes de aceitação", () => {
     it("Login com sucesso", async () => {
