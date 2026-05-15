@@ -1,8 +1,8 @@
-# Cheapy - Relatório de Desenvolvimento
+# Cents - Relatório de Desenvolvimento
 
-Bem-vindo à documentação do Cheapy!
+Bem-vindo à documentação do Cents!
 
-Encontras aqui os detalhes sobre o Cheapy, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
+Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
 
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
@@ -251,7 +251,29 @@ Fim do Sprint 1
 
 ### Sprint 2
 
-_A preencher no final do sprint._
+#### Funcionalidades Implementadas
+
+- Página de produto por @dcl674
+- Página de supermercado por @bcdtrack
+- Dark/Light mode por @bcdtrack
+- Carrinho por @lluissampaio
+- Ecrã esquecer password por @JoseSantos56
+- Ecrã inicial por @lluissampaio
+
+#### Retrospetiva
+
+**O que correu bem**
+
+- Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
+- Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
+
+**O que fazer de forma diferente**
+
+- Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
+
+**Questões em aberto**
+
+- Como melhorar a segurança da app.
 
 ---
 
