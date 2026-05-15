@@ -15,7 +15,7 @@ on:
         type: choice
         description: "Build type to run"
         options:
-          - dev
+          - prod-apk
           - all
 
 env:
@@ -159,14 +159,13 @@ jobs:
             echo "metro.config.js not found"
           fi
 
-      - name: 📱 Build Development APK
-        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'dev' || github.event_name == 'push'
+      - name: 📱 Build Production APK
+        if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-apk' || github.event_name == 'push'
         run: |
-          # Build with increased memory limit
           export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
-          eas build --platform android --profile development --local --non-interactive --output=./app-dev.apk
+          eas build --platform android --profile production-apk --local --non-interactive --output=./app-prod.apk
         env:
-          NODE_ENV: development
+          NODE_ENV: production
 
       - name: 🏷️ Generate build information
         id: build-info
@@ -190,7 +189,7 @@ jobs:
           name: "Release v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           tag_name: "v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           files: |
-            ./app-dev.apk
+            ./app-prod.apk
           body_path: changelog.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -199,5 +198,5 @@ jobs:
         with:
           name: app-builds
           path: |
-            ./app-dev.apk
+            ./app-prod.apk
           retention-days: 7
