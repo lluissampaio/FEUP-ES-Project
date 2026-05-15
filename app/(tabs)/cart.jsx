@@ -29,7 +29,7 @@ export default function Cart() {
     const options = Array.from(allStoreIds).map((id) => {
       const foundStore = supermarkets.find((s) => s.id === id);
       return {
-        label: foundStore?.name || id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " "),
+        label: foundStore?.name || (id ? id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " ") : id),
         value: id,
       };
     });
@@ -58,12 +58,12 @@ export default function Cart() {
       }
 
       const foundStore = supermarkets.find((s) => s.id === storeId);
-      const storeName = foundStore?.name || storeId.charAt(0).toUpperCase() + storeId.slice(1).replace(/-/g, " ");
+      const storeName = foundStore?.name || (storeId ? (storeId.charAt(0).toUpperCase() + storeId.slice(1).replace(/-/g, " ")) : "Supermercado");
 
       const storeOptions = Object.keys(product.prices || {}).map((id) => {
         const supermarket = supermarkets.find((s) => s.id === id);
         return {
-          label: supermarket?.name || id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " "),
+          label: supermarket?.name || (id ? id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " ") : id),
           value: id,
         };
       });

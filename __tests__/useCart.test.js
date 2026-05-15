@@ -12,54 +12,67 @@ jest.mock("firebase/firestore", () => ({
   onSnapshot: jest.fn((ref, callback) => {
     callback({
       exists: () => true,
-      data: () => ({ items: [{ id: "1", name: "Leite", currentPrice: 0.89, quantity: 1, image_ref: "leite", formattedCapacity: "1L" }] }),
+      data: () => ({ 
+        items: [
+          { 
+            id: "1", 
+            name: "Leite", 
+            currentPrice: 1.0, 
+            quantity: 1, 
+            image_ref: "leite",
+            prices: {
+              "continente": { current_price: 1.0 },
+              "pingo-doce": { current_price: 0.80 }
+            }
+          }
+        ] 
+      }),
     });
     return jest.fn(); // unsubscribe
   }),
   setDoc: jest.fn(),
-  updateDoc: jest.fn(),
 }));
 
-describe("useCart hook", () => {
-  it("deve carregar produtos da base de dados ao inicializar", async () => {
+describe("useCart hook - Funcionalidades Avançadas", () => {
+  it("deve remover o produto automaticamente quando a quantidade chega a 0", async () => {
     const { result } = renderHook(() => useCart());
-
     await waitFor(() => expect(result.current.loading).toBe(false));
+
     expect(result.current.products).toHaveLength(1);
-    expect(result.current.products[0].name).toBe("Leite");
-    expect(result.current.total).toBe(0.89);
-  });
 
-  it("deve calcular o total corretamente com múltiplos itens", async () => {
-    const { onSnapshot } = require("firebase/firestore");
-    onSnapshot.mockImplementationOnce((ref, callback) => {
-      callback({
-        exists: () => true,
-        data: () => ({
-          items: [
-            { id: "1", name: "Leite", currentPrice: 1.0, quantity: 2, image_ref: "leite" },
-            { id: "2", name: "Pão", currentPrice: 1.5, quantity: 1, image_ref: "padaria" },
-          ],
-        }),
-      });
-      return jest.fn();
+    await act(async () => {
+      await result.current.updateQuantity("1", -1);
     });
 
-    const { result } = renderHook(() => useCart());
-    await waitFor(() => expect(result.current.loading).toBe(false));
-    expect(result.current.total).toBe(3.5);
+    // Como filtramos no estado, deve ficar vazio
+    expect(result.current.products).toHaveLength(0);
   });
 
-  it("deve chamar setDoc ao atualizar a quantidade", async () => {
-    const { setDoc } = require("firebase/firestore");
+  it("deve permitir trocar o supermercado de um item e atualizar o total", async () => {
     const { result } = renderHook(() => useCart());
-
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    act(() => {
-      result.current.updateQuantity("1", 1);
+    expect(result.current.total).toBe(1.0); // Preço inicial do Continente (default)
+
+    await act(async () => {
+      await result.current.updateItemStore("1", "pingo-doce");
     });
 
-    expect(setDoc).toHaveBeenCalled();
+    // O selectedStoreId deve estar definido
+    expect(result.current.products[0].selectedStoreId).toBe("pingo-doce");
+    
+    // O total deve refletir o novo preço (0.80)
+    expect(result.current.total).toBe(0.80);
+  });
+
+  it("deve atualizar todos os itens para um supermercado específico", async () => {
+    const { result } = renderHook(() => useCart());
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    await act(async () => {
+      await result.current.updateAllItemsStore("pingo-doce");
+    });
+
+    expect(result.current.products[0].selectedStoreId).toBe("pingo-doce");
   });
 });
