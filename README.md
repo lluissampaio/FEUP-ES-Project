@@ -4,6 +4,7 @@ Bem-vindo à documentação do Cents!
 
 Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
 
+- [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
   - [Funcionalidades e Pressupostos](#funcionalidades-e-pressupostos)
@@ -21,7 +22,7 @@ Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até �
   - [Sprint 3](#sprint-3)
   - [Entrega Final](#entrega-final)
 
-As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc.
+As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 
 Entre em contacto connosco!
 
@@ -34,6 +35,38 @@ Obrigado!
 | Nome | Email |
 | ---- | ----- |
 |      |       |
+
+---
+
+## Como Correr a Aplicação
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (versão LTS recomendada)
+- [Expo Go](https://expo.dev/go) instalado no dispositivo móvel (iOS ou Android)
+
+### Instalação
+
+```bash
+# Clonar o repositório
+git clone <url-do-repositório>
+cd <pasta-do-projeto>
+
+# Instalar dependências
+npm install
+```
+
+### Execução
+
+```bash
+# Iniciar em modo Expo Go
+npx expo start --go
+
+# Limpar cache (caso necessário, recomendado em caso de erros inesperados)
+npx expo start --go -c
+```
+
+Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code exibido no terminal.
 
 ---
 
