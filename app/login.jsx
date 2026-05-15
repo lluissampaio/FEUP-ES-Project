@@ -37,7 +37,7 @@ export default function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.replace("/(tabs)");
+      router.replace("/(tabs)/home");
     } catch (error) {
       console.error("Erro login:", error);
       Alert.alert("Erro", "Email ou password incorretos");

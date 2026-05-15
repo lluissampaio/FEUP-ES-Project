@@ -66,10 +66,14 @@
     "typescript": "~5.9.2"
   },
   "jest": {
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ]
+  "preset": "jest-expo",
+  "setupFilesAfterEnv": [
+    "@testing-library/jest-native/extend-expect"
+  ],
+  "transformIgnorePatterns": [
+    "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-vector-icons|@react-navigation|@testing-library/react-native|@shopify/flash-list|firebase|@firebase)"
+  ]
   },
   "private": true
 }
+

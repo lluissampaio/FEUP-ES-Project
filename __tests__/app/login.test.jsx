@@ -94,7 +94,7 @@ describe("Login screen", () => {
       fireEvent.press(loginButton);
 
       await waitFor(() => {
-        expect(router.replace).toHaveBeenCalledWith("/(tabs)");
+        expect(router.replace).toHaveBeenCalledWith("/(tabs)/home");
       });
     });
 
