@@ -1,162 +1,187 @@
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import ThemedText from "./ThemedText";
-import { Minus, Plus } from "phosphor-react-native";
+import { Colors } from "@/constants/colors";
 import { getImageForProductCategory } from "@/constants/images";
+import { Minus, Plus } from "phosphor-react-native";
+import { Image, StyleSheet, TouchableOpacity, useColorScheme, View } from "react-native";
 import DropdownPill from "./FilterButton";
+import ThemedText from "./ThemedText";
+import ThemedView from "./ThemedView";
 
-const CartItemRow = ({ 
-  name, 
-  price, 
-  originalPrice, 
-  isPromo, 
-  quantity, 
-  subtitle, 
-  onRemove, 
-  onIncrement, 
-  onDecrement, 
+const CartItemRow = ({
+  name,
+  price,
+  originalPrice,
+  isPromo,
+  quantity,
+  subtitle,
+  onRemove,
+  onIncrement,
+  onDecrement,
   image_ref,
   storeOptions,
   selectedStoreId,
-  onStoreSelect
+  onStoreSelect,
 }) => {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
   const productImage = getImageForProductCategory(image_ref);
 
+  const safeOptions = storeOptions?.length > 0 ? storeOptions : [{ label: "Sem Loja", value: "none" }];
+  const safeSelectedId = selectedStoreId || safeOptions[0].value;
+
   return (
-    <View style={styles.card} testID="cart-item">
+    <ThemedView
+      style={[
+        styles.card,
+        { borderBottomColor: theme.searchBackground },
+      ]}
+      testID="cart-item"
+    >
       <View style={styles.imageContainer}>
-        <Image
-          source={productImage}
-          style={styles.image}
-        />
+        <Image source={productImage} style={styles.image} />
       </View>
 
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <View style={styles.infoColumn}>
-            <ThemedText style={styles.name}>{name}</ThemedText>
-            <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
-            
-            <View style={styles.badgeContainer}>
-              <DropdownPill
-                options={storeOptions}
-                selectedValue={selectedStoreId}
-                onSelect={onStoreSelect}
-              />
-            </View>
+            <ThemedText title style={[styles.name, { color: theme.title }]} numberOfLines={2}>
+              {name}
+            </ThemedText>
+            <ThemedText style={[styles.subtitle, { color: theme.iconColor }]}>
+              {subtitle}
+            </ThemedText>
           </View>
 
           <View style={styles.priceColumn}>
-            {isPromo && originalPrice && (
-              <ThemedText style={styles.originalPrice}>{originalPrice.toFixed(2)}€</ThemedText>
+            {isPromo && originalPrice != null && (
+              <ThemedText style={[styles.originalPrice, { color: theme.iconColor }]}>
+                {originalPrice.toFixed(2)}€
+              </ThemedText>
             )}
-            <ThemedText style={styles.currentPrice}>{price.toFixed(2)}€</ThemedText>
-            
-            <View style={styles.quantityControls}>
-              <TouchableOpacity 
-                onPress={onDecrement} 
+            <ThemedText style={[styles.currentPrice, { color: Colors.primary }]}>
+              {price?.toFixed(2) ?? "0.00"}€
+            </ThemedText>
+
+            <View
+              style={[
+                styles.quantityControls,
+                { backgroundColor: theme.searchBackground },
+              ]}
+            >
+              <TouchableOpacity
+                onPress={onDecrement}
                 style={styles.qtyButton}
                 testID="decrement-button"
+                hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
               >
-                <Minus size={14} color="#181725" />
+                <Minus size={14} color={Colors.warning} weight="bold" />
               </TouchableOpacity>
-              <ThemedText style={styles.qtyText} testID="item-quantity">{quantity}</ThemedText>
-              <TouchableOpacity 
-                onPress={onIncrement} 
+              <ThemedText style={[styles.qtyText, { color: theme.title }]} testID="item-quantity">
+                {quantity}
+              </ThemedText>
+              <TouchableOpacity
+                onPress={onIncrement}
                 style={styles.qtyButton}
                 testID="increment-button"
+                hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
               >
-                <Plus size={14} color="#53B175" />
+                <Plus size={14} color={Colors.primary} weight="bold" />
               </TouchableOpacity>
             </View>
           </View>
         </View>
+
+        <View style={styles.storeSelector}>
+          <DropdownPill
+            options={safeOptions}
+            selectedValue={safeSelectedId}
+            onSelect={(val) => {
+              if (val !== "none") onStoreSelect(val);
+            }}
+          />
+        </View>
       </View>
-    </View>
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    paddingVertical: 15,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#F2F3F2",
-    backgroundColor: "#fff",
-    alignItems: "center",
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
   },
   imageContainer: {
-    width: 80,
-    height: 80,
+    width: 76,
+    height: 76,
     justifyContent: "center",
     alignItems: "center",
+    flexShrink: 0,
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 66,
+    height: 66,
     resizeMode: "contain",
   },
   mainContent: {
     flex: 1,
-    marginLeft: 15,
+    marginLeft: 14,
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   infoColumn: {
     flex: 1,
+    paddingRight: 10,
   },
   name: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "700",
-    color: "#181725",
+    lineHeight: 20,
   },
   subtitle: {
-    fontSize: 14,
-    color: "#7C7C7C",
+    fontSize: 13,
     marginTop: 2,
-  },
-  badgeContainer: {
-    marginTop: 8,
-    flexDirection: "row",
   },
   priceColumn: {
     alignItems: "flex-end",
+    flexShrink: 0,
   },
   originalPrice: {
-    fontSize: 14,
-    color: "#B1B1B1",
+    fontSize: 13,
     textDecorationLine: "line-through",
     marginBottom: 2,
   },
   currentPrice: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#53B175",
   },
   quantityControls: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F2F3F2",
-    borderRadius: 15,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    marginTop: 10,
+    borderRadius: 14,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    marginTop: 8,
   },
   qtyButton: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
     justifyContent: "center",
     alignItems: "center",
   },
   qtyText: {
     fontSize: 14,
     fontWeight: "600",
-    marginHorizontal: 10,
-    color: "#181725",
-    width: 20,
+    minWidth: 22,
     textAlign: "center",
+  },
+  storeSelector: {
+    marginTop: 10,
+    alignSelf: "flex-start",
   },
 });
 
