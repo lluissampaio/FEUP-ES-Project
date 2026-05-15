@@ -7,6 +7,14 @@ jest.mock("@/firebaseConfig", () => ({
   db: {},
 }));
 
+// hacky way to prevent native module crash
+
+jest.mock("@react-native-async-storage/async-storage", () => ({
+  getItem: jest.fn(() => Promise.resolve(null)),
+  setItem: jest.fn(() => Promise.resolve()),
+  removeItem: jest.fn(() => Promise.resolve()),
+}));
+
 import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
@@ -18,9 +26,11 @@ jest.mock(
   "react-native-safe-area-context",
   () => require("react-native-safe-area-context/jest/mock").default,
 );
+
 jest.mock("expo-image", () => ({
   Image: "Image",
 }));
+
 jest.mock("expo-router", () => ({
   router: { push: jest.fn(), replace: jest.fn() },
 }));
@@ -35,7 +45,6 @@ describe("Account Feature Tests", () => {
           avatarUrl="https://example.com/avatar.png"
         />,
       );
-
       expect(screen.getByText("user123")).toBeTruthy();
       expect(screen.getByText("user123@email.com")).toBeTruthy();
     });
@@ -47,9 +56,7 @@ describe("Account Feature Tests", () => {
       render(
         <AccountMenuItem title="Ajuda" iconName="help" onPress={onPressMock} />,
       );
-
       expect(screen.getByText("Ajuda")).toBeTruthy();
-
       const menuItem = screen.getByText("Ajuda");
       fireEvent.press(menuItem);
       expect(onPressMock).toHaveBeenCalledTimes(1);
@@ -60,9 +67,7 @@ describe("Account Feature Tests", () => {
     it("renders 'Log Out' text and handles press", () => {
       const onPressMock = jest.fn();
       render(<LogoutButton onPress={onPressMock} />);
-
       expect(screen.getByText("Log Out")).toBeTruthy();
-
       const logoutBtn = screen.getByText("Log Out");
       fireEvent.press(logoutBtn);
       expect(onPressMock).toHaveBeenCalledTimes(1);
@@ -72,7 +77,6 @@ describe("Account Feature Tests", () => {
   describe("AccountScreen", () => {
     it("renders all three menu items", () => {
       render(<AccountScreen />);
-
       expect(screen.getByText("Localização")).toBeTruthy();
       expect(screen.getByText("Ajuda")).toBeTruthy();
       expect(screen.getByText("Sobre nós")).toBeTruthy();
