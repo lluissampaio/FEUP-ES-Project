@@ -36,7 +36,10 @@ export default function DropdownPill({
 
   const handleOpen = () => {
     setOpen(true);
-    if (pillRef.current && typeof pillRef.current.measureInWindow === "function") {
+    if (
+      pillRef.current &&
+      typeof pillRef.current.measureInWindow === "function"
+    ) {
       pillRef.current.measureInWindow((x, y, width, height) => {
         const dropdownWidth = Math.max(width, 160);
         const maxLeft = SCREEN_WIDTH - dropdownWidth - 16;
