@@ -68,6 +68,31 @@ npx expo start --go -c
 
 Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code exibido no terminal.
 
+### Build Local com EAS
+
+    Instalar o EAS CLI globalmente:
+    Bash
+
+    npm install -g eas-cli
+
+    Fazer login na conta da Expo:
+    Bash
+
+    eas login
+
+
+3. **Executar o build localmente**:
+   - Para **Android** (Gera um ficheiro `.apk`):
+     ```bash
+     eas build --profile development --platform android --local
+     ```
+   - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
+     ```bash
+     eas build --profile development --platform ios --local
+     
+
+Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
+
 ---
 
 ## Modelação de Negócio
@@ -318,6 +343,28 @@ Fim do Sprint 1
 **Questões em aberto**
 
 - Como melhorar a segurança da app.
+
+# Ferramentas de IA Utilizadas
+
+- Gemini, GLM, Claude, Deepseek
+
+# Prompts Relevantes
+
+1 - Como é que resolvo as dependencias do projeto?
+2 - A app não está a abrir no expo go, o que faço para resolver?
+3 - O meu workflow do Github Actions não esta a dar upload dos build artifacts, como resolvo?
+4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
+5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
+
+# Código Gerado por IA
+
+- "package.json"
+- "firebaseConfig.js"
+- Parte de "/store/useCartStore.js"
+
+# PBIs com label "MisterAI"
+
+- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 
 ---
 
