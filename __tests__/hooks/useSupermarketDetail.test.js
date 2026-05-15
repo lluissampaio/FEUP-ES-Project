@@ -59,7 +59,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     mockGetDoc.mockReturnValue(new Promise(() => {}));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     expect(result.current.loading).toBe(true);
@@ -70,12 +70,10 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
   // successful fetch
 
   it("Deve buscar e mapear corretamente os dados do supermercado", async () => {
-    mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData())
-    );
+    mockGetDoc.mockResolvedValue(makeDocSnap("store_1", defaultStoreData()));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -91,12 +89,10 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
   // schedule order
 
   it("Deve ordenar o horário de Segunda a Domingo", async () => {
-    mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData())
-    );
+    mockGetDoc.mockResolvedValue(makeDocSnap("store_1", defaultStoreData()));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -117,13 +113,16 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
 
   it("Deve formatar o timeRange como 'HH:MM - HH:MM'", async () => {
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({
-        schedule: makeFullSchedule(480, 1320),
-      }))
+      makeDocSnap(
+        "store_1",
+        defaultStoreData({
+          schedule: makeFullSchedule(480, 1320),
+        }),
+      ),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -137,17 +136,17 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     schedule[0] = null; // Domingo without schedule
 
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({ schedule }))
+      makeDocSnap("store_1", defaultStoreData({ schedule })),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     const domingo = result.current.store.weeklySchedule.find(
-      (d) => d.dayName === "Domingo"
+      (d) => d.dayName === "Domingo",
     );
     expect(domingo.timeRange).toBe("Fechado");
   });
@@ -155,24 +154,30 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
   // isToday
 
   it("Deve marcar apenas o dia atual com isToday=true", async () => {
-    mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData())
-    );
+    mockGetDoc.mockResolvedValue(makeDocSnap("store_1", defaultStoreData()));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     const todayCount = result.current.store.weeklySchedule.filter(
-      (d) => d.isToday
+      (d) => d.isToday,
     ).length;
     expect(todayCount).toBe(1);
 
-    const todayName = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"][getDayOfWeek()];
+    const todayName = [
+      "Domingo",
+      "Segunda",
+      "Terça",
+      "Quarta",
+      "Quinta",
+      "Sexta",
+      "Sábado",
+    ][getDayOfWeek()];
     const todayEntry = result.current.store.weeklySchedule.find(
-      (d) => d.isToday
+      (d) => d.isToday,
     );
     expect(todayEntry.dayName).toBe(todayName);
   });
@@ -185,13 +190,16 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     const fecho = Math.min(1439, agora + 60);
 
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({
-        schedule: makeFullSchedule(abertura, fecho),
-      }))
+      makeDocSnap(
+        "store_1",
+        defaultStoreData({
+          schedule: makeFullSchedule(abertura, fecho),
+        }),
+      ),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -204,13 +212,16 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     if (agora < 2) return; // avoid midnight edge case
 
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({
-        schedule: makeFullSchedule(0, 1),
-      }))
+      makeDocSnap(
+        "store_1",
+        defaultStoreData({
+          schedule: makeFullSchedule(0, 1),
+        }),
+      ),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -222,13 +233,16 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
 
   it("Deve calcular a distância quando userLocation está disponível", async () => {
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({
-        location: { latitude: 41.178, longitude: -8.593 },
-      }))
+      makeDocSnap(
+        "store_1",
+        defaultStoreData({
+          location: { latitude: 41.178, longitude: -8.593 },
+        }),
+      ),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", { latitude: 41.15, longitude: -8.61 })
+      useSupermarketDetail("store_1", { latitude: 41.15, longitude: -8.61 }),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -238,13 +252,9 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
   });
 
   it("Deve retornar formattedDistance='N/A' quando userLocation é null", async () => {
-    mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData())
-    );
+    mockGetDoc.mockResolvedValue(makeDocSnap("store_1", defaultStoreData()));
 
-    const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", null)
-    );
+    const { result } = renderHook(() => useSupermarketDetail("store_1", null));
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
@@ -253,21 +263,24 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
 
   it("Deve recalcular a distância quando userLocation muda", async () => {
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", defaultStoreData({
-        location: { latitude: 41.20, longitude: -8.61 },
-      }))
+      makeDocSnap(
+        "store_1",
+        defaultStoreData({
+          location: { latitude: 41.2, longitude: -8.61 },
+        }),
+      ),
     );
 
     const { result, rerender } = renderHook(
       ({ loc }) => useSupermarketDetail("store_1", loc),
-      { initialProps: { loc: { latitude: 41.15, longitude: -8.61 } } }
+      { initialProps: { loc: { latitude: 41.15, longitude: -8.61 } } },
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     const distInicial = result.current.store.formattedDistance;
 
-    rerender({ loc: { latitude: 41.20, longitude: -8.61 } });
+    rerender({ loc: { latitude: 41.2, longitude: -8.61 } });
 
     const distAtualizada = result.current.store.formattedDistance;
     // by moving to the location of the supermarket, distance should decrease
@@ -283,11 +296,11 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
         address: "Rua A",
         endereco: "Rua B",
         morada: "Rua C",
-      })
+      }),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -299,11 +312,11 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     delete data.address;
 
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", { ...data, endereco: "Rua B", morada: "Rua C" })
+      makeDocSnap("store_1", { ...data, endereco: "Rua B", morada: "Rua C" }),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -316,11 +329,11 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     delete data.endereco;
 
     mockGetDoc.mockResolvedValue(
-      makeDocSnap("store_1", { ...data, morada: "Rua C" })
+      makeDocSnap("store_1", { ...data, morada: "Rua C" }),
     );
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -334,7 +347,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     mockGetDoc.mockResolvedValue(makeDocSnap("store_1", data));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -349,7 +362,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     });
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_invalid", userLocation)
+      useSupermarketDetail("store_invalid", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -364,7 +377,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     mockGetDoc.mockRejectedValue(new Error("Network error"));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
@@ -377,7 +390,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
 
   it("Não deve fazer fetch quando storeId é null", () => {
     const { result } = renderHook(() =>
-      useSupermarketDetail(null, userLocation)
+      useSupermarketDetail(null, userLocation),
     );
 
     expect(mockGetDoc).not.toHaveBeenCalled();
@@ -393,7 +406,7 @@ describe("Integration Test: Hook useSupermarketDetail", () => {
     mockGetDoc.mockResolvedValue(makeDocSnap("store_1", data));
 
     const { result } = renderHook(() =>
-      useSupermarketDetail("store_1", userLocation)
+      useSupermarketDetail("store_1", userLocation),
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));

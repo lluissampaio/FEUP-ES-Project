@@ -1,15 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState } from "react";
 
 export const DISTANCE_OPTIONS = [
-  { label: 'Distância', value: null },
-  { label: '< 1 km',   value: 1  },
-  { label: '< 3 km',   value: 3  },
-  { label: '< 5 km',   value: 5  },
-  { label: '< 10 km',  value: 10 },
+  { label: "Distância", value: null },
+  { label: "< 1 km", value: 1 },
+  { label: "< 3 km", value: 3 },
+  { label: "< 5 km", value: 5 },
+  { label: "< 10 km", value: 10 },
 ];
 
 export function useSupermarketFilters(supermarkets) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [isOpenFilter, setIsOpenFilter] = useState(false);
   const [distanceFilter, setDistanceFilter] = useState(null);
 

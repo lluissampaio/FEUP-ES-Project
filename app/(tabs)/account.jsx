@@ -12,35 +12,31 @@ const AccountScreen = () => {
   const { theme, setTheme } = useThemeStore();
 
   const menuItems = [
-    { 
-      title: "Localização", 
-      icon: "location", 
-      onPress: () => router.push('/location')
+    {
+      title: "Localização",
+      icon: "location",
+      onPress: () => router.push("/location"),
     },
-    { 
-      title: "Ajuda", 
-      icon: "help", 
-      onPress: () => console.log("Ajuda pressed") 
+    {
+      title: "Ajuda",
+      icon: "help",
+      onPress: () => console.log("Ajuda pressed"),
     },
-    { 
-      title: "Sobre nós", 
-      icon: "about", 
-      onPress: () => console.log("Sobre nós pressed") 
+    {
+      title: "Sobre nós",
+      icon: "about",
+      onPress: () => console.log("Sobre nós pressed"),
     },
   ];
 
   const handleLogout = () => {
-    router.replace('/login');
+    router.replace("/login");
   };
 
   return (
     <ThemedView style={styles.container} safe>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AccountHeader
-          name="User123"
-          email="user123@email.com"
-          avatarUrl=""
-        />
+        <AccountHeader name="User123" email="user123@email.com" avatarUrl="" />
 
         <View style={styles.menuContainer}>
           <AccountThemeToggle currentTheme={theme} onSelectTheme={setTheme} />

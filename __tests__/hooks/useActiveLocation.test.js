@@ -137,7 +137,7 @@ describe("Unit Test: Hook useActiveLocation", () => {
         lat: 37.01,
         lon: -7.93,
         name: "Faro, Portugal",
-      })
+      }),
     );
 
     expect(result.current.location).toEqual({
@@ -202,7 +202,7 @@ describe("Unit Test: Hook useActiveLocation", () => {
     AsyncStorage.getItem.mockReturnValue(
       new Promise((resolve) => {
         resolveStorage = resolve;
-      })
+      }),
     );
 
     const { result, rerender } = renderHook(() => useActiveLocation());

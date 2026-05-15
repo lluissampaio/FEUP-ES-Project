@@ -19,7 +19,7 @@ describe("Unit Test: Hook useUserLocation", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Silenciar os warnings previstos nos testes para manter a consola limpa
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -27,8 +27,12 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve retornar a localização se a permissão já estiver concedida", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
-    Location.getLastKnownPositionAsync.mockResolvedValue({ coords: mockGPSCoords });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
+    Location.getLastKnownPositionAsync.mockResolvedValue({
+      coords: mockGPSCoords,
+    });
 
     const { result } = renderHook(() => useUserLocation());
 
@@ -44,9 +48,15 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve solicitar permissão se ainda não estiver concedida e obter a localização", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "undetermined" });
-    Location.requestForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
-    Location.getLastKnownPositionAsync.mockResolvedValue({ coords: mockGPSCoords });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "undetermined",
+    });
+    Location.requestForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
+    Location.getLastKnownPositionAsync.mockResolvedValue({
+      coords: mockGPSCoords,
+    });
 
     const { result } = renderHook(() => useUserLocation());
 
@@ -59,8 +69,12 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve definir o erro se a permissão for negada", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "denied" });
-    Location.requestForegroundPermissionsAsync.mockResolvedValue({ status: "denied" });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "denied",
+    });
+    Location.requestForegroundPermissionsAsync.mockResolvedValue({
+      status: "denied",
+    });
 
     const { result } = renderHook(() => useUserLocation());
 
@@ -73,9 +87,13 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve usar getCurrentPositionAsync se getLastKnownPositionAsync for nulo", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
     Location.getLastKnownPositionAsync.mockResolvedValue(null);
-    Location.getCurrentPositionAsync.mockResolvedValue({ coords: mockGPSCoords });
+    Location.getCurrentPositionAsync.mockResolvedValue({
+      coords: mockGPSCoords,
+    });
 
     const { result } = renderHook(() => useUserLocation());
 
@@ -92,7 +110,9 @@ describe("Unit Test: Hook useUserLocation", () => {
   it("Deve apresentar erro de timeout se o getCurrentPositionAsync demorar mais de 5 segundos", async () => {
     jest.useFakeTimers();
 
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
     Location.getLastKnownPositionAsync.mockResolvedValue(null);
     // GPS que nunca resolve
     Location.getCurrentPositionAsync.mockReturnValue(new Promise(() => {}));
@@ -116,8 +136,12 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve lidar com erros genéricos do GPS (serviço desativado...)", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
-    Location.getLastKnownPositionAsync.mockRejectedValue(new Error("Location services disabled"));
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
+    Location.getLastKnownPositionAsync.mockRejectedValue(
+      new Error("Location services disabled"),
+    );
 
     const { result } = renderHook(() => useUserLocation());
 
@@ -130,8 +154,12 @@ describe("Unit Test: Hook useUserLocation", () => {
   });
 
   it("Deve refazer a busca de localização ao chamar refreshLocation", async () => {
-    Location.getForegroundPermissionsAsync.mockResolvedValue({ status: "granted" });
-    Location.getLastKnownPositionAsync.mockResolvedValue({ coords: mockGPSCoords });
+    Location.getForegroundPermissionsAsync.mockResolvedValue({
+      status: "granted",
+    });
+    Location.getLastKnownPositionAsync.mockResolvedValue({
+      coords: mockGPSCoords,
+    });
 
     const { result } = renderHook(() => useUserLocation());
 

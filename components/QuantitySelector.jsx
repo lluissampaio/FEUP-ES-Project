@@ -1,8 +1,12 @@
-import ThemedText from '@/components/ThemedText';
-import { Colors } from '@/constants/colors';
-import { Minus, Plus } from 'phosphor-react-native';
-import { StyleSheet, TouchableOpacity, View, useColorScheme } from 'react-native';
-
+import ThemedText from "@/components/ThemedText";
+import { Colors } from "@/constants/colors";
+import { Minus, Plus } from "phosphor-react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from "react-native";
 
 export default function QuantitySelector({
   value = 1,
@@ -14,7 +18,9 @@ export default function QuantitySelector({
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.searchBackground }]}>
+    <View
+      style={[styles.container, { backgroundColor: theme.searchBackground }]}
+    >
       <TouchableOpacity
         onPress={onDecrement}
         disabled={value <= min}
@@ -44,28 +50,28 @@ export default function QuantitySelector({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderRadius: 14,
     paddingVertical: 6,
     paddingHorizontal: 4,
     gap: 4,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   button: {
     width: 36,
     height: 36,
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   disabled: {
     opacity: 0.3,
   },
   value: {
     fontSize: 16,
-    fontWeight: '700',
+    fontWeight: "700",
     minWidth: 32,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
