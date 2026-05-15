@@ -1,6 +1,8 @@
 import { auth, db } from "@/firebaseConfig";
+import { useCartStore } from "@/store/useCartStore";
+import { onAuthStateChanged } from "firebase/auth";
 import { doc, onSnapshot, setDoc } from "firebase/firestore";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 const sanitizeItems = (items) =>
   items.map((item) => {
@@ -12,33 +14,54 @@ const sanitizeItems = (items) =>
   });
 
 export default function useCart() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    products,
+    loading,
+    error,
+    setProducts,
+    setLoading,
+    setError,
+    addProductLocal,
+    removeLocal,
+    updateQuantityLocal,
+    updateItemStoreLocal,
+    updateAllItemsStoreLocal,
+    clearLocal,
+  } = useCartStore();
 
+  const isInitialMount = useRef(true);
+
+  // Sincronização com Firestore
   useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
-    const cartRef = doc(db, "users", user.uid, "cart", "default");
-
-    const unsubscribe = onSnapshot(
-      cartRef,
-      (docSnap) => {
-        setProducts(docSnap.exists() ? (docSnap.data().items ?? []) : []);
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+      if (!user) {
         setLoading(false);
-      },
-      (err) => {
-        setError("Erro");
-        setLoading(false);
-      },
-    );
+        return;
+      }
 
-    return () => unsubscribe();
-  }, []);
+      const cartRef = doc(db, "users", user.uid, "cart", "default");
+      const unsubscribeSnapshot = onSnapshot(
+        cartRef,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            setProducts(docSnap.data().items ?? []);
+          } else {
+            setProducts([]);
+          }
+          setLoading(false);
+        },
+        (err) => {
+          console.error("Erro no snapshot do carrinho:", err);
+          setError("Erro ao carregar carrinho");
+          setLoading(false);
+        }
+      );
+
+      return () => unsubscribeSnapshot();
+    });
+
+    return () => unsubscribeAuth();
+  }, [setProducts, setLoading, setError]);
 
   const saveToFirestore = useCallback(async (newItems) => {
     const user = auth.currentUser;
@@ -47,97 +70,85 @@ export default function useCart() {
     try {
       await setDoc(cartRef, { items: sanitizeItems(newItems) });
     } catch (err) {
-      setError("Erro");
+      console.error("Erro ao salvar carrinho:", err);
+      setError("Erro ao guardar alterações");
     }
-  }, []);
+  }, [setError]);
 
   const addProduct = useCallback(
     async (product, quantityToAdd = 1, storeId = null) => {
-      setProducts((prev) => {
-        const existing = prev.find((p) => p.id === product.id);
-        const next = existing
-          ? prev.map((p) =>
-              p.id === product.id
-                ? {
-                    ...p,
-                    quantity: p.quantity + quantityToAdd,
-                    selectedStoreId: storeId ?? p.selectedStoreId ?? null,
-                  }
-                : p,
-            )
-          : [
-              ...prev,
-              {
-                ...product,
-                quantity: quantityToAdd,
-                selectedStoreId: storeId ?? null,
-                originalPrice: product.originalPrice ?? null,
-              },
-            ];
-        saveToFirestore(next);
-        return next;
-      });
+      // Atualiza localmente primeiro para feedback instantâneo
+      addProductLocal(product, quantityToAdd, storeId);
+      
+      // Se houver user, salva no Firestore (o snapshot depois confirma)
+      const user = auth.currentUser;
+      if (user) {
+        // Precisamos do estado atualizado. Como o set do zustand é síncrono mas 
+        // o products aqui pode estar desatualizado por causa da closure, 
+        // idealmente o useCartStore deveria expor o estado atualizado.
+        // Por simplicidade, recalculamos o next aqui ou usamos o store diretamente
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
     },
-    [saveToFirestore],
+    [addProductLocal, saveToFirestore]
   );
 
   const remove = useCallback(
     async (id) => {
-      setProducts((prev) => {
-        const next = prev.filter((p) => p.id !== id);
-        saveToFirestore(next);
-        return next;
-      });
+      removeLocal(id);
+      const user = auth.currentUser;
+      if (user) {
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
     },
-    [saveToFirestore],
+    [removeLocal, saveToFirestore]
   );
 
   const updateQuantity = useCallback(
     async (id, delta) => {
-      setProducts((prev) => {
-        const next = prev
-          .map((p) =>
-            p.id === id ? { ...p, quantity: p.quantity + delta } : p,
-          )
-          .filter((p) => p.quantity > 0);
-        saveToFirestore(next);
-        return next;
-      });
+      updateQuantityLocal(id, delta);
+      const user = auth.currentUser;
+      if (user) {
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
     },
-    [saveToFirestore],
+    [updateQuantityLocal, saveToFirestore]
   );
 
   const updateItemStore = useCallback(
     async (productId, storeId) => {
-      setProducts((prev) => {
-        const next = prev.map((p) =>
-          p.id === productId ? { ...p, selectedStoreId: storeId ?? null } : p,
-        );
-        saveToFirestore(next);
-        return next;
-      });
+      updateItemStoreLocal(productId, storeId);
+      const user = auth.currentUser;
+      if (user) {
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
     },
-    [saveToFirestore],
+    [updateItemStoreLocal, saveToFirestore]
   );
 
   const updateAllItemsStore = useCallback(
     async (storeId) => {
-      setProducts((prev) => {
-        const next = prev.map((p) => ({
-          ...p,
-          selectedStoreId: storeId ?? null,
-        }));
-        saveToFirestore(next);
-        return next;
-      });
+      updateAllItemsStoreLocal(storeId);
+      const user = auth.currentUser;
+      if (user) {
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
     },
-    [saveToFirestore],
+    [updateAllItemsStoreLocal, saveToFirestore]
   );
 
   const clear = useCallback(async () => {
-    setProducts([]);
-    saveToFirestore([]);
-  }, [saveToFirestore]);
+    clearLocal();
+    const user = auth.currentUser;
+    if (user) {
+      await saveToFirestore([]);
+    }
+  }, [clearLocal, saveToFirestore]);
 
   const total = products.reduce((sum, p) => {
     const price =
