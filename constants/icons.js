@@ -11,10 +11,10 @@ import {
   MagnifyingGlass,
   MapPin,
   MapTrifold,
-  NotepadIcon,
   PencilSimple,
   Question,
   Ruler,
+  ShoppingCartSimple,
   Storefront,
   User,
   WarningCircle,
@@ -24,7 +24,7 @@ export const ICON_MAP = {
   // Tab Bar
   shop: Storefront,
   explore: MagnifyingGlass,
-  notepad: NotepadIcon,
+  notepad: ShoppingCartSimple,
   favourite: Heart,
   account: User,
 
