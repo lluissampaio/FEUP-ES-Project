@@ -286,6 +286,28 @@ Fim do Sprint 1
 
 - Como melhorar a segurança da app.
 
+# Ferramentas de IA Utilizadas
+
+- Gemini, GLM, Claude, Deepseek
+
+# Prompts Relevantes
+
+1 - Como é que resolvo as dependencias do projeto?
+2 - A app não está a abrir no expo go, o que faço para resolver?
+3 - O meu workflow do Github Actions não esta a dar upload dos build artifacts, como resolvo?
+4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
+5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
+
+# Código Gerado por IA
+
+- "package.json"
+- "firebaseConfig.js"
+- Parte de "/store/useCartStore.js"
+
+# PBIs com label "MisterAI"
+
+- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
+
 ---
 
 ### Sprint 3
