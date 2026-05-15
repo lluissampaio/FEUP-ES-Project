@@ -9,25 +9,34 @@ jest.mock("firebase/firestore", () => ({
   onSnapshot: jest.fn(() => jest.fn()),
   setDoc: jest.fn(),
   updateDoc: jest.fn(),
+  collection: jest.fn(),
+  getDocs: jest.fn(() => Promise.resolve({ docs: [] })),
 }));
 
 jest.mock("react-native-safe-area-context", () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 
-jest.mock("@/hooks/useSupermarkets", () => ({
-  useSupermarkets: () => ({
-    supermarkets: [
-      { id: "continente", name: "Continente" },
-      { id: "pingo-doce", name: "Pingo Doce" },
-    ],
-  }),
+// cart.jsx usa useSupermarketsStore, não useSupermarkets
+jest.mock("@/store/useSupermarketsStore", () => ({
+  useSupermarketsStore: (selector) => {
+    const state = {
+      supermarkets: [
+        { id: "continente", name: "Continente" },
+        { id: "pingo-doce", name: "Pingo Doce" },
+      ],
+      fetchSupermarkets: jest.fn(),
+      loading: false,
+      fetched: true,
+    };
+    return selector ? selector(state) : state;
+  },
 }));
 
 import Cart from "@/app/(tabs)/cart";
+import useCart from "@/hooks/useCart";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import React from "react";
-import useCart from "@/hooks/useCart";
 
 jest.mock("@/hooks/useCart");
 

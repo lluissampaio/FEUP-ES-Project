@@ -1,3 +1,12 @@
+jest.mock("firebase/auth", () => ({
+  signOut: jest.fn(() => Promise.resolve()),
+}));
+
+jest.mock("@/firebaseConfig", () => ({
+  auth: {},
+  db: {},
+}));
+
 import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";

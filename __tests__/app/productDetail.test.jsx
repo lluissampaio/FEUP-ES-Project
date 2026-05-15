@@ -1,3 +1,21 @@
+jest.mock("firebase/firestore", () => ({
+  doc: jest.fn(),
+  onSnapshot: jest.fn(() => jest.fn()),
+  setDoc: jest.fn(),
+  updateDoc: jest.fn(),
+  collection: jest.fn(),
+  getDocs: jest.fn(() => Promise.resolve({ docs: [] })),
+}));
+
+jest.mock("firebase/auth", () => ({
+  signOut: jest.fn(),
+}));
+
+jest.mock("@/firebaseConfig", () => ({
+  auth: { currentUser: { uid: "test-uid" } },
+  db: {},
+}));
+
 import ProductDetail from "@/app/product/[id]";
 import { useProductDetail } from "@/hooks/useProductDetails";
 import { fireEvent, render, screen } from "@testing-library/react-native";

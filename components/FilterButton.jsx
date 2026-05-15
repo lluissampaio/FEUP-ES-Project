@@ -35,7 +35,8 @@ export default function DropdownPill({
   const contentColor = active ? "#FFFFFF" : theme.text;
 
   const handleOpen = () => {
-    if (pillRef.current) {
+    setOpen(true);
+    if (pillRef.current && typeof pillRef.current.measureInWindow === "function") {
       pillRef.current.measureInWindow((x, y, width, height) => {
         const dropdownWidth = Math.max(width, 160);
         const maxLeft = SCREEN_WIDTH - dropdownWidth - 16;
@@ -46,10 +47,7 @@ export default function DropdownPill({
           y: y + height + 6,
           width: dropdownWidth,
         });
-        setOpen(true);
       });
-    } else {
-      setOpen(true);
     }
   };
 
@@ -176,8 +174,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   dropdownItem: {
-    paddingVertical: 12,
     paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   dropdownItemText: {
     fontSize: 14,
