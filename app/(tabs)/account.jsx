@@ -5,6 +5,8 @@ import ThemedView from "@/components/ThemedView";
 import { router } from "expo-router";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
 
 const AccountScreen = () => {
   const menuItems = [
@@ -25,8 +27,13 @@ const AccountScreen = () => {
     },
   ];
 
-  const handleLogout = () => {
-    router.replace("/login");
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.replace("/");
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
   };
 
   return (

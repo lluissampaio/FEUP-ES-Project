@@ -8,6 +8,9 @@ import {
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
 
 import ThemedText from "@/components/ThemedText";
 import ThemedButton from "@/components/ThemedButton";
@@ -16,6 +19,16 @@ import { Colors } from "@/constants/colors";
 
 export default function WelcomeScreen() {
   const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.replace("/(tabs)/home");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleRegister = () => {
     router.push("/register");
@@ -26,7 +39,7 @@ export default function WelcomeScreen() {
   };
 
   const handleGuest = () => {
-    router.replace("/(tabs)");
+    router.replace("/(tabs)/home");
   };
 
   return (
