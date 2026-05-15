@@ -36,7 +36,7 @@ const mapDocToProduct = (doc) => {
     isPromo,
     bestStore,
     image_ref: dbData.image_ref,
-    prices: dbData.prices,
+    prices: dbData.prices, // Adicionado para permitir troca de supermercado no carrinho
   };
 };
 

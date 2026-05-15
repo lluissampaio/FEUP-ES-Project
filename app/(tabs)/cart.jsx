@@ -1,4 +1,5 @@
 import CartItemRow from "@/components/CartItemRow";
+import DropdownPill from "@/components/FilterButton";
 import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
@@ -11,9 +12,35 @@ import { ActivityIndicator, FlatList, ScrollView, StyleSheet, View } from "react
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Cart() {
-  const { products, total, loading, error, remove, updateQuantity, updateItemStore } = useCart();
+  const { products, total, loading, error, remove, updateQuantity, updateItemStore, updateAllItemsStore } = useCart();
   const { supermarkets } = useSupermarkets();
+  const [globalSelectedStore, setGlobalSelectedStore] = useState(null);
   const insets = useSafeAreaInsets();
+
+  const globalStoreOptions = useMemo(() => {
+    // Collect all unique store IDs from all products in the cart
+    const allStoreIds = new Set();
+    products.forEach((p) => {
+      if (p.prices) {
+        Object.keys(p.prices).forEach((id) => allStoreIds.add(id));
+      }
+    });
+
+    const options = Array.from(allStoreIds).map((id) => {
+      const foundStore = supermarkets.find((s) => s.id === id);
+      return {
+        label: foundStore?.name || id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, " "),
+        value: id,
+      };
+    });
+
+    return [{ label: "Melhor Preço (Mix)", value: null }, ...options];
+  }, [products, supermarkets]);
+
+  const handleGlobalStoreSelect = (storeId) => {
+    setGlobalSelectedStore(storeId);
+    updateAllItemsStore(storeId);
+  };
 
   const processedProducts = useMemo(() => {
     return products.map((product) => {
@@ -90,6 +117,17 @@ export default function Cart() {
 
       <View style={styles.divider} />
 
+      <View style={styles.globalSelectorContainer}>
+        <ThemedText style={styles.globalSelectorLabel}>Poupar em:</ThemedText>
+        <DropdownPill
+          options={globalStoreOptions}
+          selectedValue={globalSelectedStore}
+          onSelect={handleGlobalStoreSelect}
+        />
+      </View>
+
+      <View style={styles.divider} />
+
       <FlatList
         data={processedProducts}
         keyExtractor={(item) => item.id}
@@ -157,6 +195,19 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 20,
     paddingTop: 10,
+  },
+  globalSelectorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: "#fff",
+  },
+  globalSelectorLabel: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#181725",
   },
   footer: {
     paddingHorizontal: 20,
