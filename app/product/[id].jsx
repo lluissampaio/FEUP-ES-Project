@@ -26,7 +26,7 @@ export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
-  
+
   const { addProduct } = useCart();
 
   const {
@@ -43,9 +43,9 @@ export default function ProductDetail() {
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     await addProduct(product, quantity, selectedStoreKey);
-    
+
     // Feedback visual e navegação de volta para a lista
     router.back();
   };

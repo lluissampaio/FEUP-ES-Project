@@ -80,7 +80,8 @@ export default function Cart() {
       ) {
         const storeData = product.prices[product.selectedStoreId];
         price = storeData.current_price;
-        isPromo = storeData.is_promo === true && storeData.original_price != null;
+        isPromo =
+          storeData.is_promo === true && storeData.original_price != null;
         originalPrice = isPromo ? storeData.original_price : null;
         storeId = product.selectedStoreId;
       }
@@ -128,14 +129,18 @@ export default function Cart() {
             Lista de Compras
           </ThemedText>
         </View>
-        <View style={[styles.divider, { backgroundColor: theme.searchBackground }]} />
+        <View
+          style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+        />
         <View style={styles.emptyState}>
           <ShoppingCartSimple size={80} color={Colors.primary} weight="thin" />
           <Spacer height={24} />
           <ThemedText title style={styles.emptyTitle}>
             O seu carrinho está vazio
           </ThemedText>
-          <ThemedText style={[styles.emptySubtitle, { color: theme.iconColor }]}>
+          <ThemedText
+            style={[styles.emptySubtitle, { color: theme.iconColor }]}
+          >
             Adicione produtos para começar a poupar!
           </ThemedText>
         </View>
@@ -151,9 +156,16 @@ export default function Cart() {
         </ThemedText>
       </View>
 
-      <View style={[styles.divider, { backgroundColor: theme.searchBackground }]} />
+      <View
+        style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+      />
 
-      <View style={[styles.globalSelectorContainer, { backgroundColor: theme.background }]}>
+      <View
+        style={[
+          styles.globalSelectorContainer,
+          { backgroundColor: theme.background },
+        ]}
+      >
         <ThemedText title style={styles.globalSelectorLabel}>
           Poupar em:
         </ThemedText>
@@ -164,7 +176,9 @@ export default function Cart() {
         />
       </View>
 
-      <View style={[styles.divider, { backgroundColor: theme.searchBackground }]} />
+      <View
+        style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+      />
 
       <FlatList
         data={processedProducts}
@@ -203,12 +217,12 @@ export default function Cart() {
           },
         ]}
       >
-        {error && (
-          <ThemedText style={styles.errorText}>{error}</ThemedText>
-        )}
+        {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
         <View style={styles.totalButton}>
           <ThemedText style={styles.totalLabel}>Total Estimado</ThemedText>
-          <ThemedText style={styles.totalValue}>{total.toFixed(2)} €</ThemedText>
+          <ThemedText style={styles.totalValue}>
+            {total.toFixed(2)} €
+          </ThemedText>
         </View>
       </View>
     </ThemedView>

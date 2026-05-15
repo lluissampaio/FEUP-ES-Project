@@ -1,7 +1,13 @@
 import { Colors } from "@/constants/colors";
 import { getImageForProductCategory } from "@/constants/images";
 import { Minus, Plus } from "phosphor-react-native";
-import { Image, StyleSheet, TouchableOpacity, useColorScheme, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import DropdownPill from "./FilterButton";
 import ThemedText from "./ThemedText";
 import ThemedView from "./ThemedView";
@@ -25,15 +31,15 @@ const CartItemRow = ({
   const theme = Colors[colorScheme] ?? Colors.light;
   const productImage = getImageForProductCategory(image_ref);
 
-  const safeOptions = storeOptions?.length > 0 ? storeOptions : [{ label: "Sem Loja", value: "none" }];
+  const safeOptions =
+    storeOptions?.length > 0
+      ? storeOptions
+      : [{ label: "Sem Loja", value: "none" }];
   const safeSelectedId = selectedStoreId || safeOptions[0].value;
 
   return (
     <ThemedView
-      style={[
-        styles.card,
-        { borderBottomColor: theme.searchBackground },
-      ]}
+      style={[styles.card, { borderBottomColor: theme.searchBackground }]}
       testID="cart-item"
     >
       <View style={styles.imageContainer}>
@@ -43,7 +49,11 @@ const CartItemRow = ({
       <View style={styles.mainContent}>
         <View style={styles.headerRow}>
           <View style={styles.infoColumn}>
-            <ThemedText title style={[styles.name, { color: theme.title }]} numberOfLines={2}>
+            <ThemedText
+              title
+              style={[styles.name, { color: theme.title }]}
+              numberOfLines={2}
+            >
               {name}
             </ThemedText>
             <ThemedText style={[styles.subtitle, { color: theme.iconColor }]}>
@@ -53,11 +63,15 @@ const CartItemRow = ({
 
           <View style={styles.priceColumn}>
             {isPromo && originalPrice != null && (
-              <ThemedText style={[styles.originalPrice, { color: theme.iconColor }]}>
+              <ThemedText
+                style={[styles.originalPrice, { color: theme.iconColor }]}
+              >
                 {originalPrice.toFixed(2)}€
               </ThemedText>
             )}
-            <ThemedText style={[styles.currentPrice, { color: Colors.primary }]}>
+            <ThemedText
+              style={[styles.currentPrice, { color: Colors.primary }]}
+            >
               {price?.toFixed(2) ?? "0.00"}€
             </ThemedText>
 
@@ -75,7 +89,10 @@ const CartItemRow = ({
               >
                 <Minus size={14} color={Colors.warning} weight="bold" />
               </TouchableOpacity>
-              <ThemedText style={[styles.qtyText, { color: theme.title }]} testID="item-quantity">
+              <ThemedText
+                style={[styles.qtyText, { color: theme.title }]}
+                testID="item-quantity"
+              >
                 {quantity}
               </ThemedText>
               <TouchableOpacity

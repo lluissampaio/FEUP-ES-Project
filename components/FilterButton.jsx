@@ -26,7 +26,8 @@ export default function DropdownPill({
   const theme = Colors[colorScheme] ?? Colors.light;
 
   const active = selectedValue !== null && selectedValue !== undefined;
-  const safeOptions = options?.length > 0 ? options : [{ label: "Sem Opções", value: "none" }];
+  const safeOptions =
+    options?.length > 0 ? options : [{ label: "Sem Opções", value: "none" }];
   const selectedLabel =
     safeOptions.find((o) => o.value === selectedValue)?.label ??
     safeOptions[0].label;
@@ -40,7 +41,11 @@ export default function DropdownPill({
         const maxLeft = SCREEN_WIDTH - dropdownWidth - 16;
         const safeX = Math.min(x, maxLeft);
 
-        setDropdownLayout({ x: safeX, y: y + height + 6, width: dropdownWidth });
+        setDropdownLayout({
+          x: safeX,
+          y: y + height + 6,
+          width: dropdownWidth,
+        });
         setOpen(true);
       });
     } else {
@@ -59,7 +64,7 @@ export default function DropdownPill({
           {
             backgroundColor: active ? Colors.primary : theme.searchBackground,
             borderColor: active ? Colors.primary : "transparent",
-            opacity: (!options || options.length === 0) ? 0.5 : 1,
+            opacity: !options || options.length === 0 ? 0.5 : 1,
           },
         ]}
       >

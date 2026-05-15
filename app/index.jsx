@@ -73,8 +73,8 @@ export default function WelcomeScreen() {
 
             {/* Subtitle */}
             <ThemedText style={styles.subtitle}>
-              O teu assistente inteligente para poupar{"\n"}em todas as compras de
-              supermercado
+              O teu assistente inteligente para poupar{"\n"}em todas as compras
+              de supermercado
             </ThemedText>
           </View>
 
@@ -183,4 +183,3 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 });
-

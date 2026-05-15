@@ -12,20 +12,20 @@ jest.mock("firebase/firestore", () => ({
   onSnapshot: jest.fn((ref, callback) => {
     callback({
       exists: () => true,
-      data: () => ({ 
+      data: () => ({
         items: [
-          { 
-            id: "1", 
-            name: "Leite", 
-            currentPrice: 1.0, 
-            quantity: 1, 
+          {
+            id: "1",
+            name: "Leite",
+            currentPrice: 1.0,
+            quantity: 1,
             image_ref: "leite",
             prices: {
-              "continente": { current_price: 1.0 },
-              "pingo-doce": { current_price: 0.80 }
-            }
-          }
-        ] 
+              continente: { current_price: 1.0 },
+              "pingo-doce": { current_price: 0.8 },
+            },
+          },
+        ],
       }),
     });
     return jest.fn(); // unsubscribe
@@ -60,9 +60,9 @@ describe("useCart hook - Funcionalidades Avançadas", () => {
 
     // O selectedStoreId deve estar definido
     expect(result.current.products[0].selectedStoreId).toBe("pingo-doce");
-    
+
     // O total deve refletir o novo preço (0.80)
-    expect(result.current.total).toBe(0.80);
+    expect(result.current.total).toBe(0.8);
   });
 
   it("deve atualizar todos os itens para um supermercado específico", async () => {

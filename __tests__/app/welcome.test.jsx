@@ -61,7 +61,7 @@ describe("Welcome Screen", () => {
     it("deve renderizar a proposta de valor", () => {
       render(<WelcomeScreen />);
       expect(
-        screen.getByText(/O teu assistente inteligente para poupar/)
+        screen.getByText(/O teu assistente inteligente para poupar/),
       ).toBeTruthy();
     });
 
