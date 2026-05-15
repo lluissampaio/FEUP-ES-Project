@@ -20,11 +20,14 @@ import {
 } from "react-native";
 
 import { formatUnitPrice, useProductDetail } from "@/hooks/useProductDetails";
+import useCart from "@/hooks/useCart";
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
+  
+  const { addProduct } = useCart();
 
   const {
     product,
@@ -37,6 +40,15 @@ export default function ProductDetail() {
     handleIncrement,
     handleSelectStore,
   } = useProductDetail(id);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    
+    await addProduct(product, quantity, selectedStoreKey);
+    
+    // Feedback visual e navegação de volta para a lista
+    router.back();
+  };
 
   if (loading) {
     return (
@@ -174,6 +186,7 @@ export default function ProductDetail() {
         ]}
       >
         <Pressable
+          onPress={handleAddToCart}
           style={({ pressed }) => [
             styles.addButton,
             pressed && styles.pressedOpacity,

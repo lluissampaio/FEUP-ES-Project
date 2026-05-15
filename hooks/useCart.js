@@ -33,29 +33,54 @@ export default function useCart() {
     return () => unsubscribe();
   }, []);
 
+  // Remove valores undefined para evitar erro do Firebase
+  const sanitizeItems = (items) => {
+    return items.map(item => {
+      const sanitized = { ...item };
+      Object.keys(sanitized).forEach(key => {
+        if (sanitized[key] === undefined) {
+          sanitized[key] = null;
+        }
+      });
+      return sanitized;
+    });
+  };
+
   const saveToFirestore = async (newItems) => {
     const user = auth.currentUser;
     if (!user) return;
 
     const cartRef = doc(db, "users", user.uid, "cart", "default");
     try {
-      await setDoc(cartRef, { items: newItems }, { merge: true });
+      const cleanItems = sanitizeItems(newItems);
+      await setDoc(cartRef, { items: cleanItems }, { merge: true });
     } catch (err) {
       console.error("Erro ao guardar carrinho:", err);
       setError("Erro ao sincronizar com base de dados");
     }
   };
 
-  const addProduct = async (product) => {
+  const addProduct = async (product, quantityToAdd = 1, storeId = null) => {
     setProducts((prev) => {
       const existing = prev.find((p) => p.id === product.id);
       let next;
       if (existing) {
         next = prev.map((p) =>
-          p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+          p.id === product.id 
+            ? { 
+                ...p, 
+                quantity: p.quantity + quantityToAdd,
+                selectedStoreId: storeId || p.selectedStoreId || null 
+              } 
+            : p
         );
       } else {
-        next = [...prev, { ...product, quantity: 1, selectedStoreId: null }];
+        next = [...prev, { 
+          ...product, 
+          quantity: quantityToAdd, 
+          selectedStoreId: storeId || null,
+          originalPrice: product.originalPrice || null 
+        }];
       }
       saveToFirestore(next);
       return next;
@@ -79,7 +104,6 @@ export default function useCart() {
         return p;
       });
 
-      // Se a quantidade chegar a 0, removemos o produto
       next = next.filter(p => p.quantity > 0);
 
       saveToFirestore(next);
@@ -91,7 +115,7 @@ export default function useCart() {
     setProducts((prev) => {
       const next = prev.map((p) => {
         if (p.id === productId) {
-          return { ...p, selectedStoreId: storeId };
+          return { ...p, selectedStoreId: storeId || null };
         }
         return p;
       });
@@ -104,7 +128,7 @@ export default function useCart() {
     setProducts((prev) => {
       const next = prev.map((p) => ({
         ...p,
-        selectedStoreId: storeId
+        selectedStoreId: storeId || null
       }));
       saveToFirestore(next);
       return next;
