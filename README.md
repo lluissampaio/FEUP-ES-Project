@@ -251,6 +251,17 @@ Fim do Sprint 1
 
 ### Sprint 2
 
+#### Board do projeto
+
+##### Antes
+
+<img width="1536" height="1030" alt="antes" src="https://github.com/user-attachments/assets/3456d272-5a69-4de2-8826-e63198b58f4e" />
+
+##### Depois
+
+<img width="1358" height="986" alt="depois" src="https://github.com/user-attachments/assets/9b6c040d-12ad-40d0-9fe1-137d085052a6" />
+
+
 #### Funcionalidades Implementadas
 
 - Página de produto por @dcl674
