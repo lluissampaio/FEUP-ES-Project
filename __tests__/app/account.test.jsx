@@ -2,8 +2,19 @@ jest.mock("firebase/auth", () => ({
   signOut: jest.fn(() => Promise.resolve()),
 }));
 
+let mockCurrentUser = {
+  displayName: "User123",
+  email: "user123@email.com",
+  photoURL: "https://example.com/avatar.png",
+  reload: jest.fn(() => Promise.resolve()),
+};
+
 jest.mock("@/firebaseConfig", () => ({
-  auth: {},
+  auth: {
+    get currentUser() {
+      return mockCurrentUser;
+    },
+  },
   db: {},
 }));
 
@@ -19,7 +30,7 @@ import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
 import LogoutButton from "@/components/LogoutButton";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
 import React from "react";
 
 jest.mock(
@@ -31,9 +42,15 @@ jest.mock("expo-image", () => ({
   Image: "Image",
 }));
 
-jest.mock("expo-router", () => ({
-  router: { push: jest.fn(), replace: jest.fn() },
-}));
+jest.mock("expo-router", () => {
+  const React = require("react");
+  return {
+    router: { push: jest.fn(), replace: jest.fn() },
+    useFocusEffect: jest.fn((callback) => {
+      React.useEffect(callback, []);
+    }),
+  };
+});
 
 describe("Account Feature Tests", () => {
   describe("AccountHeader Component", () => {
@@ -86,6 +103,27 @@ describe("Account Feature Tests", () => {
       render(<AccountScreen />);
       expect(screen.getByText("User123")).toBeTruthy();
       expect(screen.getByText("user123@email.com")).toBeTruthy();
+    });
+
+    it("fetches guestName from AsyncStorage when user is null", async () => {
+      mockCurrentUser = null;
+      const AsyncStorage = require("@react-native-async-storage/async-storage");
+      AsyncStorage.getItem.mockResolvedValueOnce("ConvidadoLocal");
+      
+      render(<AccountScreen />);
+      
+      await waitFor(() => {
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("guestName");
+        expect(screen.getByText("ConvidadoLocal")).toBeTruthy();
+      });
+      
+      // Reset mock back for other tests if needed
+      mockCurrentUser = {
+        displayName: "User123",
+        email: "user123@email.com",
+        photoURL: "https://example.com/avatar.png",
+        reload: jest.fn(() => Promise.resolve()),
+      };
     });
   });
 });
