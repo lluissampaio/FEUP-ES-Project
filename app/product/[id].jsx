@@ -1,14 +1,14 @@
-import AppIcon from '@/components/AppIcon';
-import PriceCard from '@/components/PriceCard';
-import QuantitySelector from '@/components/QuantitySelector';
-import ScoreBadge from '@/components/ScoreBadge';
-import Spacer from '@/components/Spacer';
-import ThemedText from '@/components/ThemedText';
-import ThemedView from '@/components/ThemedView';
-import { Colors } from '@/constants/colors';
-import { getImageForProductCategory } from '@/constants/images';
-import { capitalizeFirstLetter } from '@/utils/capitalizeFirstLetter';
-import { router, useLocalSearchParams } from 'expo-router';
+import AppIcon from "@/components/AppIcon";
+import PriceCard from "@/components/PriceCard";
+import QuantitySelector from "@/components/QuantitySelector";
+import ScoreBadge from "@/components/ScoreBadge";
+import Spacer from "@/components/Spacer";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { Colors } from "@/constants/colors";
+import { getImageForProductCategory } from "@/constants/images";
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   ActivityIndicator,
   Image,
@@ -17,14 +17,17 @@ import {
   StyleSheet,
   View,
   useColorScheme,
-} from 'react-native';
+} from "react-native";
 
-import { formatUnitPrice, useProductDetail } from '@/hooks/useProductDetails';
+import { formatUnitPrice, useProductDetail } from "@/hooks/useProductDetails";
+import useCart from "@/hooks/useCart";
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
+
+  const { addProduct } = useCart();
 
   const {
     product,
@@ -37,6 +40,15 @@ export default function ProductDetail() {
     handleIncrement,
     handleSelectStore,
   } = useProductDetail(id);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+
+    await addProduct(product, quantity, selectedStoreKey);
+
+    // Feedback visual e navegação de volta para a lista
+    router.back();
+  };
 
   if (loading) {
     return (
@@ -61,19 +73,29 @@ export default function ProductDetail() {
   const hasNutri = product.nutri_score != null;
   const hasEco = product.eco_score != null;
   const showScoresRow = hasNutri || hasEco;
-  const metaSegments = [capitalizeFirstLetter(product.category), product.formattedCapacity].filter(Boolean);
+  const metaSegments = [
+    capitalizeFirstLetter(product.category),
+    product.formattedCapacity,
+  ].filter(Boolean);
 
   return (
     <ThemedView safe style={styles.container}>
-
       <View style={styles.header}>
         <Pressable
           onPress={() => router.back()}
-          style={({ pressed }) => [styles.backButton, pressed && styles.pressedOpacity]}
+          style={({ pressed }) => [
+            styles.backButton,
+            pressed && styles.pressedOpacity,
+          ]}
           accessibilityLabel="Voltar"
           accessibilityRole="button"
         >
-          <AppIcon name="back" size={22} color={theme.iconColorFocused} weight="bold" />
+          <AppIcon
+            name="back"
+            size={22}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
         </Pressable>
       </View>
 
@@ -97,14 +119,16 @@ export default function ProductDetail() {
 
         {metaSegments.length > 0 && (
           <ThemedText style={[styles.productMeta, { color: theme.iconColor }]}>
-            {metaSegments.join(' • ')}
+            {metaSegments.join(" • ")}
           </ThemedText>
         )}
 
         {/* Avaliações Nutri/Eco */}
         {showScoresRow && (
           <View style={styles.scoresRow}>
-            {hasNutri && <ScoreBadge type="nutri" grade={product.nutri_score} />}
+            {hasNutri && (
+              <ScoreBadge type="nutri" grade={product.nutri_score} />
+            )}
             {hasEco && <ScoreBadge type="eco" grade={product.eco_score} />}
           </View>
         )}
@@ -138,7 +162,7 @@ export default function ProductDetail() {
                 pricePerUnit={formatUnitPrice(
                   priceData,
                   product.capacity,
-                  product.measurement_unit
+                  product.measurement_unit,
                 )}
                 isBestChoice={index === 0}
                 isSelected={selectedStoreKey === storeKey}
@@ -155,16 +179,25 @@ export default function ProductDetail() {
       <View
         style={[
           styles.footer,
-          { backgroundColor: theme.background, borderTopColor: theme.searchBackground },
+          {
+            backgroundColor: theme.background,
+            borderTopColor: theme.searchBackground,
+          },
         ]}
       >
         <Pressable
-          style={({ pressed }) => [styles.addButton, pressed && styles.pressedOpacity]}
+          onPress={handleAddToCart}
+          style={({ pressed }) => [
+            styles.addButton,
+            pressed && styles.pressedOpacity,
+          ]}
           accessibilityRole="button"
           accessibilityLabel={`Adicionar ${quantity} à lista, total ${totalPrice.toFixed(2)} euros`}
         >
           <ThemedText style={styles.addButtonLabel}>
-            {quantity > 1 ? `Adicionar ${quantity} à Lista` : 'Adicionar à Lista'}
+            {quantity > 1
+              ? `Adicionar ${quantity} à Lista`
+              : "Adicionar à Lista"}
           </ThemedText>
 
           <ThemedText style={styles.addButtonPrice}>
@@ -172,7 +205,6 @@ export default function ProductDetail() {
           </ThemedText>
         </Pressable>
       </View>
-
     </ThemedView>
   );
 }
@@ -183,13 +215,13 @@ const styles = StyleSheet.create({
   },
   centred: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
   },
   errorText: {
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
 
   header: {
@@ -201,8 +233,8 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   pressedOpacity: {
     opacity: 0.55,
@@ -213,13 +245,13 @@ const styles = StyleSheet.create({
   },
 
   productImage: {
-    width: '100%',
+    width: "100%",
     height: 210,
     marginVertical: 12,
   },
   productName: {
     fontSize: 26,
-    fontWeight: '700',
+    fontWeight: "700",
     lineHeight: 32,
   },
   productMeta: {
@@ -227,19 +259,19 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   scoresRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
     marginTop: 10,
   },
 
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 
   footer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -253,20 +285,20 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingVertical: 17,
     paddingHorizontal: 22,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   addButtonLabel: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     flex: 1,
   },
 
   addButtonPrice: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 17,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });

@@ -1,53 +1,147 @@
 import CartItemRow from "@/components/CartItemRow";
+import DropdownPill from "@/components/FilterButton";
 import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
 import useCart from "@/hooks/useCart";
+import { useSupermarketsStore } from "@/store/useSupermarketsStore";
 import { ShoppingCartSimple } from "phosphor-react-native";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { useEffect, useMemo, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Cart() {
-  const { products, total, error, clear, remove, updateQuantity } = useCart([
-    {
-      id: "1",
-      name: "Morangos",
-      price: 4.99,
-      subtitle: "1kg, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "2",
-      name: "Ovos",
-      price: 1.99,
-      subtitle: "6un, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "3",
-      name: "Banana",
-      price: 3.00,
-      subtitle: "1kg, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "4",
-      name: "Couve-flor",
-      price: 2.99,
-      subtitle: "250g, Price",
-      image: { uri: '' }
-    },
-  ]);
+  const {
+    products,
+    total,
+    loading,
+    error,
+    remove,
+    updateQuantity,
+    updateItemStore,
+    updateAllItemsStore,
+  } = useCart();
+
+  const { supermarkets, fetchSupermarkets } = useSupermarketsStore();
+  const [globalSelectedStore, setGlobalSelectedStore] = useState(null);
+  const insets = useSafeAreaInsets();
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+
+  useEffect(() => {
+    fetchSupermarkets();
+  }, [fetchSupermarkets]);
+
+  const getStoreName = (storeId) => {
+    if (!storeId) return "";
+    const found = supermarkets.find((s) => s.id === storeId);
+    return (
+      found?.name ??
+      storeId.charAt(0).toUpperCase() + storeId.slice(1).replace(/-/g, " ")
+    );
+  };
+
+  const globalStoreOptions = useMemo(() => {
+    const allStoreIds = new Set();
+    products.forEach((p) => {
+      if (p.prices) Object.keys(p.prices).forEach((id) => allStoreIds.add(id));
+    });
+
+    const options = Array.from(allStoreIds).map((id) => ({
+      label: getStoreName(id),
+      value: id,
+    }));
+
+    return [{ label: "Melhor Preço (Mix)", value: null }, ...options];
+  }, [products, supermarkets]);
+
+  const handleGlobalStoreSelect = (storeId) => {
+    setGlobalSelectedStore(storeId);
+    updateAllItemsStore(storeId);
+  };
+
+  const processedProducts = useMemo(() => {
+    return products.map((product) => {
+      let price = product.currentPrice ?? 0;
+      let originalPrice = product.originalPrice ?? null;
+      let isPromo = product.isPromo ?? false;
+      let storeId = product.bestStore ?? null;
+
+      if (
+        product.selectedStoreId &&
+        product.prices?.[product.selectedStoreId]
+      ) {
+        const storeData = product.prices[product.selectedStoreId];
+        price = storeData.current_price;
+        isPromo =
+          storeData.is_promo === true && storeData.original_price != null;
+        originalPrice = isPromo ? storeData.original_price : null;
+        storeId = product.selectedStoreId;
+      }
+
+      const storeKeys = Object.keys(product.prices ?? {});
+      let storeOptions = [];
+
+      if (storeKeys.length > 0) {
+        storeOptions = storeKeys.map((id) => ({
+          label: getStoreName(id),
+          value: id,
+        }));
+      } else if (storeId) {
+        storeOptions = [{ label: getStoreName(storeId), value: storeId }];
+      } else {
+        storeOptions = [{ label: "Sem Lojas", value: "none" }];
+      }
+
+      return {
+        ...product,
+        displayPrice: price,
+        displayOriginalPrice: originalPrice,
+        displayIsPromo: isPromo,
+        storeOptions,
+        activeStoreId: storeId,
+      };
+    });
+  }, [products, supermarkets]);
+
+  if (loading) {
+    return (
+      <ThemedView style={styles.container}>
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+      </ThemedView>
+    );
+  }
 
   if (products.length === 0) {
     return (
-      <ThemedView style={styles.container}>
+      <ThemedView safe style={styles.container}>
+        <View style={styles.header}>
+          <ThemedText title style={styles.headerTitle}>
+            Lista de Compras
+          </ThemedText>
+        </View>
+        <View
+          style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+        />
         <View style={styles.emptyState}>
           <ShoppingCartSimple size={80} color={Colors.primary} weight="thin" />
           <Spacer height={24} />
-          <ThemedText style={styles.emptyTitle}>O carrinho está vazio</ThemedText>
-          <ThemedText style={styles.emptySubtitle}>
-            Adiciona produtos para começares a poupar!
+          <ThemedText title style={styles.emptyTitle}>
+            O seu carrinho está vazio
+          </ThemedText>
+          <ThemedText
+            style={[styles.emptySubtitle, { color: theme.iconColor }]}
+          >
+            Adicione produtos para começar a poupar!
           </ThemedText>
         </View>
       </ThemedView>
@@ -55,45 +149,81 @@ export default function Cart() {
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView safe style={styles.container}>
       <View style={styles.header}>
-        <ThemedText style={styles.headerTitle}>Lista de Compras</ThemedText>
+        <ThemedText title style={styles.headerTitle}>
+          Lista de Compras
+        </ThemedText>
       </View>
 
-      <View style={styles.divider} />
+      <View
+        style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+      />
+
+      <View
+        style={[
+          styles.globalSelectorContainer,
+          { backgroundColor: theme.background },
+        ]}
+      >
+        <ThemedText title style={styles.globalSelectorLabel}>
+          Poupar em:
+        </ThemedText>
+        <DropdownPill
+          options={globalStoreOptions}
+          selectedValue={globalSelectedStore}
+          onSelect={handleGlobalStoreSelect}
+        />
+      </View>
+
+      <View
+        style={[styles.divider, { backgroundColor: theme.searchBackground }]}
+      />
 
       <FlatList
-        data={products}
+        data={processedProducts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CartItemRow
             name={item.name}
-            price={item.price}
+            price={item.displayPrice}
+            originalPrice={item.displayOriginalPrice}
+            isPromo={item.displayIsPromo}
             quantity={item.quantity}
-            subtitle={item.subtitle}
-            image={item.image}
+            subtitle={item.formattedCapacity}
             onRemove={() => remove(item.id)}
             onIncrement={() => updateQuantity(item.id, 1)}
             onDecrement={() => updateQuantity(item.id, -1)}
+            image_ref={item.image_ref}
+            storeOptions={item.storeOptions}
+            selectedStoreId={item.activeStoreId}
+            onStoreSelect={(storeId) => updateItemStore(item.id, storeId)}
           />
         )}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[
+          styles.listContent,
+          { paddingBottom: 150 + insets.bottom },
+        ]}
         showsVerticalScrollIndicator={false}
       />
 
-      <View style={styles.footer}>
-        {error && (
-          <ThemedText style={styles.errorText}>{error}</ThemedText>
-        )}
-
-        <TouchableOpacity style={styles.checkoutButton} activeOpacity={0.8}>
-          <ThemedText style={styles.checkoutText}>Checkout</ThemedText>
-          <View style={styles.priceBadge}>
-            <ThemedText style={styles.priceBadgeText} testID="total-price">
-              €{total.toFixed(2)}
-            </ThemedText>
-          </View>
-        </TouchableOpacity>
+      <View
+        style={[
+          styles.footer,
+          {
+            backgroundColor: theme.background,
+            borderTopColor: theme.searchBackground,
+            paddingBottom: 85 + insets.bottom,
+          },
+        ]}
+      >
+        {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
+        <View style={styles.totalButton}>
+          <ThemedText style={styles.totalLabel}>Total Estimado</ThemedText>
+          <ThemedText style={styles.totalValue}>
+            {total.toFixed(2)} €
+          </ThemedText>
+        </View>
       </View>
     </ThemedView>
   );
@@ -102,66 +232,70 @@ export default function Cart() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
-  header: {
-    flexDirection: "row",
+  center: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  header: {
     paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: 16,
+    paddingBottom: 16,
+    alignItems: "center",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "800",
-    color: "#181725",
+    fontSize: 22,
+    fontWeight: "700",
   },
   divider: {
     height: 1,
-    backgroundColor: "#E2E2E2",
   },
   listContent: {
     paddingHorizontal: 20,
-    paddingBottom: 20,
+    paddingTop: 8,
+  },
+  globalSelectorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+  globalSelectorLabel: {
+    fontSize: 15,
+    fontWeight: "600",
   },
   footer: {
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 80,
-    backgroundColor: "#fff",
+    paddingTop: 14,
+    borderTopWidth: 1,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  checkoutButton: {
-    backgroundColor: "#53B175",
-    height: 67,
-    borderRadius: 19,
+  totalButton: {
+    backgroundColor: Colors.primary,
+    height: 65,
+    borderRadius: 20,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 20,
-    position: "relative",
+    justifyContent: "space-between",
+    paddingHorizontal: 25,
   },
-  checkoutText: {
+  totalLabel: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "600",
-    textAlign: "center",
   },
-  priceBadge: {
-    backgroundColor: "#489E67",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    position: "absolute",
-    right: 20,
-  },
-  priceBadgeText: {
+  totalValue: {
     color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "700",
   },
   errorText: {
-    color: "#cc475a",
+    color: Colors.warning,
     textAlign: "center",
     marginBottom: 10,
   },
@@ -176,9 +310,9 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   emptySubtitle: {
-    fontSize: 16,
-    color: "#666",
+    fontSize: 15,
     textAlign: "center",
     marginTop: 8,
+    paddingHorizontal: 32,
   },
 });

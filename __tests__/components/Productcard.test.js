@@ -2,8 +2,9 @@ import ProductCard from "@/components/ProductCard";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import React from "react";
 
-jest.mock("react-native-safe-area-context", () =>
-  require("react-native-safe-area-context/jest/mock").default
+jest.mock(
+  "react-native-safe-area-context",
+  () => require("react-native-safe-area-context/jest/mock").default,
 );
 
 // Evitar erros de require() para imagens de assets
@@ -57,7 +58,7 @@ describe("Unit Test: Componente ProductCard", () => {
         isPromo={true}
         currentPrice={0.94}
         originalPrice={1.08}
-      />
+      />,
     );
 
     const precoOriginal = screen.getByText("1.08€");
@@ -65,7 +66,7 @@ describe("Unit Test: Componente ProductCard", () => {
     expect(precoOriginal.props.style).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ textDecorationLine: "line-through" }),
-      ])
+      ]),
     );
   });
 
@@ -78,7 +79,12 @@ describe("Unit Test: Componente ProductCard", () => {
 
   it("Não deve mostrar preço original quando isPromo=true mas originalPrice é null", () => {
     render(
-      <ProductCard {...baseProps} isPromo={true} currentPrice={0.5} originalPrice={null} />
+      <ProductCard
+        {...baseProps}
+        isPromo={true}
+        currentPrice={0.5}
+        originalPrice={null}
+      />,
     );
 
     // Apenas o preço atual deve estar visível

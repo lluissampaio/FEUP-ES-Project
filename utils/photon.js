@@ -6,7 +6,9 @@ export const searchLocations = async (query) => {
 
   try {
     // limit to 10 results to avoid clutter
-    const response = await fetch(`${PHOTON_BASE_URL}/?q=${encodeURIComponent(query)}&limit=10`);
+    const response = await fetch(
+      `${PHOTON_BASE_URL}/?q=${encodeURIComponent(query)}&limit=10`,
+    );
     const data = await response.json();
 
     return data.features.map((feature) => ({
@@ -21,8 +23,10 @@ export const searchLocations = async (query) => {
       displayString: [
         feature.properties.name,
         feature.properties.city,
-        feature.properties.country
-      ].filter(Boolean).join(", ")
+        feature.properties.country,
+      ]
+        .filter(Boolean)
+        .join(", "),
     }));
   } catch (error) {
     console.error("Photon API Error:", error);

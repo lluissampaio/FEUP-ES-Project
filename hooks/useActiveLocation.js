@@ -1,17 +1,21 @@
 // hooks/useActiveLocation.js
-import { useUserLocation } from './useUserLocation';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUserLocation } from "./useUserLocation";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const STORAGE_KEY = '@location_override';
+const STORAGE_KEY = "@location_override";
 
 export function useActiveLocation() {
-  const { location: gpsLocation, isLoading: isGpsLoading, refreshLocation } = useUserLocation();
+  const {
+    location: gpsLocation,
+    isLoading: isGpsLoading,
+    refreshLocation,
+  } = useUserLocation();
   const [override, setOverride] = useState(null);
   const [isLoadingOverride, setIsLoadingOverride] = useState(true);
 
   useEffect(() => {
-    AsyncStorage.getItem(STORAGE_KEY).then(stored => {
+    AsyncStorage.getItem(STORAGE_KEY).then((stored) => {
       if (stored) setOverride(JSON.parse(stored));
       setIsLoadingOverride(false);
     });
@@ -23,7 +27,12 @@ export function useActiveLocation() {
     : gpsLocation;
 
   const setManualLocation = async (loc) => {
-    const data = { type: 'manual', lat: loc.latitude, lon: loc.longitude, name: loc.displayString };
+    const data = {
+      type: "manual",
+      lat: loc.latitude,
+      lon: loc.longitude,
+      name: loc.displayString,
+    };
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     setOverride(data);
   };
@@ -33,5 +42,12 @@ export function useActiveLocation() {
     setOverride(null);
   };
 
-  return { location, isLoading, override, setManualLocation, clearOverride, refreshLocation };
+  return {
+    location,
+    isLoading,
+    override,
+    setManualLocation,
+    clearOverride,
+    refreshLocation,
+  };
 }

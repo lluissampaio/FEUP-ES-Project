@@ -1,9 +1,10 @@
-# Cheapy - Relatório de Desenvolvimento
+# Cents - Relatório de Desenvolvimento
 
-Bem-vindo à documentação do Cheapy!
+Bem-vindo à documentação do Cents!
 
-Encontras aqui os detalhes sobre o Cheapy, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
+Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
 
+- [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
   - [Funcionalidades e Pressupostos](#funcionalidades-e-pressupostos)
@@ -21,7 +22,7 @@ Encontras aqui os detalhes sobre o Cheapy, desde uma visão de alto nível até 
   - [Sprint 3](#sprint-3)
   - [Entrega Final](#entrega-final)
 
-As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc.
+As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 
 Entre em contacto connosco!
 
@@ -32,8 +33,65 @@ Obrigado!
 ## Membros da Equipa
 
 | Nome | Email |
-|------|-------|
-|  |  |
+| ---- | ----- |
+|      |       |
+
+---
+
+## Como Correr a Aplicação
+
+### Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (versão LTS recomendada)
+- [Expo Go](https://expo.dev/go) instalado no dispositivo móvel (iOS ou Android)
+
+### Instalação
+
+```bash
+# Clonar o repositório
+git clone <url-do-repositório>
+cd <pasta-do-projeto>
+
+# Instalar dependências
+npm install
+```
+
+### Execução
+
+```bash
+# Iniciar em modo Expo Go
+npx expo start --go
+
+# Limpar cache (caso necessário, recomendado em caso de erros inesperados)
+npx expo start --go -c
+```
+
+Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code exibido no terminal.
+
+### Build Local com EAS
+
+    Instalar o EAS CLI globalmente:
+    Bash
+
+    npm install -g eas-cli
+
+    Fazer login na conta da Expo:
+    Bash
+
+    eas login
+
+
+3. **Executar o build localmente**:
+   - Para **Android** (Gera um ficheiro `.apk`):
+     ```bash
+     eas build --profile development --platform android --local
+     ```
+   - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
+     ```bash
+     eas build --profile development --platform ios --local
+     
+
+Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
 
 ---
 
@@ -139,7 +197,7 @@ Para mais detalhes: [Diagrama de Deployment PDF](docs/architecture/deployment_di
 
 ### Protótipo Vertical
 
-O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta *thin vertical slice* prova a viabilidade das integrações nativas com React Native e Expo.
+O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 
 Através da integração com o GPS do dispositivo e a base de dados Firebase Firestore, o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância usando a fórmula de Haversine e verificar se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
 
@@ -198,12 +256,15 @@ Fim do Sprint 0
 #### Retrospetiva
 
 **O que correu bem**
+
 - Desenho do Protótipo: A equipa conseguiu implementar um protótipo funcional centrado na funcionalidade principal da app, demonstrando com sucesso o propósito do produto.
 
 **O que fazer de forma diferente**
+
 - Distribuição de Trabalho: A distribuição de tarefas foi desequilibrada, com alguns elementos a implementar significativamente mais do que outros. A equipa irá abordar este ponto no próximo sprint.
 
 **Questões em aberto**
+
 - Base de Dados de Produtos: É necessário definir uma estratégia para popular a base de dados de produtos, manualmente ou via API, de modo a que a funcionalidade de pesquisa de produtos funcione corretamente.
 
 ---
@@ -232,29 +293,87 @@ Fim do Sprint 1
 #### Retrospetiva
 
 **O que correu bem**
+
 - Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
 - Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
 
 **O que fazer de forma diferente**
+
 - Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
 
 **Questões em aberto**
+
 - Integração Carrinho-Base de Dados: É necessário definir como ligar o carrinho do utilizador à base de dados, de modo a obter os metadados necessários para os cálculos de preço.
 
 ---
 
 ### Sprint 2
 
-*A preencher no final do sprint.*
+#### Board do projeto
+
+##### Antes
+
+<img width="1536" height="1030" alt="antes" src="https://github.com/user-attachments/assets/3456d272-5a69-4de2-8826-e63198b58f4e" />
+
+##### Depois
+
+<img width="1358" height="986" alt="depois" src="https://github.com/user-attachments/assets/9b6c040d-12ad-40d0-9fe1-137d085052a6" />
+
+
+#### Funcionalidades Implementadas
+
+- Página de produto por @dcl674
+- Página de supermercado por @bcdtrack
+- Dark/Light mode por @bcdtrack
+- Carrinho por @lluissampaio
+- Ecrã esquecer password por @JoseSantos56
+- Ecrã inicial por @lluissampaio
+
+#### Retrospetiva
+
+**O que correu bem**
+
+- Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
+- Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
+
+**O que fazer de forma diferente**
+
+- Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
+
+**Questões em aberto**
+
+- Como melhorar a segurança da app.
+
+# Ferramentas de IA Utilizadas
+
+- Gemini, GLM, Claude, Deepseek
+
+# Prompts Relevantes
+
+1 - Como é que resolvo as dependencias do projeto?
+2 - A app não está a abrir no expo go, o que faço para resolver?
+3 - O meu workflow do Github Actions não esta a dar upload dos build artifacts, como resolvo?
+4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
+5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
+
+# Código Gerado por IA
+
+- "package.json"
+- "firebaseConfig.js"
+- Parte de "/store/useCartStore.js"
+
+# PBIs com label "MisterAI"
+
+- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 
 ---
 
 ### Sprint 3
 
-*A preencher no final do sprint.*
+_A preencher no final do sprint._
 
 ---
 
 ### Entrega Final
 
-*A preencher na entrega final.*
+_A preencher na entrega final._

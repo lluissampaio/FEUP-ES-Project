@@ -10,7 +10,7 @@ describe("Unit Test: Components - ScoreBadge", () => {
 
   it("Normalizes lowercase grades and renders correct label", () => {
     render(<ScoreBadge type="eco" grade="a" />);
-    
+
     expect(screen.getByText("ECO")).toBeTruthy();
     expect(screen.getByText("A")).toBeTruthy();
   });

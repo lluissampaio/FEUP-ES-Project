@@ -1,5 +1,10 @@
 import SupermarketDetail from "@/app/search/[id]";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import React from "react";
 
 // mocks
@@ -17,8 +22,9 @@ jest.mock("@/hooks/useSupermarketDetail", () => ({
   useSupermarketDetail: jest.fn(),
 }));
 
-jest.mock("react-native-safe-area-context", () =>
-  require("react-native-safe-area-context/jest/mock").default
+jest.mock(
+  "react-native-safe-area-context",
+  () => require("react-native-safe-area-context/jest/mock").default,
 );
 
 jest.mock("@/constants/images", () => ({
@@ -86,7 +92,13 @@ describe("Acceptance Test: Página de Detalhe do Supermercado", () => {
   describe("Full-time check: Visualização do horário semanal", () => {
     it("Deve exibir o horário completo de Segunda a Domingo", () => {
       const todayDayName = [
-        "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado",
+        "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado",
       ][new Date().getDay()];
 
       useSupermarketDetail.mockReturnValue({
@@ -115,7 +127,13 @@ describe("Acceptance Test: Página de Detalhe do Supermercado", () => {
 
       // check that all 7 days are in the correct order
       const expectedDays = [
-        "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo",
+        "Segunda",
+        "Terça",
+        "Quarta",
+        "Quinta",
+        "Sexta",
+        "Sábado",
+        "Domingo",
       ];
       expectedDays.forEach((day) => {
         expect(screen.getByText(day)).toBeTruthy();

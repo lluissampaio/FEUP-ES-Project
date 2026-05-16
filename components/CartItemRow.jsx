@@ -1,115 +1,204 @@
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
-import ThemedText from "./ThemedText";
 import { Colors } from "@/constants/colors";
-import { X, Minus, Plus } from "phosphor-react-native";
+import { getImageForProductCategory } from "@/constants/images";
+import { Minus, Plus } from "phosphor-react-native";
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
+import DropdownPill from "./FilterButton";
+import ThemedText from "./ThemedText";
+import ThemedView from "./ThemedView";
 
-const CartItemRow = ({ name, price, quantity, subtitle, onRemove, onIncrement, onDecrement, image }) => (
-  <View style={styles.card} testID="cart-item">
-    <View style={styles.imageContainer}>
-      <Image
-        source={image || { uri: 'https://cdn-icons-png.flaticon.com/512/3721/3721818.png' }}
-        style={styles.image}
-      />
-    </View>
+const CartItemRow = ({
+  name,
+  price,
+  originalPrice,
+  isPromo,
+  quantity,
+  subtitle,
+  onRemove,
+  onIncrement,
+  onDecrement,
+  image_ref,
+  storeOptions,
+  selectedStoreId,
+  onStoreSelect,
+}) => {
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme] ?? Colors.light;
+  const productImage = getImageForProductCategory(image_ref);
 
-    <View style={styles.mainContent}>
-      <View style={styles.headerRow}>
-        <View>
-          <ThemedText style={styles.name}>{name}</ThemedText>
-          <ThemedText style={styles.subtitle}>{subtitle}</ThemedText>
-        </View>
-        <TouchableOpacity onPress={onRemove} style={styles.closeButton} testID="remove-item">
-          <X size={20} color="#b1b1b1" />
-        </TouchableOpacity>
+  const safeOptions =
+    storeOptions?.length > 0
+      ? storeOptions
+      : [{ label: "Sem Loja", value: "none" }];
+  const safeSelectedId = selectedStoreId || safeOptions[0].value;
+
+  return (
+    <ThemedView
+      style={[styles.card, { borderBottomColor: theme.searchBackground }]}
+      testID="cart-item"
+    >
+      <View style={styles.imageContainer}>
+        <Image source={productImage} style={styles.image} />
       </View>
 
-      <View style={styles.bottomRow}>
-        <View style={styles.quantityControls}>
-          <TouchableOpacity onPress={onDecrement} style={styles.qtyButton}>
-            <Minus size={16} color={Colors.primary} />
-          </TouchableOpacity>
-          <ThemedText style={styles.qtyText}>{quantity}</ThemedText>
-          <TouchableOpacity onPress={onIncrement} style={styles.qtyButton}>
-            <Plus size={16} color={Colors.primary} />
-          </TouchableOpacity>
+      <View style={styles.mainContent}>
+        <View style={styles.headerRow}>
+          <View style={styles.infoColumn}>
+            <ThemedText
+              title
+              style={[styles.name, { color: theme.title }]}
+              numberOfLines={2}
+            >
+              {name}
+            </ThemedText>
+            <ThemedText style={[styles.subtitle, { color: theme.iconColor }]}>
+              {subtitle}
+            </ThemedText>
+          </View>
+
+          <View style={styles.priceColumn}>
+            {isPromo && originalPrice != null && (
+              <ThemedText
+                style={[styles.originalPrice, { color: theme.iconColor }]}
+              >
+                {originalPrice.toFixed(2)}€
+              </ThemedText>
+            )}
+            <ThemedText
+              style={[styles.currentPrice, { color: Colors.primary }]}
+            >
+              {price?.toFixed(2) ?? "0.00"}€
+            </ThemedText>
+
+            <View
+              style={[
+                styles.quantityControls,
+                { backgroundColor: theme.searchBackground },
+              ]}
+            >
+              <TouchableOpacity
+                onPress={onDecrement}
+                style={styles.qtyButton}
+                testID="decrement-button"
+                hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              >
+                <Minus size={14} color={Colors.warning} weight="bold" />
+              </TouchableOpacity>
+              <ThemedText
+                style={[styles.qtyText, { color: theme.title }]}
+                testID="item-quantity"
+              >
+                {quantity}
+              </ThemedText>
+              <TouchableOpacity
+                onPress={onIncrement}
+                style={styles.qtyButton}
+                testID="increment-button"
+                hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}
+              >
+                <Plus size={14} color={Colors.primary} weight="bold" />
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
-        <ThemedText style={styles.price}>{(price * quantity).toFixed(2)} €</ThemedText>
+
+        <View style={styles.storeSelector}>
+          <DropdownPill
+            options={safeOptions}
+            selectedValue={safeSelectedId}
+            onSelect={(val) => {
+              if (val !== "none") onStoreSelect(val);
+            }}
+          />
+        </View>
       </View>
-    </View>
-  </View>
-);
+    </ThemedView>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    paddingVertical: 20,
+    paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
-    backgroundColor: "#fff",
+    alignItems: "flex-start",
+    backgroundColor: "transparent",
   },
   imageContainer: {
-    width: 80,
-    height: 80,
+    width: 76,
+    height: 76,
     justifyContent: "center",
     alignItems: "center",
+    flexShrink: 0,
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 66,
+    height: 66,
     resizeMode: "contain",
   },
   mainContent: {
     flex: 1,
-    marginLeft: 15,
+    marginLeft: 14,
   },
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
+  infoColumn: {
+    flex: 1,
+    paddingRight: 10,
+  },
   name: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#181725",
+    fontSize: 15,
+    fontWeight: "700",
+    lineHeight: 20,
   },
   subtitle: {
-    fontSize: 14,
-    color: "#7C7C7C",
-    marginTop: 4,
+    fontSize: 13,
+    marginTop: 2,
   },
-  closeButton: {
-    padding: 4,
+  priceColumn: {
+    alignItems: "flex-end",
+    flexShrink: 0,
   },
-  bottomRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 15,
+  originalPrice: {
+    fontSize: 13,
+    textDecorationLine: "line-through",
+    marginBottom: 2,
+  },
+  currentPrice: {
+    fontSize: 18,
+    fontWeight: "700",
   },
   quantityControls: {
     flexDirection: "row",
     alignItems: "center",
+    borderRadius: 14,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    marginTop: 8,
   },
   qtyButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "#E2E2E2",
+    width: 28,
+    height: 28,
     justifyContent: "center",
     alignItems: "center",
   },
   qtyText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
-    marginHorizontal: 15,
-    width: 20,
+    minWidth: 22,
     textAlign: "center",
   },
-  price: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#181725",
+  storeSelector: {
+    marginTop: 10,
+    alignSelf: "flex-start",
   },
 });
 

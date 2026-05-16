@@ -68,10 +68,14 @@ describe("Unit Test: Hook useProducts", () => {
           capacity: 1,
           measurement_unit: "L",
           prices: {
-            continente: { current_price: 0.89, is_promo: false, original_price: null },
+            continente: {
+              current_price: 0.89,
+              is_promo: false,
+              original_price: null,
+            },
           },
         }),
-      ])
+      ]),
     );
 
     const { result } = renderHook(() => useProducts(uniqueQuery()));
@@ -93,10 +97,14 @@ describe("Unit Test: Hook useProducts", () => {
         makeDoc("prod_promo", {
           name: "Açúcar Branco",
           prices: {
-            pingo_doce: { current_price: 0.94, is_promo: true, original_price: 1.08 },
+            pingo_doce: {
+              current_price: 0.94,
+              is_promo: true,
+              original_price: 1.08,
+            },
           },
         }),
-      ])
+      ]),
     );
 
     const { result } = renderHook(() => useProducts(uniqueQuery()));
@@ -117,7 +125,7 @@ describe("Unit Test: Hook useProducts", () => {
             lidl: { current_price: 0.5, is_promo: true, original_price: null },
           },
         }),
-      ])
+      ]),
     );
 
     const { result } = renderHook(() => useProducts(uniqueQuery()));
@@ -136,12 +144,24 @@ describe("Unit Test: Hook useProducts", () => {
         makeDoc("prod_multi", {
           name: "Água 1.5L",
           prices: {
-            continente: { current_price: 0.55, is_promo: false, original_price: null },
-            aldi:       { current_price: 0.39, is_promo: false, original_price: null },
-            pingo_doce: { current_price: 0.60, is_promo: false, original_price: null },
+            continente: {
+              current_price: 0.55,
+              is_promo: false,
+              original_price: null,
+            },
+            aldi: {
+              current_price: 0.39,
+              is_promo: false,
+              original_price: null,
+            },
+            pingo_doce: {
+              current_price: 0.6,
+              is_promo: false,
+              original_price: null,
+            },
           },
         }),
-      ])
+      ]),
     );
 
     const { result } = renderHook(() => useProducts(uniqueQuery()));
@@ -163,7 +183,9 @@ describe("Unit Test: Hook useProducts", () => {
     it("Deve mostrar loading=true enquanto o Firebase não resolve", async () => {
       let resolveDocs;
       mockGetDocs.mockReturnValue(
-        new Promise((resolve) => { resolveDocs = resolve; })
+        new Promise((resolve) => {
+          resolveDocs = resolve;
+        }),
       );
 
       const { result } = renderHook(() => useProducts(uniqueQuery()));
@@ -241,8 +263,12 @@ describe("Unit Test: Hook useProducts", () => {
   it("Deve formatar corretamente a capacidade com diferentes unidades", async () => {
     mockGetDocs.mockResolvedValue(
       makeSnapshot([
-        makeDoc("prod_kg", { name: "Arroz", capacity: 5, measurement_unit: "Kg" }),
-      ])
+        makeDoc("prod_kg", {
+          name: "Arroz",
+          capacity: 5,
+          measurement_unit: "Kg",
+        }),
+      ]),
     );
 
     const { result } = renderHook(() => useProducts(uniqueQuery()));

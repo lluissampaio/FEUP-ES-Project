@@ -4,18 +4,27 @@ import { getImageForSupermarket } from "@/constants/images";
 import { Image, StyleSheet } from "react-native";
 import BaseCard from "./BaseCard";
 
-const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress, testID }) => {
+const SupermarketCard = ({
+  name,
+  distance,
+  isOpen,
+  scheduleToday,
+  onPress,
+}) => {
   return (
-    <BaseCard onPress={onPress} testID={testID}>
-      <Image 
-        source={getImageForSupermarket(name)} 
-        style={styles.logo} 
-        resizeMode="contain" 
+    <BaseCard onPress={onPress}>
+      <Image
+        source={getImageForSupermarket(name)}
+        style={styles.logo}
+        resizeMode="contain"
       />
       <ThemedText title style={styles.name} numberOfLines={2}>
         {name}
       </ThemedText>
-      <ThemedText title style={[styles.status, { color: isOpen ? Colors.primary : '#cc475a' }]}>
+      <ThemedText
+        title
+        style={[styles.status, { color: isOpen ? Colors.primary : "#cc475a" }]}
+      >
         {isOpen ? "Aberto" : "Fechado"}
       </ThemedText>
       {scheduleToday && (
@@ -48,8 +57,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     opacity: 0.7,
   },
-  status: { 
-    fontSize: 13, fontWeight: "bold", textAlign: "center", marginBottom: 2 
+  status: {
+    fontSize: 13,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 2,
   },
   seeMore: {
     fontSize: 12,
