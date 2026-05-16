@@ -52,7 +52,7 @@
     "@config-plugins/detox": "^11.0.0",
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "29.5.14",
+    "@types/jest": "^29.5.14",
     "@types/react": "~19.1.0",
     "detox": "^20.50.4",
     "eslint": "^9.25.0",
@@ -63,6 +63,11 @@
     "jest-expo": "~54.0.0",
     "react-test-renderer": "19.1.0",
     "typescript": "~5.9.2"
+  },
+  "overrides": {
+    "@config-plugins/detox": {
+      "expo": "$expo"
+    }
   },
   "jest": {
     "preset": "jest-expo",
