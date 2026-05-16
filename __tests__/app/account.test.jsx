@@ -3,7 +3,13 @@ jest.mock("firebase/auth", () => ({
 }));
 
 jest.mock("@/firebaseConfig", () => ({
-  auth: {},
+  auth: {
+    currentUser: {
+      displayName: "User123",
+      email: "user123@email.com",
+      photoURL: "https://example.com/avatar.png",
+    },
+  },
   db: {},
 }));
 
