@@ -9,9 +9,9 @@ import { useActiveLocation } from '@/hooks/useActiveLocation';
 import { DISTANCE_OPTIONS, useSupermarketFilters } from '@/hooks/useSupermarketFilters';
 import { useSupermarkets } from '@/hooks/useSupermarkets';
 import { FlashList } from '@shopify/flash-list';
+import { router } from 'expo-router';
 import { useCallback } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
 
 export default function SearchSupermarkets() {
   const { location: userLocation, isLoading: isFetchingLocation } = useActiveLocation();
@@ -30,6 +30,7 @@ export default function SearchSupermarkets() {
   const renderItem = useCallback(
     ({ item }) => (
       <SupermarketCard
+        testID={`store-card-${item.id}`}
         name={item.name}
         distance={item.formattedDistance}
         isOpen={item.isOpen}
@@ -50,12 +51,14 @@ export default function SearchSupermarkets() {
 
         <View style={styles.filterRow}>
           <DropdownPill
+            testID="filter-distance-dropdown"
             icon="ruler"
             options={DISTANCE_OPTIONS}
             selectedValue={distanceFilter}
             onSelect={setDistanceFilter}
           />
           <FilterPill
+            testID="filter-status-button"
             icon="lock-simple-open"
             label="Aberto"
             active={isOpenFilter}

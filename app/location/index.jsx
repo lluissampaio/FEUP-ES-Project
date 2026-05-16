@@ -163,6 +163,7 @@ export default function LocationPage() {
         <Spacer height={16} />
 
         <SearchInput
+          testID="location-search-input"
           value={searchQuery}
           onChangeText={handleSearchChange}
           placeholder="Pesquisar cidade, morada..."

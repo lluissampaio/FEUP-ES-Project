@@ -4,9 +4,9 @@ import { getImageForSupermarket } from "@/constants/images";
 import { Image, StyleSheet } from "react-native";
 import BaseCard from "./BaseCard";
 
-const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress }) => {
+const SupermarketCard = ({ name, distance, isOpen, scheduleToday, onPress, testID }) => {
   return (
-    <BaseCard onPress={onPress}>
+    <BaseCard onPress={onPress} testID={testID}>
       <Image 
         source={getImageForSupermarket(name)} 
         style={styles.logo} 

@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-export default function DropdownPill({ options, selectedValue, onSelect, icon }) {
+export default function DropdownPill({ options, selectedValue, onSelect, icon, testID={testID} }) {
   const [open, setOpen] = useState(false);
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
@@ -24,6 +24,7 @@ export default function DropdownPill({ options, selectedValue, onSelect, icon })
   return (
     <>
       <Pressable
+        testID={testID}
         onPress={() => setOpen(true)}
         style={[
           styles.pill,
