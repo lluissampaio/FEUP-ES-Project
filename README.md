@@ -80,7 +80,6 @@ Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code
 
     eas login
 
-
 3. **Executar o build localmente**:
    - Para **Android** (Gera um ficheiro `.apk`):
      ```bash
@@ -89,7 +88,8 @@ Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code
    - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
      ```bash
      eas build --profile development --platform ios --local
-     
+
+     ```
 
 Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
 
@@ -318,7 +318,6 @@ Fim do Sprint 1
 ##### Depois
 
 <img width="1358" height="986" alt="depois" src="https://github.com/user-attachments/assets/9b6c040d-12ad-40d0-9fe1-137d085052a6" />
-
 
 #### Funcionalidades Implementadas
 

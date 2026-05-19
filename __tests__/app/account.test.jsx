@@ -29,7 +29,12 @@ import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
 import LogoutButton from "@/components/LogoutButton";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import React from "react";
 import { signOut } from "firebase/auth";
 
@@ -75,7 +80,11 @@ describe("Account Feature Tests", () => {
       it("renders title correctly and handles press", () => {
         const onPressMock = jest.fn();
         render(
-          <AccountMenuItem title="Ajuda" iconName="help" onPress={onPressMock} />,
+          <AccountMenuItem
+            title="Ajuda"
+            iconName="help"
+            onPress={onPressMock}
+          />,
         );
         expect(screen.getByText("Ajuda")).toBeTruthy();
         const menuItem = screen.getByText("Ajuda");
@@ -132,18 +141,18 @@ describe("Account Feature Tests", () => {
   describe("User Acceptance Tests (UAT)", () => {
     it("Acceptance: User views their profile and logs out successfully", async () => {
       const { router } = require("expo-router");
-      
+
       // 1. User sees the account screen
       render(<AccountScreen />);
-      
+
       // 2. User verifies their data is visible
       expect(screen.getByText("User123")).toBeTruthy();
       expect(screen.getByText("user123@email.com")).toBeTruthy();
-      
+
       // 3. User clicks on Logout
       const logoutBtn = screen.getByText("Log Out");
       fireEvent.press(logoutBtn);
-      
+
       // 4. System signs out and navigates back to root
       await waitFor(() => {
         expect(signOut).toHaveBeenCalled();
