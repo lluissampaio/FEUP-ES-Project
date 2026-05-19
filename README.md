@@ -313,7 +313,7 @@ Fim do Sprint 1
 
 ##### Antes
 
-<img width="1536" height="1030" alt="imagem" src="https://github.com/user-attachments/assets/3f941453-5c1e-4c94-b537-5dc3e5330f83" />
+<img width="892" height="854" alt="image" src="https://github.com/user-attachments/assets/f7cbd25d-cbb2-4de9-a468-45318a95c55a" />
 
 
 ##### Depois
