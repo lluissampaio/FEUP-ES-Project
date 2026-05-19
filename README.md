@@ -313,11 +313,13 @@ Fim do Sprint 1
 
 ##### Antes
 
-<img width="1536" height="1030" alt="antes" src="https://github.com/user-attachments/assets/3456d272-5a69-4de2-8826-e63198b58f4e" />
+<img width="1536" height="1030" alt="imagem" src="https://github.com/user-attachments/assets/3f941453-5c1e-4c94-b537-5dc3e5330f83" />
+
 
 ##### Depois
 
-<img width="1358" height="986" alt="depois" src="https://github.com/user-attachments/assets/9b6c040d-12ad-40d0-9fe1-137d085052a6" />
+<img width="1358" height="986" alt="imagem" src="https://github.com/user-attachments/assets/f2583b2c-83f6-4d92-a1d6-6e5923c190b9" />
+
 
 
 #### Funcionalidades Implementadas
