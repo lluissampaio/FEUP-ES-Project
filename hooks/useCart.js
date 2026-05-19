@@ -54,7 +54,7 @@ export default function useCart() {
           console.error("Erro no snapshot do carrinho:", err);
           setError("Erro ao carregar carrinho");
           setLoading(false);
-        }
+        },
       );
 
       return () => unsubscribeSnapshot();
@@ -63,35 +63,38 @@ export default function useCart() {
     return () => unsubscribeAuth();
   }, [setProducts, setLoading, setError]);
 
-  const saveToFirestore = useCallback(async (newItems) => {
-    const user = auth.currentUser;
-    if (!user) return;
-    const cartRef = doc(db, "users", user.uid, "cart", "default");
-    try {
-      await setDoc(cartRef, { items: sanitizeItems(newItems) });
-    } catch (err) {
-      console.error("Erro ao salvar carrinho:", err);
-      setError("Erro ao guardar alterações");
-    }
-  }, [setError]);
+  const saveToFirestore = useCallback(
+    async (newItems) => {
+      const user = auth.currentUser;
+      if (!user) return;
+      const cartRef = doc(db, "users", user.uid, "cart", "default");
+      try {
+        await setDoc(cartRef, { items: sanitizeItems(newItems) });
+      } catch (err) {
+        console.error("Erro ao salvar carrinho:", err);
+        setError("Erro ao guardar alterações");
+      }
+    },
+    [setError],
+  );
 
   const addProduct = useCallback(
     async (product, quantityToAdd = 1, storeId = null) => {
       // Atualiza localmente primeiro para feedback instantâneo
       addProductLocal(product, quantityToAdd, storeId);
-      
+
       // Se houver user, salva no Firestore (o snapshot depois confirma)
       const user = auth.currentUser;
       if (user) {
-        // Precisamos do estado atualizado. Como o set do zustand é síncrono mas 
-        // o products aqui pode estar desatualizado por causa da closure, 
+        // Precisamos do estado atualizado. Como o set do zustand é síncrono mas
+        // o products aqui pode estar desatualizado por causa da closure,
         // idealmente o useCartStore deveria expor o estado atualizado.
         // Por simplicidade, recalculamos o next aqui ou usamos o store diretamente
         const currentProducts = useCartStore.getState().products;
         await saveToFirestore(currentProducts);
       }
     },
-    [addProductLocal, saveToFirestore]
+    [addProductLocal, saveToFirestore],
   );
 
   const remove = useCallback(
@@ -103,7 +106,7 @@ export default function useCart() {
         await saveToFirestore(currentProducts);
       }
     },
-    [removeLocal, saveToFirestore]
+    [removeLocal, saveToFirestore],
   );
 
   const updateQuantity = useCallback(
@@ -115,7 +118,7 @@ export default function useCart() {
         await saveToFirestore(currentProducts);
       }
     },
-    [updateQuantityLocal, saveToFirestore]
+    [updateQuantityLocal, saveToFirestore],
   );
 
   const updateItemStore = useCallback(
@@ -127,7 +130,7 @@ export default function useCart() {
         await saveToFirestore(currentProducts);
       }
     },
-    [updateItemStoreLocal, saveToFirestore]
+    [updateItemStoreLocal, saveToFirestore],
   );
 
   const updateAllItemsStore = useCallback(
@@ -139,7 +142,7 @@ export default function useCart() {
         await saveToFirestore(currentProducts);
       }
     },
-    [updateAllItemsStoreLocal, saveToFirestore]
+    [updateAllItemsStoreLocal, saveToFirestore],
   );
 
   const clear = useCallback(async () => {

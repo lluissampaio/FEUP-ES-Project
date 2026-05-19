@@ -40,10 +40,20 @@ const AccountScreen = () => {
     }
   };
 
+  const user = auth.currentUser;
+  const userName =
+    user?.displayName || user?.email?.split("@")[0] || "Utilizador";
+  const userEmail = user?.email || "";
+  const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=fff`;
+
   return (
     <ThemedView style={styles.container} safe>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AccountHeader name="User123" email="user123@email.com" avatarUrl="" />
+        <AccountHeader
+          name={userName}
+          email={userEmail}
+          avatarUrl={user?.photoURL || defaultAvatar}
+        />
 
         <View style={styles.menuContainer}>
           <AccountThemeToggle currentTheme={theme} onSelectTheme={setTheme} />
