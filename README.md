@@ -86,6 +86,7 @@ Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code
      eas build --profile development --platform android --local
      ```
    - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
+
      ```bash
      eas build --profile development --platform ios --local
 
