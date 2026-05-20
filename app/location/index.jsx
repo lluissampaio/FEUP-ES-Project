@@ -1,4 +1,3 @@
-// app/location/index.jsx
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Pressable,

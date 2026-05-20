@@ -80,7 +80,6 @@ Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code
 
     eas login
 
-
 3. **Executar o build localmente**:
    - Para **Android** (Gera um ficheiro `.apk`):
      ```bash
@@ -89,7 +88,8 @@ Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code
    - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
      ```bash
      eas build --profile development --platform ios --local
-     
+
+     ```
 
 Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
 
@@ -313,12 +313,11 @@ Fim do Sprint 1
 
 ##### Antes
 
-<img width="1536" height="1030" alt="antes" src="https://github.com/user-attachments/assets/3456d272-5a69-4de2-8826-e63198b58f4e" />
+<img width="892" height="854" alt="image" src="https://github.com/user-attachments/assets/f7cbd25d-cbb2-4de9-a468-45318a95c55a" />
 
 ##### Depois
 
-<img width="1358" height="986" alt="depois" src="https://github.com/user-attachments/assets/9b6c040d-12ad-40d0-9fe1-137d085052a6" />
-
+<img width="539" height="877" alt="imagem" src="https://github.com/user-attachments/assets/cf14b3c4-76cb-4264-a12a-f6a47f598fbd" />
 
 #### Funcionalidades Implementadas
 
@@ -344,11 +343,11 @@ Fim do Sprint 1
 
 - Como melhorar a segurança da app.
 
-# Ferramentas de IA Utilizadas
+#### Ferramentas de IA Utilizadas
 
 - Gemini, GLM, Claude, Deepseek
 
-# Prompts Relevantes
+#### Prompts Relevantes
 
 1 - Como é que resolvo as dependencias do projeto?
 2 - A app não está a abrir no expo go, o que faço para resolver?
@@ -356,21 +355,45 @@ Fim do Sprint 1
 4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
 5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
 
-# Código Gerado por IA
+#### Código Gerado por IA
 
 - "package.json"
 - "firebaseConfig.js"
 - Parte de "/store/useCartStore.js"
 
-# PBIs com label "MisterAI"
+#### PBIs com label "MisterAI"
 
 - Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 
----
-
 ### Sprint 3
 
-_A preencher no final do sprint._
+#### Board do projeto
+
+##### Antes
+
+<img width="540" height="874" alt="imagem" src="https://github.com/user-attachments/assets/8ae5cb67-94c8-4cc6-997d-e287eb9d613e" />
+
+##### Depois
+
+#### Funcionalidades Implementadas
+
+#### Retrospetiva
+
+**O que correu bem**
+
+**O que fazer de forma diferente**
+
+**Questões em aberto**
+
+# Ferramentas de IA Utilizadas
+
+- Gemini, GLM, Claude, Deepseek
+
+# Prompts Relevantes
+
+# Código Gerado por IA
+
+# PBIs com label "MisterAI"
 
 ---
 
