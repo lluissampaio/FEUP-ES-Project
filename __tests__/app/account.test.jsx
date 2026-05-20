@@ -30,7 +30,12 @@ import AccountScreen from "@/app/(tabs)/account";
 import AccountHeader from "@/components/AccountHeader";
 import AccountMenuItem from "@/components/AccountMenuItem";
 import LogoutButton from "@/components/LogoutButton";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react-native";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react-native";
 import React from "react";
 import { signOut } from "firebase/auth";
 
@@ -118,7 +123,10 @@ describe("Account Feature Tests", () => {
       });
 
       it("falls back to email prefix if displayName is missing", () => {
-        mockCurrentUser = { email: "teste@email.com", reload: jest.fn(() => Promise.resolve()) };
+        mockCurrentUser = {
+          email: "teste@email.com",
+          reload: jest.fn(() => Promise.resolve()),
+        };
         render(<AccountScreen />);
         expect(screen.getByText("teste")).toBeTruthy();
       });
@@ -167,14 +175,14 @@ describe("Account Feature Tests", () => {
       mockCurrentUser = null;
       const AsyncStorage = require("@react-native-async-storage/async-storage");
       AsyncStorage.getItem.mockResolvedValueOnce("ConvidadoLocal");
-      
+
       render(<AccountScreen />);
-      
+
       await waitFor(() => {
         expect(AsyncStorage.getItem).toHaveBeenCalledWith("guestName");
         expect(screen.getByText("ConvidadoLocal")).toBeTruthy();
       });
-      
+
       // Reset mock back for other tests if needed
       mockCurrentUser = {
         displayName: "User123",
