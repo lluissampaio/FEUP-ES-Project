@@ -56,10 +56,11 @@ jest.mock("expo-router", () => {
 describe("Account Feature Tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUser = {
+    mockCurrentUser = {
       displayName: "User123",
       email: "user123@email.com",
       photoURL: "https://example.com/avatar.png",
+      reload: jest.fn(() => Promise.resolve()),
     };
   });
 
@@ -117,13 +118,13 @@ describe("Account Feature Tests", () => {
       });
 
       it("falls back to email prefix if displayName is missing", () => {
-        mockUser = { email: "teste@email.com" };
+        mockCurrentUser = { email: "teste@email.com", reload: jest.fn(() => Promise.resolve()) };
         render(<AccountScreen />);
         expect(screen.getByText("teste")).toBeTruthy();
       });
 
       it("falls back to 'Utilizador' if both displayName and email are missing", () => {
-        mockUser = {};
+        mockCurrentUser = { reload: jest.fn(() => Promise.resolve()) };
         render(<AccountScreen />);
         expect(screen.getByText("Utilizador")).toBeTruthy();
       });
