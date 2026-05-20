@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AccountScreen = () => {
   const { theme, setTheme } = useThemeStore();
-  
+
   const [userData, setUserData] = useState({
     name: auth.currentUser?.displayName,
     email: auth.currentUser?.email,
@@ -39,7 +39,7 @@ const AccountScreen = () => {
           });
         });
       }
-    }, [])
+    }, []),
   );
 
   const menuItems = [
@@ -69,17 +69,18 @@ const AccountScreen = () => {
     }
   };
 
-  const userName = userData.name || userData.email?.split('@')[0] || "Utilizador";
+  const userName =
+    userData.name || userData.email?.split("@")[0] || "Utilizador";
   const userEmail = userData.email || "";
   const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=fff`;
 
   return (
     <ThemedView style={styles.container} safe>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AccountHeader 
-          name={userName} 
-          email={userEmail} 
-          avatarUrl={userData.photoURL || defaultAvatar} 
+        <AccountHeader
+          name={userName}
+          email={userEmail}
+          avatarUrl={userData.photoURL || defaultAvatar}
           onEditPress={() => router.push("/edit-profile")}
         />
 

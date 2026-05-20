@@ -1,6 +1,12 @@
 import { auth } from "@/firebaseConfig";
 import { router } from "expo-router";
-import { EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword, updateProfile } from "firebase/auth";
+import {
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+} from "firebase/auth";
 import { useState, useEffect } from "react";
 import {
   ActivityIndicator,
@@ -23,14 +29,14 @@ import AppIcon from "@/components/AppIcon";
 
 export default function EditProfile() {
   const user = auth.currentUser;
-  
+
   const [name, setName] = useState(user?.displayName || "");
   const [email, setEmail] = useState(user?.email || "");
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
-  
+
   const isAnonymous = !user;
-  
+
   useEffect(() => {
     if (isAnonymous) {
       AsyncStorage.getItem("guestName").then((guestName) => {
@@ -38,7 +44,7 @@ export default function EditProfile() {
       });
     }
   }, [isAnonymous]);
-  
+
   const [loading, setLoading] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -52,7 +58,7 @@ export default function EditProfile() {
         // Guest mode logic
         await AsyncStorage.setItem("guestName", name);
         Alert.alert("Sucesso", "Perfil atualizado com sucesso!", [
-          { text: "OK", onPress: () => router.back() }
+          { text: "OK", onPress: () => router.back() },
         ]);
         return;
       }
@@ -70,12 +76,18 @@ export default function EditProfile() {
       // If email or password is being changed, we need the current password to re-authenticate
       if (isEmailChanged || isPasswordChanged) {
         if (!currentPassword) {
-          Alert.alert("Atenção", "É necessária a Palavra-passe atual para alterar o Email ou a Palavra-passe.");
+          Alert.alert(
+            "Atenção",
+            "É necessária a Palavra-passe atual para alterar o Email ou a Palavra-passe.",
+          );
           setLoading(false);
           return;
         }
 
-        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          currentPassword,
+        );
         try {
           await reauthenticateWithCredential(user, credential);
         } catch (error) {
@@ -97,7 +109,10 @@ export default function EditProfile() {
 
       if (isPasswordChanged) {
         if (newPassword.length < 6) {
-          Alert.alert("Erro", "A nova Palavra-passe deve ter pelo menos 6 caracteres.");
+          Alert.alert(
+            "Erro",
+            "A nova Palavra-passe deve ter pelo menos 6 caracteres.",
+          );
           setLoading(false);
           return;
         }
@@ -107,13 +122,12 @@ export default function EditProfile() {
       await user.reload(); // Garante que a Firebase re-carrega os dados do user atualizados.
 
       Alert.alert("Sucesso", "Perfil atualizado com sucesso!", [
-        { text: "OK", onPress: () => router.back() }
+        { text: "OK", onPress: () => router.back() },
       ]);
-      
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
       let errorMessage = "Ocorreu um erro ao atualizar o perfil.";
-      
+
       if (error.code === "auth/email-already-in-use") {
         errorMessage = "Este email já está em uso por outra conta.";
       } else if (error.code === "auth/invalid-email") {
@@ -121,7 +135,7 @@ export default function EditProfile() {
       } else if (error.code === "auth/weak-password") {
         errorMessage = "A nova password é demasiado fraca.";
       }
-      
+
       Alert.alert("Erro", errorMessage);
     } finally {
       setLoading(false);
@@ -131,7 +145,10 @@ export default function EditProfile() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ThemedView safe style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
           <Spacer height={20} />
           <View style={styles.header}>
             <Pressable onPress={() => router.back()} style={styles.backButton}>
@@ -202,7 +219,9 @@ export default function EditProfile() {
               <Spacer height={30} />
 
               {/* Current Password (for security) */}
-              <ThemedText style={styles.label}>Palavra-passe Atual (Obrigatório para mudar Email/Pass)</ThemedText>
+              <ThemedText style={styles.label}>
+                Palavra-passe Atual (Obrigatório para mudar Email/Pass)
+              </ThemedText>
               <View style={styles.passwordContainer}>
                 <TextInput
                   style={[styles.input, styles.passwordInput]}
@@ -238,10 +257,12 @@ export default function EditProfile() {
             {loading ? (
               <ActivityIndicator color="#fff" />
             ) : (
-              <ThemedText style={styles.buttonText}>Guardar Alterações</ThemedText>
+              <ThemedText style={styles.buttonText}>
+                Guardar Alterações
+              </ThemedText>
             )}
           </ThemedButton>
-          
+
           <Spacer height={40} />
         </ScrollView>
       </ThemedView>
