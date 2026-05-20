@@ -33,7 +33,7 @@ jest.mock("@/store/useSupermarketsStore", () => ({
   },
 }));
 
-import Cart from "@/app/(tabs)/cart";
+import Cart from "@/app/(tabs)/list";
 import useCart from "@/hooks/useCart";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import React from "react";

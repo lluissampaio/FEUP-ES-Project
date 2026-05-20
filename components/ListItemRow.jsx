@@ -51,6 +51,7 @@ const CartItemRow = ({
           <View style={styles.infoColumn}>
             <ThemedText
               title
+              testID="cart-item-name"
               style={[styles.name, { color: theme.title }]}
               numberOfLines={2}
             >

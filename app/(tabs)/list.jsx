@@ -1,4 +1,4 @@
-import CartItemRow from "@/components/CartItemRow";
+import CartItemRow from "@/components/ListItemRow";
 import DropdownPill from "@/components/FilterButton";
 import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
@@ -220,7 +220,7 @@ export default function Cart() {
         {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
         <View style={styles.totalButton}>
           <ThemedText style={styles.totalLabel}>Total Estimado</ThemedText>
-          <ThemedText style={styles.totalValue}>
+          <ThemedText style={styles.totalValue} testID="cart-total-estimated-value">
             {total.toFixed(2)} €
           </ThemedText>
         </View>
