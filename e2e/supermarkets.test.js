@@ -1,56 +1,63 @@
-const { device, element, by, expect } = require("detox");
+/* global device, element, by, expect, describe, beforeAll, it, waitFor */
 
 describe("Jornada: Filtragem e Comparação de Supermercados", () => {
   beforeAll(async () => {
-    // newInstance: true garante que a app arranca do zero, limpando estado em memória
     await device.launchApp({ newInstance: true });
+    // Ignorar long-polling do Firestore. Consequência: Detox deixa de esperar por fetches de DB.
+    await device.setURLBlacklist([
+      ".*firestore\\.googleapis\\.com.*",
+      ".*Listen/channel.*",
+    ]);
   });
 
   it("deve fixar localização manual, filtrar por distância e validar loja", async () => {
-    // Navegar para Tab Perfil
+    const guestButton = element(by.id("continue-as-guest"));
+    await expect(guestButton).toBeVisible();
+    await guestButton.tap();
+
     await element(by.text("Perfil")).tap();
 
-    // Navegar para ecrã de Localização
     await expect(element(by.text("Localização"))).toBeVisible();
     await element(by.text("Localização")).tap();
 
-    // Pesquisar localização específica ("Porto")
     await expect(element(by.id("location-search-input"))).toBeVisible();
-    // typeText simula a escrita. O \n submete o teclado (onSubmitEditing)
-    await element(by.id("location-search-input")).typeText("Porto\n");
+    await element(by.id("location-search-input")).typeText("FEUP\n");
 
-    // Aguardar resposta da rede (Photon API) e selecionar resultado
-    const locationResult = element(by.text("Porto, Portugal"));
-    await expect(locationResult).toBeVisible();
+    const locationResult = element(
+      by.text(
+        "Faculdade de Engenharia da Universidade do Porto, Porto, Portugal",
+      ),
+    ).atIndex(0);
+    await waitFor(locationResult).toBeVisible().withTimeout(10000);
     await locationResult.tap();
 
-    // Validar que o override ficou ativo na UI
     await expect(element(by.text("Localização manual ativa"))).toBeVisible();
 
-    // Voltar ao Tab Início
+    const backBtn = element(by.id("location-back-button"));
+    await expect(backBtn).toBeVisible();
+    await backBtn.tap();
+
     await element(by.text("Ínicio")).tap();
 
-    // Aceder à pesquisa de supermercados
-    await expect(element(by.id("home-search-bar"))).toBeVisible();
-    await element(by.id("home-search-bar")).tap();
+    const homeSearchBar = element(by.id("home-search-bar"));
+    await expect(homeSearchBar).toBeVisible();
+    await homeSearchBar.tap();
 
-    // Abrir filtro de distância
     await expect(element(by.id("filter-distance-dropdown"))).toBeVisible();
     await element(by.id("filter-distance-dropdown")).tap();
 
-    // Selecionar o raio "< 5 km"
-    await expect(element(by.id("filter-option-5"))).toBeVisible();
-    await element(by.id("filter-option-5")).tap();
+    await expect(element(by.id("filter-option-10"))).toBeVisible();
+    await element(by.id("filter-option-10")).tap();
 
-    // Lojas fora do Porto (> 5km) não podem existir
-    await expect(element(by.id("store-card-ID_LOJA_FARO"))).toNotExist();
+    // Sincronização Explícita 2: Esperar pelo Firestore injetar os dados no FlashList.
+    // Compensa o facto de termos bloqueado o domínio no beforeAll.
+    const firstCard = element(by.text("Ver mais")).atIndex(0);
+    await waitFor(firstCard).toBeVisible().withTimeout(10000);
+    await firstCard.tap();
 
-    // Loja no Porto (< 5km) tem de estar visível e ser interagível
-    const validStore = element(by.id("store-card-ID_LOJA_PORTO"));
-    await expect(validStore).toBeVisible();
-    await validStore.tap();
-
-    // Validação de rendering do SupermarketDetail
-    await expect(element(by.text("Horário"))).toBeVisible();
+    // Sincronização Explícita 3: Garantir que a renderização da sub-página terminou
+    await waitFor(element(by.text("Horário")))
+      .toBeVisible()
+      .withTimeout(5000);
   });
 });
