@@ -1,3 +1,4 @@
+// app/location/index.jsx
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Pressable,
@@ -16,6 +17,7 @@ import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
 import { useActiveLocation } from "@/hooks/useActiveLocation";
 import { searchLocations } from "@/utils/photon";
+import { router } from "expo-router";
 
 export default function LocationPage() {
   const {
@@ -109,12 +111,27 @@ export default function LocationPage() {
 
   return (
     <ThemedView safe style={styles.container}>
+      <View style={styles.header}>
+        <Pressable 
+          onPress={() => router.back()} 
+          style={styles.backButton}
+          testID="location-back-button"
+        >
+          <AppIcon
+            name="back"
+            size={22}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
+        </Pressable>
+      </View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
-        <Spacer height={40} />
+        <Spacer height={10} />
 
         <View style={styles.statusArea}>
           <AppIcon
@@ -273,6 +290,18 @@ export default function LocationPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
   },
   scrollContent: {
     paddingHorizontal: 20,
