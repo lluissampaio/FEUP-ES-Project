@@ -2,16 +2,17 @@ jest.mock("firebase/auth", () => ({
   signOut: jest.fn(() => Promise.resolve()),
 }));
 
-let mockUser = {
+let mockCurrentUser = {
   displayName: "User123",
   email: "user123@email.com",
   photoURL: "https://example.com/avatar.png",
+  reload: jest.fn(() => Promise.resolve()),
 };
 
 jest.mock("@/firebaseConfig", () => ({
   auth: {
     get currentUser() {
-      return mockUser;
+      return mockCurrentUser;
     },
   },
   db: {},
@@ -47,17 +48,24 @@ jest.mock("expo-image", () => ({
   Image: "Image",
 }));
 
-jest.mock("expo-router", () => ({
-  router: { push: jest.fn(), replace: jest.fn() },
-}));
+jest.mock("expo-router", () => {
+  const React = require("react");
+  return {
+    router: { push: jest.fn(), replace: jest.fn() },
+    useFocusEffect: jest.fn((callback) => {
+      React.useEffect(callback, []);
+    }),
+  };
+});
 
 describe("Account Feature Tests", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUser = {
+    mockCurrentUser = {
       displayName: "User123",
       email: "user123@email.com",
       photoURL: "https://example.com/avatar.png",
+      reload: jest.fn(() => Promise.resolve()),
     };
   });
 
@@ -115,13 +123,16 @@ describe("Account Feature Tests", () => {
       });
 
       it("falls back to email prefix if displayName is missing", () => {
-        mockUser = { email: "teste@email.com" };
+        mockCurrentUser = {
+          email: "teste@email.com",
+          reload: jest.fn(() => Promise.resolve()),
+        };
         render(<AccountScreen />);
         expect(screen.getByText("teste")).toBeTruthy();
       });
 
       it("falls back to 'Utilizador' if both displayName and email are missing", () => {
-        mockUser = {};
+        mockCurrentUser = { reload: jest.fn(() => Promise.resolve()) };
         render(<AccountScreen />);
         expect(screen.getByText("Utilizador")).toBeTruthy();
       });
@@ -158,6 +169,27 @@ describe("Account Feature Tests", () => {
         expect(signOut).toHaveBeenCalled();
         expect(router.replace).toHaveBeenCalledWith("/");
       });
+    });
+
+    it("fetches guestName from AsyncStorage when user is null", async () => {
+      mockCurrentUser = null;
+      const AsyncStorage = require("@react-native-async-storage/async-storage");
+      AsyncStorage.getItem.mockResolvedValueOnce("ConvidadoLocal");
+
+      render(<AccountScreen />);
+
+      await waitFor(() => {
+        expect(AsyncStorage.getItem).toHaveBeenCalledWith("guestName");
+        expect(screen.getByText("ConvidadoLocal")).toBeTruthy();
+      });
+
+      // Reset mock back for other tests if needed
+      mockCurrentUser = {
+        displayName: "User123",
+        email: "user123@email.com",
+        photoURL: "https://example.com/avatar.png",
+        reload: jest.fn(() => Promise.resolve()),
+      };
     });
   });
 });

@@ -6,7 +6,7 @@ import ThemedView from "./ThemedView";
 import AppIcon from "./AppIcon";
 import { Colors } from "@/constants/colors";
 
-const AccountHeader = ({ name, email, avatarUrl }) => {
+const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
   return (
     <ThemedView style={styles.container}>
       <Image
@@ -17,7 +17,7 @@ const AccountHeader = ({ name, email, avatarUrl }) => {
       <View style={styles.textContainer}>
         <View style={styles.nameRow}>
           <ThemedText style={styles.name}>{name}</ThemedText>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onEditPress}>
             <AppIcon
               name="edit"
               size={18}
