@@ -44,6 +44,7 @@ export default function ExploreCategoriesScreen() {
 
       <View style={styles.gridContainer}>
         <FlashList
+          testID="categories-flashlist"
           data={CATEGORY_GRID_DATA}
           renderItem={({ item }) => (
             <CategoryCard

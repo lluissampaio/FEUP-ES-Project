@@ -17,7 +17,6 @@ import {
   PencilSimple,
   Question,
   Ruler,
-  ShoppingCartSimple,
   Storefront,
   Sun,
   User,
@@ -27,7 +26,7 @@ import {
 export const ICON_MAP = {
   shop: Storefront,
   explore: MagnifyingGlass,
-  notepad: ShoppingCartSimple,
+  notepad: NotepadIcon,
   favourite: Heart,
   account: User,
 
