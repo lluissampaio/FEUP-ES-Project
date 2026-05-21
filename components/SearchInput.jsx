@@ -8,6 +8,7 @@ export default function SearchInput({
   onSubmitEditing,
   placeholder = "Pesquisar...",
   style,
+  testID,
 }) {
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
@@ -21,6 +22,7 @@ export default function SearchInput({
     >
       <AppIcon name="explore" size={20} color={theme.iconColor} weight="bold" />
       <TextInput
+        testID={testID}
         style={[styles.input, { color: theme.text }]}
         placeholder={placeholder}
         placeholderTextColor={theme.iconColor}

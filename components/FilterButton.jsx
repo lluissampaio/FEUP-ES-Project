@@ -18,6 +18,7 @@ export default function DropdownPill({
   selectedValue,
   onSelect,
   icon,
+  testID,
 }) {
   const [open, setOpen] = useState(false);
   const [dropdownLayout, setDropdownLayout] = useState(null);
@@ -58,6 +59,7 @@ export default function DropdownPill({
     <>
       <Pressable
         ref={pillRef}
+        testID={testID}
         onPress={handleOpen}
         disabled={!options || options.length === 0}
         style={[
@@ -108,6 +110,7 @@ export default function DropdownPill({
               return (
                 <Pressable
                   key={String(option.value)}
+                  testID={`filter-option-${option.value}`} // Anchors Detox strictly to this node
                   onPress={() => {
                     if (option.value !== "none") {
                       onSelect(option.value);

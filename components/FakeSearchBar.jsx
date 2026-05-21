@@ -10,6 +10,7 @@ const FakeSearchBar = () => {
 
   return (
     <Pressable
+      testID="home-search-bar"
       style={[styles.searchBox, { backgroundColor: theme.searchBackground }]}
       onPress={() => router.push("/search/supermarkets")}
     >
