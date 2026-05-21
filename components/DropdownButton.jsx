@@ -3,7 +3,7 @@ import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/colors";
 import { Pressable, StyleSheet, useColorScheme } from "react-native";
 
-export default function FilterPill({ label, active, onPress, icon }) {
+export default function FilterPill({ label, active, onPress, icon, testID }) {
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
 
@@ -12,6 +12,7 @@ export default function FilterPill({ label, active, onPress, icon }) {
   return (
     <Pressable
       onPress={onPress}
+      testID={testID}
       style={[
         styles.pill,
         {

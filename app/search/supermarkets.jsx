@@ -35,6 +35,7 @@ export default function SearchSupermarkets() {
   const renderItem = useCallback(
     ({ item }) => (
       <SupermarketCard
+        testID={`store-card-${item.id}`}
         name={item.name}
         distance={item.formattedDistance}
         isOpen={item.isOpen}
@@ -54,12 +55,14 @@ export default function SearchSupermarkets() {
 
         <View style={styles.filterRow}>
           <DropdownPill
+            testID="filter-distance-dropdown"
             icon="ruler"
             options={DISTANCE_OPTIONS}
             selectedValue={distanceFilter}
             onSelect={setDistanceFilter}
           />
           <FilterPill
+            testID="filter-status-button"
             icon="lock-simple-open"
             label="Aberto"
             active={isOpenFilter}

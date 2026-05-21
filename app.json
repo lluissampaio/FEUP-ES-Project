@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.cheapy"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,6 +33,21 @@
     },
     "plugins": [
       "expo-router",
+      "@config-plugins/detox",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "packagingOptions": {
+              "pickFirsts": [
+                "lib/**/libc++_shared.so",
+                "lib/**/libfbjni.so",
+                "lib/**/libfabricjni.so"
+              ]
+            }
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {
