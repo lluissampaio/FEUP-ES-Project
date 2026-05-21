@@ -23,7 +23,7 @@ export default function usePaginatedProducts(category, searchQuery) {
 
   useEffect(() => {
     const normalizeText = (text) =>
-      text
+      (text || "")
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
         .toLowerCase();
