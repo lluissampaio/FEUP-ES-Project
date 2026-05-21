@@ -50,7 +50,7 @@ describe("Unit Test: Lógica de Mapeamento de Imagens", () => {
 
     it("Deve normalizar acentos e caracteres especiais corretamente", () => {
       expect(getImageForProductCategory("Laticínios")).toBe(
-        PRODUCT_IMAGES.leite,
+        PRODUCT_IMAGES.laticinio,
       );
       expect(getImageForProductCategory("Frutas & Vegetais")).toBe(
         PRODUCT_IMAGES.frutas_vegetais,

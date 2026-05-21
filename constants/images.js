@@ -14,7 +14,7 @@ export const SUPERMARKET_IMAGES = {
 export const PRODUCT_IMAGES = {
   bebidas: require("@/assets/products/bebidas.png"),
   frutas_vegetais: require("@/assets/products/frutas_vegetais.png"),
-  leite: require("@/assets/products/leite.png"),
+  laticinio: require("@/assets/products/leite.png"),
   mercearia: require("@/assets/products/mercearia.png"),
   peixaria: require("@/assets/products/peixaria.png"),
   snacks: require("@/assets/products/snacks.png"),
@@ -63,7 +63,7 @@ export const getImageForProductCategory = (category) => {
     normalizedCategory.includes("leite") ||
     normalizedCategory.includes("laticinio")
   )
-    return PRODUCT_IMAGES.leite;
+    return PRODUCT_IMAGES.laticinio;
   if (
     normalizedCategory.includes("peixaria") ||
     normalizedCategory.includes("peixe")

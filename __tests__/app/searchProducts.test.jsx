@@ -1,24 +1,22 @@
-import Explore from "@/app/(tabs)/explore";
+import CategoryProductsScreen from "@/app/(tabs)/explore/products";
 import useProducts from "@/hooks/useProducts";
-import { fireEvent, render, screen } from "@testing-library/react-native";
+import { render, screen } from "@testing-library/react-native";
 import React from "react";
 
-jest.mock("@/hooks/useProducts", () => {
-  return {
-    __esModule: true,
-    default: jest.fn(),
-  };
-});
+jest.mock("expo-router", () => ({
+  router: { push: jest.fn(), back: jest.fn() },
+  useLocalSearchParams: () => ({ category: "tudo", title: "Produtos" }),
+}));
+
+jest.mock("@/hooks/useProducts", () => jest.fn());
 
 jest.mock(
   "react-native-safe-area-context",
   () => require("react-native-safe-area-context/jest/mock").default,
 );
 
-// Mock do FlashList para evitar erros de act() com o render assíncrono interno do componente
 jest.mock("@shopify/flash-list", () => {
   const { View } = require("react-native");
-  const React = require("react");
   return {
     FlashList: ({ data, renderItem, ListEmptyComponent }) => (
       <View>
@@ -47,13 +45,13 @@ describe("Acceptance Test: Pesquisa de Produtos e Preços no Explore", () => {
           bestStore: "Minipreço",
         },
       ],
+      hasMore: false,
     });
 
-    render(<Explore />);
+    render(<CategoryProductsScreen />);
 
     expect(screen.getByText("Açúcar Branco")).toBeTruthy();
     expect(screen.getByText("1 Kg")).toBeTruthy();
-
     expect(screen.getByText(/Melhor preço:/)).toBeTruthy();
     expect(screen.getByText("Minipreço")).toBeTruthy();
   });
@@ -79,12 +77,12 @@ describe("Acceptance Test: Pesquisa de Produtos e Preços no Explore", () => {
           bestStore: "Continente",
         },
       ],
+      hasMore: false,
     });
 
-    render(<Explore />);
+    render(<CategoryProductsScreen />);
 
     expect(screen.getByText("0.94€")).toBeTruthy();
-
     const originalPricePromo = screen.getByText("1.08€");
     expect(originalPricePromo).toBeTruthy();
     expect(originalPricePromo.props.style).toEqual(
@@ -94,20 +92,16 @@ describe("Acceptance Test: Pesquisa de Produtos e Preços no Explore", () => {
     );
 
     expect(screen.getByText("0.99€")).toBeTruthy();
-    const originalPrices = screen.queryAllByText("0.99€");
-    expect(originalPrices.length).toBe(1);
   });
 
   it("Cenário 4: Erro de rede / Sem resultados mostra Empty State", () => {
     useProducts.mockReturnValue({
       loading: false,
       products: [],
+      hasMore: false,
     });
 
-    render(<Explore />);
-
-    const searchInput = screen.getByPlaceholderText("Pesquisar produtos...");
-    fireEvent.changeText(searchInput, "Inexistente");
+    render(<CategoryProductsScreen />);
 
     expect(screen.getByText("Nenhum produto encontrado")).toBeTruthy();
   });

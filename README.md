@@ -1,9 +1,14 @@
 # Cents - Relatório de Desenvolvimento
 
+# Cents - Relatório de Desenvolvimento
+
+Bem-vindo à documentação do Cents!
 Bem-vindo à documentação do Cents!
 
 Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
+Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
 
+- [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
@@ -22,6 +27,7 @@ Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até �
   - [Sprint 3](#sprint-3)
   - [Entrega Final](#entrega-final)
 
+As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 
 Entre em contacto connosco!
@@ -198,6 +204,7 @@ Para mais detalhes: [Diagrama de Deployment PDF](docs/architecture/deployment_di
 
 ### Protótipo Vertical
 
+O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 
 Através da integração com o GPS do dispositivo e a base de dados Firebase Firestore, o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância usando a fórmula de Haversine e verificar se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
@@ -400,4 +407,5 @@ Fim do Sprint 1
 
 ### Entrega Final
 
+_A preencher na entrega final._
 _A preencher na entrega final._

@@ -111,8 +111,8 @@ export default function LocationPage() {
   return (
     <ThemedView safe style={styles.container}>
       <View style={styles.header}>
-        <Pressable 
-          onPress={() => router.back()} 
+        <Pressable
+          onPress={() => router.back()}
           style={styles.backButton}
           testID="location-back-button"
         >

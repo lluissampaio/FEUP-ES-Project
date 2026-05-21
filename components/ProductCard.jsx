@@ -23,7 +23,11 @@ const ProductCard = ({
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
-    <BaseCard onPress={onPress} style>
+    <BaseCard
+      onPress={onPress}
+      testID={`product-card-${name.toLowerCase().replace(/\s/g, "-")}`}
+      style
+    >
       <Image
         source={getImageForProductCategory(image_ref)}
         style={styles.image}

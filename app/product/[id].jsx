@@ -19,8 +19,8 @@ import {
   useColorScheme,
 } from "react-native";
 
+import useCart from "@/hooks/useList";
 import { formatUnitPrice, useProductDetail } from "@/hooks/useProductDetails";
-import useCart from "@/hooks/useCart";
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
@@ -187,6 +187,7 @@ export default function ProductDetail() {
       >
         <Pressable
           onPress={handleAddToCart}
+          testID="add-to-cart-footer-button"
           style={({ pressed }) => [
             styles.addButton,
             pressed && styles.pressedOpacity,

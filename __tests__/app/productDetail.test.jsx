@@ -27,6 +27,13 @@ jest.mock("expo-router", () => ({
   useLocalSearchParams: () => ({ id: "prod_123" }),
 }));
 
+jest.mock("firebase/auth", () => ({
+  __esModule: true,
+  onAuthStateChanged: jest.fn(() => jest.fn()),
+  getReactNativePersistence: jest.fn(),
+  initializeAuth: jest.fn(),
+}));
+
 jest.mock(
   "react-native-safe-area-context",
   () => require("react-native-safe-area-context/jest/mock").default,
@@ -39,6 +46,15 @@ jest.mock("@/hooks/useProductDetails", () => ({
     return `${data.unit_price.toFixed(2)}€ / ${unit}`;
   }),
 }));
+
+jest.mock("@/hooks/useList", () => {
+  return {
+    __esModule: true,
+    default: jest.fn(() => ({
+      addProduct: jest.fn(),
+    })),
+  };
+});
 
 jest.mock("@/constants/images", () => ({
   getImageForProductCategory: jest.fn(() => null),

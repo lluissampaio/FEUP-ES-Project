@@ -6,114 +6,123 @@ import {
   limit,
   orderBy,
   query,
-  startAt,
+  startAfter,
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useDebounce } from "./useDebounce";
 
-const searchCache = new Map();
-
-const extractProductData = async (q) => {
-  const querySnapshot = await getDocs(q);
-  const data = querySnapshot.docs.map(mapDocToProduct);
-  const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1] ?? null;
-  const fetchedHasMore = querySnapshot.docs.length === 20;
-  return { data, lastDoc, fetchedHasMore };
-};
-
-export default function useProducts(searchQuery) {
+export default function usePaginatedProducts(category, searchQuery) {
   const [products, setProducts] = useState([]);
   const [lastVisible, setLastVisible] = useState(null);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const debouncedQuery = useDebounce(searchQuery, 500);
-  const normalizedQuery = debouncedQuery
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
+  const debouncedQuery = useDebounce(searchQuery, 400);
 
   useEffect(() => {
-    if (!normalizedQuery) {
-      setProducts([]);
-      setLoading(false);
-      setLastVisible(null);
-      setHasMore(true);
-      return;
-    }
+    const normalizeText = (text) =>
+      (text || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
 
-    if (searchCache.has(normalizedQuery)) {
-      const cached = searchCache.get(normalizedQuery);
-      setProducts(cached.data);
-      setLastVisible(cached.lastDoc);
-      setHasMore(cached.hasMore);
-      setLoading(false);
-      return;
-    }
+    const buildInitialQuery = () => {
+      const productsRef = collection(db, "products");
+      const cleanSearch = normalizeText(debouncedQuery);
 
-    async function fetchInitialProducts() {
-      setLoading(true);
-      try {
-        const q = query(
-          collection(db, "products"),
+      if (cleanSearch) {
+        return query(
+          productsRef,
           orderBy("name_for_search"),
-          where("name_for_search", ">=", normalizedQuery),
-          where("name_for_search", "<=", normalizedQuery + "\uf8ff"),
+          where("name_for_search", ">=", cleanSearch),
+          where("name_for_search", "<=", cleanSearch + "\uf8ff"),
+          limit(40),
+        );
+      }
+
+      if (category && category !== "tudo") {
+        return query(
+          productsRef,
+          where("category", "==", category),
+          orderBy("name_for_search"),
           limit(20),
         );
-        const { data, lastDoc, fetchedHasMore } = await extractProductData(q);
+      }
 
-        searchCache.set(normalizedQuery, {
-          data,
-          lastDoc,
-          hasMore: fetchedHasMore,
-        });
+      return query(productsRef, orderBy("name_for_search"), limit(20));
+    };
 
-        setProducts(data);
-        setLastVisible(lastDoc);
-        setHasMore(fetchedHasMore);
+    async function fetchInitial() {
+      setLoading(true);
+      setHasMore(true);
+      try {
+        const q = buildInitialQuery();
+        const snapshot = await getDocs(q);
+
+        let fetchedProducts = snapshot.docs.map(mapDocToProduct);
+        const cleanSearch = normalizeText(debouncedQuery);
+
+        if (cleanSearch && category && category !== "tudo") {
+          fetchedProducts = fetchedProducts.filter(
+            (p) => p.category === category,
+          );
+        }
+
+        setProducts(fetchedProducts);
+        setLastVisible(snapshot.docs[snapshot.docs.length - 1] || null);
+        setHasMore(snapshot.docs.length >= 20);
       } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        console.error("Firestore initial fetch error:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchInitialProducts();
-  }, [normalizedQuery]);
+    fetchInitial();
+  }, [category, debouncedQuery]);
 
   const loadMore = async () => {
-    if (!hasMore || loading || loadingMore || !lastVisible) return;
+    if (
+      !hasMore ||
+      loading ||
+      loadingMore ||
+      !lastVisible ||
+      searchQuery.trim()
+    )
+      return;
+
     setLoadingMore(true);
     try {
-      const q = query(
-        collection(db, "products"),
-        orderBy("name_for_search"),
-        where("name_for_search", ">=", normalizedQuery),
-        where("name_for_search", "<=", normalizedQuery + "\uf8ff"),
-        startAt(lastVisible),
-        limit(20),
-      );
-      const { data, lastDoc, fetchedHasMore } = await extractProductData(q);
+      const productsRef = collection(db, "products");
+      let q;
 
-      const merged = [
-        ...(searchCache.get(normalizedQuery)?.data ?? []),
-        ...data,
-      ];
+      if (category && category !== "tudo") {
+        q = query(
+          productsRef,
+          where("category", "==", category),
+          orderBy("name_for_search"),
+          startAfter(lastVisible),
+          limit(20),
+        );
+      } else {
+        q = query(
+          productsRef,
+          orderBy("name_for_search"),
+          startAfter(lastVisible),
+          limit(20),
+        );
+      }
 
-      searchCache.set(normalizedQuery, {
-        data: merged,
-        lastDoc,
-        hasMore: fetchedHasMore,
-      });
+      const snapshot = await getDocs(q);
+      const newProducts = snapshot.docs.map(mapDocToProduct);
 
-      setProducts(merged);
-      setLastVisible(lastDoc);
-      setHasMore(fetchedHasMore);
+      setProducts((prev) => [...prev, ...newProducts]);
+      setLastVisible(snapshot.docs[snapshot.docs.length - 1] || null);
+      setHasMore(snapshot.docs.length === 20);
     } catch (error) {
-      console.error("Erro ao buscar mais produtos:", error);
+      console.error("Firestore pagination error:", error);
     } finally {
       setLoadingMore(false);
     }
