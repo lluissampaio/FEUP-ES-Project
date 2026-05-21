@@ -22,7 +22,7 @@ export const useCartStore = create((set) => ({
                   quantity: p.quantity + quantityToAdd,
                   selectedStoreId: storeId ?? p.selectedStoreId ?? null,
                 }
-              : p
+              : p,
           )
         : [
             ...state.products,
@@ -54,7 +54,7 @@ export const useCartStore = create((set) => ({
   updateItemStoreLocal: (productId, storeId) => {
     set((state) => ({
       products: state.products.map((p) =>
-        p.id === productId ? { ...p, selectedStoreId: storeId ?? null } : p
+        p.id === productId ? { ...p, selectedStoreId: storeId ?? null } : p,
       ),
     }));
   },

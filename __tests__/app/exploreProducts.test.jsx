@@ -37,7 +37,11 @@ describe("Integration Test: Listagem de Produtos da Categoria", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useLocalSearchParams.mockReturnValue({ category: "bebidas", title: "Bebidas", initialSearch: "" });
+    useLocalSearchParams.mockReturnValue({
+      category: "bebidas",
+      title: "Bebidas",
+      initialSearch: "",
+    });
   });
 
   it("Deve exibir o ActivityIndicator durante o carregamento", () => {
@@ -48,7 +52,7 @@ describe("Integration Test: Listagem de Produtos da Categoria", () => {
     });
 
     render(<CategoryProductsScreen />);
-    
+
     // Testa título da página e estado de loading
     expect(screen.getByText("Bebidas")).toBeTruthy();
     // Um ActivityIndicator renderizado na view
@@ -58,8 +62,18 @@ describe("Integration Test: Listagem de Produtos da Categoria", () => {
   it("Deve renderizar a lista de produtos retornados pelo hook", () => {
     usePaginatedProducts.mockReturnValue({
       products: [
-        { id: "prod_1", name: "Sumo Laranja", currentPrice: 1.5, formattedCapacity: "1 L" },
-        { id: "prod_2", name: "Água Natural", currentPrice: 0.5, formattedCapacity: "1.5 L" }
+        {
+          id: "prod_1",
+          name: "Sumo Laranja",
+          currentPrice: 1.5,
+          formattedCapacity: "1 L",
+        },
+        {
+          id: "prod_2",
+          name: "Água Natural",
+          currentPrice: 0.5,
+          formattedCapacity: "1.5 L",
+        },
       ],
       loading: false,
       hasMore: false,
@@ -86,18 +100,24 @@ describe("Integration Test: Listagem de Produtos da Categoria", () => {
   it("Deve navegar para o detalhe do produto ao clicar no ProductCard", () => {
     usePaginatedProducts.mockReturnValue({
       products: [
-        { id: "prod_1", name: "Sumo Laranja", currentPrice: 1.5, formattedCapacity: "1 L", image_ref: "bebidas" }
+        {
+          id: "prod_1",
+          name: "Sumo Laranja",
+          currentPrice: 1.5,
+          formattedCapacity: "1 L",
+          image_ref: "bebidas",
+        },
       ],
       loading: false,
     });
 
     render(<CategoryProductsScreen />);
-    
+
     fireEvent.press(screen.getByTestId("product-card-sumo-laranja"));
 
     expect(router.push).toHaveBeenCalledWith({
       pathname: "/product/[id]",
-      params: { id: "prod_1" }
+      params: { id: "prod_1" },
     });
   });
 });

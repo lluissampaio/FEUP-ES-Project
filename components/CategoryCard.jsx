@@ -2,34 +2,43 @@
 import { CATEGORY_THEME_MAP } from "@/constants/categories";
 import { getImageForProductCategory } from "@/constants/images";
 import React from "react";
-import { Dimensions, Image, Pressable, StyleSheet, Text, useColorScheme, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from "react-native";
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 const CARD_WIDTH = (WINDOW_WIDTH - 48) / 2;
 
 export default function CategoryCard({ config, onPress }) {
   const isDark = useColorScheme() === "dark";
-  const colorTheme = CATEGORY_THEME_MAP[config.themeKey] || CATEGORY_THEME_MAP.gray;
+  const colorTheme =
+    CATEGORY_THEME_MAP[config.themeKey] || CATEGORY_THEME_MAP.gray;
 
   const currentBg = isDark ? colorTheme.darkBg : colorTheme.lightBg;
   const currentTextColor = isDark ? colorTheme.darkText : colorTheme.lightText;
 
   return (
-    <Pressable 
+    <Pressable
       onPress={onPress}
       testID={`category-card-${config.id}`}
       style={[
-        styles.card, 
-        { 
-          backgroundColor: currentBg, 
-          borderColor: colorTheme.border 
-        }
+        styles.card,
+        {
+          backgroundColor: currentBg,
+          borderColor: colorTheme.border,
+        },
       ]}
     >
       <View style={styles.imageWrapper}>
-        <Image 
-          source={getImageForProductCategory(config.asset)} 
-          style={styles.image} 
+        <Image
+          source={getImageForProductCategory(config.asset)}
+          style={styles.image}
           resizeMode="contain"
         />
       </View>

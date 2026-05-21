@@ -49,7 +49,7 @@ describe("Acceptance Test: Pesquisa de Produtos e Preços no Explore", () => {
     });
 
     render(<CategoryProductsScreen />);
-    
+
     expect(screen.getByText("Açúcar Branco")).toBeTruthy();
     expect(screen.getByText("1 Kg")).toBeTruthy();
     expect(screen.getByText(/Melhor preço:/)).toBeTruthy();
@@ -81,7 +81,7 @@ describe("Acceptance Test: Pesquisa de Produtos e Preços no Explore", () => {
     });
 
     render(<CategoryProductsScreen />);
-    
+
     expect(screen.getByText("0.94€")).toBeTruthy();
     const originalPricePromo = screen.getByText("1.08€");
     expect(originalPricePromo).toBeTruthy();

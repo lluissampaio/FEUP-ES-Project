@@ -8,17 +8,24 @@ import usePaginatedProducts from "@/hooks/useProducts"; // Updated pagination ho
 import { FlashList } from "@shopify/flash-list";
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, View, useColorScheme } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
 export default function CategoryProductsScreen() {
   const params = useLocalSearchParams();
   const categoryId = params.category || "tudo";
   const displayTitle = params.title || "Products";
-  
+
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   const [localQuery, setLocalQuery] = useState(params.initialSearch || "");
-  const { products, loading, loadMore, loadingMore, hasMore } = usePaginatedProducts(categoryId, localQuery);
+  const { products, loading, loadMore, loadingMore, hasMore } =
+    usePaginatedProducts(categoryId, localQuery);
 
   const renderProductItem = useCallback(
     ({ item }) => (
@@ -35,14 +42,19 @@ export default function CategoryProductsScreen() {
         }
       />
     ),
-    []
+    [],
   );
 
   return (
     <ThemedView safe style={styles.container}>
       <View style={styles.navigationHeader}>
         <Pressable onPress={() => router.back()} style={styles.backButton}>
-          <AppIcon name="back" size={24} color={theme.iconColorFocused} weight="bold" />
+          <AppIcon
+            name="back"
+            size={24}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
         </Pressable>
         <ThemedText title style={styles.categoryTitle}>
           {displayTitle}
@@ -59,7 +71,11 @@ export default function CategoryProductsScreen() {
 
       <View style={styles.listWrapper}>
         {loading && products.length === 0 ? (
-          <ActivityIndicator size="large" color={Colors.primary} style={styles.centerSpinner} />
+          <ActivityIndicator
+            size="large"
+            color={Colors.primary}
+            style={styles.centerSpinner}
+          />
         ) : (
           <FlashList
             data={products}
@@ -72,7 +88,10 @@ export default function CategoryProductsScreen() {
             onEndReachedThreshold={0.4}
             ListFooterComponent={
               loadingMore ? (
-                <ActivityIndicator color={Colors.primary} style={styles.footerSpinner} />
+                <ActivityIndicator
+                  color={Colors.primary}
+                  style={styles.footerSpinner}
+                />
               ) : null
             }
             ListEmptyComponent={

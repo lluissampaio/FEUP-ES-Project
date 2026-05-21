@@ -18,7 +18,9 @@ describe("Unit Test: Componente SearchInput", () => {
 
   it("Chama a função onSubmitEditing quando o utilizador pressiona enter no teclado", () => {
     const mockOnSubmit = jest.fn();
-    render(<SearchInput testID="search-input" onSubmitEditing={mockOnSubmit} />);
+    render(
+      <SearchInput testID="search-input" onSubmitEditing={mockOnSubmit} />,
+    );
 
     fireEvent(screen.getByTestId("search-input"), "submitEditing");
     expect(mockOnSubmit).toHaveBeenCalledTimes(1);

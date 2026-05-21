@@ -9,11 +9,11 @@ import { useSupermarketsStore } from "@/store/useSupermarketsStore";
 import { ShoppingCartSimple } from "phosphor-react-native";
 import { useEffect, useMemo, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    View,
-    useColorScheme,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  View,
+  useColorScheme,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -220,7 +220,10 @@ export default function Cart() {
         {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
         <View style={styles.totalButton}>
           <ThemedText style={styles.totalLabel}>Total Estimado</ThemedText>
-          <ThemedText style={styles.totalValue} testID="cart-total-estimated-value">
+          <ThemedText
+            style={styles.totalValue}
+            testID="cart-total-estimated-value"
+          >
             {total.toFixed(2)} €
           </ThemedText>
         </View>

@@ -33,7 +33,7 @@ describe("Integration Test: Ecrã Explorar (Categorias e Pesquisa Global)", () =
 
   it("Deve renderizar a barra de pesquisa e a grelha de categorias", () => {
     render(<ExploreCategoriesScreen />);
-    
+
     expect(screen.getByText("Encontra Produtos")).toBeTruthy();
     expect(screen.getByPlaceholderText("Search Store")).toBeTruthy();
     expect(screen.getByText("Frutas e Vegetais")).toBeTruthy();
@@ -42,9 +42,9 @@ describe("Integration Test: Ecrã Explorar (Categorias e Pesquisa Global)", () =
 
   it("Deve navegar para a lista de produtos passando a query da pesquisa global", () => {
     render(<ExploreCategoriesScreen />);
-    
+
     const searchInput = screen.getByPlaceholderText("Search Store");
-    
+
     // Escrever no input e simular o enter (onSubmitEditing)
     fireEvent.changeText(searchInput, "Arroz");
     fireEvent(searchInput, "submitEditing");
@@ -57,7 +57,7 @@ describe("Integration Test: Ecrã Explorar (Categorias e Pesquisa Global)", () =
 
   it("Não deve navegar se a pesquisa estiver vazia", () => {
     render(<ExploreCategoriesScreen />);
-    
+
     const searchInput = screen.getByPlaceholderText("Search Store");
     fireEvent.changeText(searchInput, "   ");
     fireEvent(searchInput, "submitEditing");
@@ -67,7 +67,7 @@ describe("Integration Test: Ecrã Explorar (Categorias e Pesquisa Global)", () =
 
   it("Deve navegar para a respetiva categoria ao clicar no CategoryCard", () => {
     render(<ExploreCategoriesScreen />);
-    
+
     // Clica no cartão da "Mercearia"
     const merceariaCard = screen.getByTestId("category-card-mercearia");
     fireEvent.press(merceariaCard);
