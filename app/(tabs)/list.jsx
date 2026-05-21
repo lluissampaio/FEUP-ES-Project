@@ -1,19 +1,19 @@
-import CartItemRow from "@/components/ListItemRow";
 import DropdownPill from "@/components/FilterButton";
+import CartItemRow from "@/components/ListItemRow";
 import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
-import useCart from "@/hooks/useCart";
+import useCart from "@/hooks/useList";
 import { useSupermarketsStore } from "@/store/useSupermarketsStore";
 import { ShoppingCartSimple } from "phosphor-react-native";
 import { useEffect, useMemo, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  View,
-  useColorScheme,
+    ActivityIndicator,
+    FlatList,
+    StyleSheet,
+    View,
+    useColorScheme,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

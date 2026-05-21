@@ -10,16 +10,16 @@ import { getImageForProductCategory } from "@/constants/images";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { router, useLocalSearchParams } from "expo-router";
 import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-  useColorScheme,
+    ActivityIndicator,
+    Image,
+    Pressable,
+    ScrollView,
+    StyleSheet,
+    View,
+    useColorScheme,
 } from "react-native";
 
-import useCart from "@/hooks/useCart";
+import useCart from "@/hooks/useList";
 import { formatUnitPrice, useProductDetail } from "@/hooks/useProductDetails";
 
 export default function ProductDetail() {

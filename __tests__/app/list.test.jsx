@@ -1,7 +1,13 @@
-// Mocks devem vir antes de quase tudo
 jest.mock("@/firebaseConfig", () => ({
   auth: { currentUser: { uid: "test-uid" } },
   db: {},
+}));
+
+jest.mock("firebase/auth", () => ({
+  onAuthStateChanged: jest.fn((auth, callback) => {
+    callback({ uid: "test-uid" });
+    return jest.fn();
+  }),
 }));
 
 jest.mock("firebase/firestore", () => ({
@@ -17,7 +23,6 @@ jest.mock("react-native-safe-area-context", () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
 
-// cart.jsx usa useSupermarketsStore, não useSupermarkets
 jest.mock("@/store/useSupermarketsStore", () => ({
   useSupermarketsStore: (selector) => {
     const state = {
@@ -34,11 +39,11 @@ jest.mock("@/store/useSupermarketsStore", () => ({
 }));
 
 import Cart from "@/app/(tabs)/list";
-import useCart from "@/hooks/useCart";
+import useCart from "@/hooks/useList";
 import { fireEvent, render, screen } from "@testing-library/react-native";
 import React from "react";
 
-jest.mock("@/hooks/useCart");
+jest.mock("@/hooks/useList");
 
 describe("Acceptance Test: Página do Carrinho - Novas Funcionalidades", () => {
   it('deve renderizar o seletor global "Poupar em:"', () => {
@@ -86,7 +91,6 @@ describe("Acceptance Test: Página do Carrinho - Novas Funcionalidades", () => {
 
     render(<Cart />);
 
-    // Clicar no DropdownPill (que mostra "Melhor Preço (Mix)")
     fireEvent.press(screen.getByText("Melhor Preço (Mix)"));
 
     expect(screen.getByText("Pingo Doce")).toBeTruthy();
