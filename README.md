@@ -314,11 +314,11 @@ Fim do Sprint 1
 
 ##### Antes
 
-<img width="1536" height="1030" alt="imagem" src="https://github.com/user-attachments/assets/3f941453-5c1e-4c94-b537-5dc3e5330f83" />
+<img width="892" height="854" alt="image" src="https://github.com/user-attachments/assets/f7cbd25d-cbb2-4de9-a468-45318a95c55a" />
 
 ##### Depois
 
-<img width="1358" height="986" alt="imagem" src="https://github.com/user-attachments/assets/f2583b2c-83f6-4d92-a1d6-6e5923c190b9" />
+<img width="539" height="877" alt="imagem" src="https://github.com/user-attachments/assets/cf14b3c4-76cb-4264-a12a-f6a47f598fbd" />
 
 #### Funcionalidades Implementadas
 
@@ -344,11 +344,11 @@ Fim do Sprint 1
 
 - Como melhorar a segurança da app.
 
-# Ferramentas de IA Utilizadas
+#### Ferramentas de IA Utilizadas
 
 - Gemini, GLM, Claude, Deepseek
 
-# Prompts Relevantes
+#### Prompts Relevantes
 
 1 - Como é que resolvo as dependencias do projeto?
 2 - A app não está a abrir no expo go, o que faço para resolver?
@@ -356,21 +356,45 @@ Fim do Sprint 1
 4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
 5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
 
-# Código Gerado por IA
+#### Código Gerado por IA
 
 - "package.json"
 - "firebaseConfig.js"
 - Parte de "/store/useCartStore.js"
 
-# PBIs com label "MisterAI"
+#### PBIs com label "MisterAI"
 
 - Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 
----
-
 ### Sprint 3
 
-_A preencher no final do sprint._
+#### Board do projeto
+
+##### Antes
+
+<img width="540" height="874" alt="imagem" src="https://github.com/user-attachments/assets/8ae5cb67-94c8-4cc6-997d-e287eb9d613e" />
+
+##### Depois
+
+#### Funcionalidades Implementadas
+
+#### Retrospetiva
+
+**O que correu bem**
+
+**O que fazer de forma diferente**
+
+**Questões em aberto**
+
+# Ferramentas de IA Utilizadas
+
+- Gemini, GLM, Claude, Deepseek
+
+# Prompts Relevantes
+
+# Código Gerado por IA
+
+# PBIs com label "MisterAI"
 
 ---
 
