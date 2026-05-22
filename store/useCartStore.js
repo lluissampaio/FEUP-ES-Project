@@ -5,12 +5,18 @@ export const useCartStore = create((set) => ({
   loading: true,
   error: null,
 
-  setProducts: (products) => set({ products, loading: false }),
+  // ensure scratched defaults to false for items loaded from firestore safely
+  setProducts: (products) =>
+    set({
+      products: (products ?? []).filter(Boolean).map((p) => ({
+        ...p,
+        scratched: p.scratched ?? false,
+      })),
+      loading: false,
+    }),
   setLoading: (loading) => set({ loading }),
   setError: (error) => set({ error }),
 
-  // Estas funções podem ser usadas para atualizações locais imediatas (optimistic updates)
-  // Mas a sincronização real será feita pelo hook useCart com o Firestore
   addProductLocal: (product, quantityToAdd = 1, storeId = null) => {
     set((state) => {
       const existing = state.products.find((p) => p.id === product.id);
@@ -31,6 +37,7 @@ export const useCartStore = create((set) => ({
               quantity: quantityToAdd,
               selectedStoreId: storeId ?? null,
               originalPrice: product.originalPrice ?? null,
+              scratched: false,
             },
           ];
       return { products: next };
@@ -65,6 +72,14 @@ export const useCartStore = create((set) => ({
         ...p,
         selectedStoreId: storeId ?? null,
       })),
+    }));
+  },
+
+  scratchItemLocal: (id) => {
+    set((state) => ({
+      products: state.products.map((p) =>
+        p.id === id ? { ...p, scratched: !p.scratched } : p,
+      ),
     }));
   },
 
