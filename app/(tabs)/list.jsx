@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Platform,
   Pressable,
   StyleSheet,
   View,
@@ -73,14 +74,18 @@ export default function Cart() {
   };
 
   const handleClearList = () => {
-    Alert.alert("Limpar Lista", "Tem a certeza que deseja limpar a lista?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Limpar",
-        style: "destructive",
-        onPress: clear,
-      },
-    ]);
+    const confirmed = () => clear();
+
+    if (Platform.OS === "web") {
+      if (window.confirm("Tem a certeza que deseja limpar a lista?")) {
+        confirmed();
+      }
+    } else {
+      Alert.alert("Limpar Lista", "Tem a certeza que deseja limpar a lista?", [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Limpar", style: "destructive", onPress: confirmed },
+      ]);
+    }
   };
 
   const processedProducts = useMemo(() => {
@@ -127,7 +132,6 @@ export default function Cart() {
     });
   }, [products, supermarkets]);
 
-  // unscratched items stay on top, scratched sink to the bottom
   const sortedProducts = useMemo(() => {
     return [...processedProducts].sort((a, b) => {
       if (a.scratched === b.scratched) return 0;
@@ -161,6 +165,13 @@ export default function Cart() {
         <ThemedText title style={styles.headerTitle}>
           Lista de Compras
         </ThemedText>
+        <Pressable
+          onPress={handleClearList}
+          hitSlop={8}
+          testID="clear-list-button"
+        >
+          <ThemedText style={styles.clearButtonText}>Limpar</ThemedText>
+        </Pressable>
       </View>
 
       <View
@@ -227,15 +238,9 @@ export default function Cart() {
         ]}
       >
         {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
-        <Pressable
-          onPress={allScratched ? handleClearList : undefined}
-          style={({ pressed }) => [
-            styles.totalButton,
-            allScratched && pressed && styles.totalButtonPressed,
-          ]}
-        >
+        <View style={styles.totalButton}>
           <ThemedText style={styles.totalLabel}>
-            {allScratched ? "Limpar Lista" : "Total Estimado"}
+            {allScratched ? "Lista Completa" : "Total Estimado"}
           </ThemedText>
           <ThemedText
             style={styles.totalValue}
@@ -243,7 +248,7 @@ export default function Cart() {
           >
             {total.toFixed(2)} €
           </ThemedText>
-        </Pressable>
+        </View>
       </View>
     </ThemedView>
   );
@@ -259,14 +264,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 16,
     paddingBottom: 16,
-    alignItems: "center",
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: "700",
+  },
+  clearButtonText: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: Colors.warning,
   },
   divider: {
     height: 1,
@@ -303,9 +315,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 25,
-  },
-  totalButtonPressed: {
-    opacity: 0.7,
   },
   totalLabel: {
     color: "#fff",

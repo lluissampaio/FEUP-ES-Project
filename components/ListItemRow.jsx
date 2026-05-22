@@ -53,6 +53,7 @@ const CartItemRow = ({
         style={styles.checkboxHitArea}
         accessibilityRole="checkbox"
         accessibilityState={{ checked: scratched }}
+        testID="item-checkbox"
       >
         <View
           style={[
@@ -63,9 +64,7 @@ const CartItemRow = ({
             },
           ]}
         >
-          {scratched && (
-            <View style={styles.checkmarkStroke} />
-          )}
+          {scratched && <View style={styles.checkmarkStroke} />}
         </View>
       </TouchableOpacity>
 
