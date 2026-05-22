@@ -1,16 +1,16 @@
 import DropdownPill from "@/components/FilterButton";
 import CartItemRow from "@/components/ListItemRow";
-import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
 import useCart from "@/hooks/useList";
 import { useSupermarketsStore } from "@/store/useSupermarketsStore";
-import { ShoppingCartSimple } from "phosphor-react-native";
 import { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
+  Pressable,
   StyleSheet,
   View,
   useColorScheme,
@@ -27,6 +27,8 @@ export default function Cart() {
     updateQuantity,
     updateItemStore,
     updateAllItemsStore,
+    scratchItem,
+    clear,
   } = useCart();
 
   const { supermarkets, fetchSupermarkets } = useSupermarketsStore();
@@ -38,6 +40,9 @@ export default function Cart() {
   useEffect(() => {
     fetchSupermarkets();
   }, [fetchSupermarkets]);
+
+  const allScratched =
+    products.length > 0 && products.every((p) => p.scratched);
 
   const getStoreName = (storeId) => {
     if (!storeId) return "";
@@ -65,6 +70,17 @@ export default function Cart() {
   const handleGlobalStoreSelect = (storeId) => {
     setGlobalSelectedStore(storeId);
     updateAllItemsStore(storeId);
+  };
+
+  const handleClearList = () => {
+    Alert.alert("Limpar Lista", "Tem a certeza que deseja limpar a lista?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Limpar",
+        style: "destructive",
+        onPress: clear,
+      },
+    ]);
   };
 
   const processedProducts = useMemo(() => {
@@ -111,6 +127,14 @@ export default function Cart() {
     });
   }, [products, supermarkets]);
 
+  // unscratched items stay on top, scratched sink to the bottom
+  const sortedProducts = useMemo(() => {
+    return [...processedProducts].sort((a, b) => {
+      if (a.scratched === b.scratched) return 0;
+      return a.scratched ? 1 : -1;
+    });
+  }, [processedProducts]);
+
   if (loading) {
     return (
       <ThemedView style={styles.container}>
@@ -124,25 +148,8 @@ export default function Cart() {
   if (products.length === 0) {
     return (
       <ThemedView safe style={styles.container}>
-        <View style={styles.header}>
-          <ThemedText title style={styles.headerTitle}>
-            Lista de Compras
-          </ThemedText>
-        </View>
-        <View
-          style={[styles.divider, { backgroundColor: theme.searchBackground }]}
-        />
         <View style={styles.emptyState}>
-          <ShoppingCartSimple size={80} color={Colors.primary} weight="thin" />
-          <Spacer height={24} />
-          <ThemedText title style={styles.emptyTitle}>
-            O seu carrinho está vazio
-          </ThemedText>
-          <ThemedText
-            style={[styles.emptySubtitle, { color: theme.iconColor }]}
-          >
-            Adicione produtos para começar a poupar!
-          </ThemedText>
+          <ThemedText style={styles.emptyText}>empty list</ThemedText>
         </View>
       </ThemedView>
     );
@@ -181,7 +188,7 @@ export default function Cart() {
       />
 
       <FlatList
-        data={processedProducts}
+        data={sortedProducts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <CartItemRow
@@ -198,6 +205,8 @@ export default function Cart() {
             storeOptions={item.storeOptions}
             selectedStoreId={item.activeStoreId}
             onStoreSelect={(storeId) => updateItemStore(item.id, storeId)}
+            scratched={item.scratched ?? false}
+            onToggleScratch={() => scratchItem(item.id)}
           />
         )}
         contentContainerStyle={[
@@ -218,15 +227,23 @@ export default function Cart() {
         ]}
       >
         {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
-        <View style={styles.totalButton}>
-          <ThemedText style={styles.totalLabel}>Total Estimado</ThemedText>
+        <Pressable
+          onPress={allScratched ? handleClearList : undefined}
+          style={({ pressed }) => [
+            styles.totalButton,
+            allScratched && pressed && styles.totalButtonPressed,
+          ]}
+        >
+          <ThemedText style={styles.totalLabel}>
+            {allScratched ? "Limpar Lista" : "Total Estimado"}
+          </ThemedText>
           <ThemedText
             style={styles.totalValue}
             testID="cart-total-estimated-value"
           >
             {total.toFixed(2)} €
           </ThemedText>
-        </View>
+        </Pressable>
       </View>
     </ThemedView>
   );
@@ -287,6 +304,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 25,
   },
+  totalButtonPressed: {
+    opacity: 0.7,
+  },
   totalLabel: {
     color: "#fff",
     fontSize: 18,
@@ -306,16 +326,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 100,
   },
-  emptyTitle: {
+  emptyText: {
     fontSize: 20,
-    fontWeight: "700",
-  },
-  emptySubtitle: {
-    fontSize: 15,
-    textAlign: "center",
-    marginTop: 8,
-    paddingHorizontal: 32,
+    fontWeight: "600",
+    opacity: 0.5,
   },
 });
