@@ -17,6 +17,7 @@ Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até �
   - [Arquitetura Lógica](#arquitetura-lógica)
   - [Arquitetura Física](#arquitetura-física)
   - [Protótipo Vertical](#protótipo-vertical)
+- [Validação de Requisitos](#validação-de-requisitos)
 - [Gestão do Projeto](#gestão-do-projeto)
   - [Sprint 0](#sprint-0)
   - [Sprint 1](#sprint-1)
@@ -232,6 +233,18 @@ Através da integração com o GPS do dispositivo e a base de dados Firebase Fir
 Nota: Nesta iteração, alguns botões e elementos interativos ainda não se encontram totalmente operacionais. Estes elementos fazem parte das funcionalidades planeadas para os sprints seguintes.
 
 ---
+
+## Validação de Requisitos
+
+No início do projeto, realizámos um questionário ao nosso público-alvo para validar a utilidade da aplicação e perceber quais as funcionalidades com maior procura. Este processo foi fundamental para refinar o nosso Product Backlog (PBL) e focar o esforço de desenvolvimento no que realmente importa.
+Link do formulário: [https://tally.so/r/pbWPjV]
+
+### Principais Conclusões e Impacto no PBL:
+
+- Priorização da Checklist: O feedback indicou que os utilizadores queriam algo prático para usar durante as compras no supermercado. Isto levou-nos a priorizar a implementação da checklist interativa (Issue #117), em vez de mantermos apenas uma lista de produtos estática.
+- Implementação do Modo Convidado: Percebemos que obrigar à criação de conta afastava potenciais utilizadores. Ajustámos a arquitetura para permitir a utilização da app como "Convidado", mantendo o registo e a sincronização com o Firebase apenas para quem quer guardar o histórico.
+- Toggle de Poupança vs. Conveniência: Os inquéritos confirmaram que a decisão de compra varia: uns dias procura-se o preço mais baixo (várias lojas), noutros a rapidez (uma só loja). Isto validou a necessidade do toggle de otimização no ecrã do carrinho.
+- Corte de Funcionalidades (Limpeza do MVP): Ideias iniciais que tínhamos planeado, como os indicadores ecológicos, pontuação nutricional ou partilha de listas, não despertaram grande interesse. Foram removidas do backlog para podermos focar em funcionalidades com maior importância para o user final
 
 ## Gestão do Projeto
 
