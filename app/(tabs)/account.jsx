@@ -34,7 +34,7 @@ const AccountScreen = () => {
           })
           .catch((error) => {
             if (
-              error.code === "auth/user-token-expired" || 
+              error.code === "auth/user-token-expired" ||
               error.code === "auth/user-not-found"
             ) {
               Alert.alert(
@@ -53,7 +53,7 @@ const AccountScreen = () => {
                     },
                   },
                 ],
-                { cancelable: false }
+                { cancelable: false },
               );
             } else {
               console.warn("Outro erro de sessão detetado:", error.message);
@@ -72,9 +72,21 @@ const AccountScreen = () => {
   );
 
   const menuItems = [
-    { title: "Localização", icon: "location", onPress: () => router.push("/location") },
-    { title: "Ajuda", icon: "help", onPress: () => console.log("Ajuda pressed") },
-    { title: "Sobre nós", icon: "about", onPress: () => console.log("Sobre nós pressed") },
+    {
+      title: "Localização",
+      icon: "location",
+      onPress: () => router.push("/location"),
+    },
+    {
+      title: "Ajuda",
+      icon: "help",
+      onPress: () => console.log("Ajuda pressed"),
+    },
+    {
+      title: "Sobre nós",
+      icon: "about",
+      onPress: () => console.log("Sobre nós pressed"),
+    },
   ];
 
   const handleLogout = async () => {
@@ -86,7 +98,8 @@ const AccountScreen = () => {
     }
   };
 
-  const userName = userData.name || userData.email?.split("@")[0] || "Utilizador";
+  const userName =
+    userData.name || userData.email?.split("@")[0] || "Utilizador";
   const userEmail = userData.email || "";
   const defaultAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random&color=fff`;
 
@@ -103,7 +116,12 @@ const AccountScreen = () => {
         <View style={styles.menuContainer}>
           <AccountThemeToggle currentTheme={theme} onSelectTheme={setTheme} />
           {menuItems.map((item, index) => (
-            <AccountMenuItem key={index} title={item.title} iconName={item.icon} onPress={item.onPress} />
+            <AccountMenuItem
+              key={index}
+              title={item.title}
+              iconName={item.icon}
+              onPress={item.onPress}
+            />
           ))}
         </View>
 
@@ -117,5 +135,9 @@ export default AccountScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  menuContainer: { marginTop: 10, borderTopWidth: 1, borderTopColor: "#E2E2E233" },
+  menuContainer: {
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#E2E2E233",
+  },
 });

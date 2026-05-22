@@ -98,7 +98,7 @@ export default function EditProfile() {
 
         const credential = EmailAuthProvider.credential(
           auth.currentUser.email,
-          currentPassword
+          currentPassword,
         );
 
         try {
@@ -107,7 +107,7 @@ export default function EditProfile() {
           console.error("Erro na reautenticação:", error);
           Alert.alert(
             "Erro de Autenticação",
-            "A Palavra-passe atual introduzida está incorreta. Verifica os dados e tenta novamente."
+            "A Palavra-passe atual introduzida está incorreta. Verifica os dados e tenta novamente.",
           );
           setLoading(false);
           return;
@@ -136,7 +136,7 @@ export default function EditProfile() {
         await updatePassword(auth.currentUser, newPassword);
       }
 
-      await auth.currentUser.reload(); 
+      await auth.currentUser.reload();
 
       const successMessage = emailVerificationSent
         ? "Alterações guardadas! Enviámos um link de validação para o novo email. A alteração só terá efeito após confirmares no teu email."
@@ -156,7 +156,8 @@ export default function EditProfile() {
       } else if (error.code === "auth/weak-password") {
         errorMessage = "A nova password é demasiado fraca.";
       } else if (error.code === "auth/invalid-credential") {
-        errorMessage = "Credenciais inválidas. Por favor, reintroduza a sua password atual.";
+        errorMessage =
+          "Credenciais inválidas. Por favor, reintroduza a sua password atual.";
       }
 
       Alert.alert("Erro", errorMessage);
@@ -296,13 +297,30 @@ export default function EditProfile() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { paddingHorizontal: 24, flexGrow: 1 },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   backButton: { padding: 4 },
   logoText: { fontSize: 24, fontWeight: "bold", textAlign: "center" },
   label: { fontSize: 14, marginBottom: 8, fontWeight: "500" },
-  input: { borderWidth: 1, borderColor: "#ccc", borderRadius: 8, paddingHorizontal: 16, paddingVertical: 12, fontSize: 16, backgroundColor: "#f9f9f9" },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    backgroundColor: "#f9f9f9",
+  },
   saveButton: { borderRadius: 8, paddingVertical: 14 },
-  buttonText: { color: "#fff", textAlign: "center", fontSize: 16, fontWeight: "600" },
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "600",
+  },
   passwordContainer: { position: "relative", width: "100%" },
   passwordInput: { paddingRight: 50 },
   eyeButton: { position: "absolute", right: 12, top: 12, padding: 4 },
