@@ -1,31 +1,31 @@
 import { auth } from "@/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
-  updateEmail,
   updatePassword,
   updateProfile,
+  verifyBeforeUpdateEmail,
 } from "firebase/auth";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Keyboard,
   Pressable,
+  ScrollView,
   StyleSheet,
   TextInput,
   TouchableWithoutFeedback,
   View,
-  ScrollView,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import AppIcon from "@/components/AppIcon";
 import Spacer from "@/components/Spacer";
 import ThemedButton from "@/components/ThemedButton";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
-import AppIcon from "@/components/AppIcon";
 
 export default function EditProfile() {
   const user = auth.currentUser;
@@ -53,9 +53,10 @@ export default function EditProfile() {
     Keyboard.dismiss();
     setLoading(true);
 
+    const freshUser = auth.currentUser;
+
     try {
       if (isAnonymous) {
-        // Guest mode logic
         await AsyncStorage.setItem("guestName", name);
         Alert.alert("Sucesso", "Perfil atualizado com sucesso!", [
           { text: "OK", onPress: () => router.back() },
@@ -63,9 +64,15 @@ export default function EditProfile() {
         return;
       }
 
-      const isEmailChanged = email !== user.email;
+      if (!freshUser) {
+        Alert.alert("Erro", "Utilizador não autenticado.");
+        setLoading(false);
+        return;
+      }
+
+      const isEmailChanged = email !== freshUser.email;
       const isPasswordChanged = newPassword.length > 0;
-      const isNameChanged = name !== user.displayName;
+      const isNameChanged = name !== freshUser.displayName;
 
       if (!isEmailChanged && !isPasswordChanged && !isNameChanged) {
         Alert.alert("Aviso", "Nenhuma alteração foi feita.");
@@ -73,7 +80,6 @@ export default function EditProfile() {
         return;
       }
 
-      // If email or password is being changed, we need the current password to re-authenticate
       if (isEmailChanged || isPasswordChanged) {
         if (!currentPassword) {
           Alert.alert(
@@ -84,27 +90,38 @@ export default function EditProfile() {
           return;
         }
 
+        try {
+          await freshUser.reload();
+        } catch (reloadError) {
+          console.warn("Aviso ao recarregar sessão:", reloadError);
+        }
+
         const credential = EmailAuthProvider.credential(
-          user.email,
+          auth.currentUser.email,
           currentPassword,
         );
+
         try {
-          await reauthenticateWithCredential(user, credential);
+          await reauthenticateWithCredential(auth.currentUser, credential);
         } catch (error) {
           console.error("Erro na reautenticação:", error);
-          Alert.alert("Erro", "Palavra-passe atual incorreta.");
+          Alert.alert(
+            "Erro de Autenticação",
+            "A Palavra-passe atual introduzida está incorreta. Verifica os dados e tenta novamente.",
+          );
           setLoading(false);
           return;
         }
       }
 
-      // Proceed with updates
       if (isNameChanged) {
-        await updateProfile(user, { displayName: name });
+        await updateProfile(auth.currentUser, { displayName: name });
       }
 
+      let emailVerificationSent = false;
       if (isEmailChanged) {
-        await updateEmail(user, email);
+        await verifyBeforeUpdateEmail(auth.currentUser, email);
+        emailVerificationSent = true;
       }
 
       if (isPasswordChanged) {
@@ -116,12 +133,16 @@ export default function EditProfile() {
           setLoading(false);
           return;
         }
-        await updatePassword(user, newPassword);
+        await updatePassword(auth.currentUser, newPassword);
       }
 
-      await user.reload(); // Garante que a Firebase re-carrega os dados do user atualizados.
+      await auth.currentUser.reload();
 
-      Alert.alert("Sucesso", "Perfil atualizado com sucesso!", [
+      const successMessage = emailVerificationSent
+        ? "Alterações guardadas! Enviámos um link de validação para o novo email. A alteração só terá efeito após confirmares no teu email."
+        : "Perfil updated com sucesso!";
+
+      Alert.alert("Sucesso", successMessage, [
         { text: "OK", onPress: () => router.back() },
       ]);
     } catch (error) {
@@ -134,6 +155,9 @@ export default function EditProfile() {
         errorMessage = "O email fornecido é inválido.";
       } else if (error.code === "auth/weak-password") {
         errorMessage = "A nova password é demasiado fraca.";
+      } else if (error.code === "auth/invalid-credential") {
+        errorMessage =
+          "Credenciais inválidas. Por favor, reintroduza a sua password atual.";
       }
 
       Alert.alert("Erro", errorMessage);
@@ -218,7 +242,7 @@ export default function EditProfile() {
 
               <Spacer height={30} />
 
-              {/* Current Password (for security) */}
+              {/* Current Password */}
               <ThemedText style={styles.label}>
                 Palavra-passe Atual (Obrigatório para mudar Email/Pass)
               </ThemedText>
@@ -271,31 +295,16 @@ export default function EditProfile() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingHorizontal: 24,
-    flexGrow: 1,
-  },
+  container: { flex: 1 },
+  scrollContent: { paddingHorizontal: 24, flexGrow: 1 },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  backButton: {
-    padding: 4,
-  },
-  logoText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 8,
-    fontWeight: "500",
-  },
+  backButton: { padding: 4 },
+  logoText: { fontSize: 24, fontWeight: "bold", textAlign: "center" },
+  label: { fontSize: 14, marginBottom: 8, fontWeight: "500" },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -305,27 +314,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: "#f9f9f9",
   },
-  saveButton: {
-    borderRadius: 8,
-    paddingVertical: 14,
-  },
+  saveButton: { borderRadius: 8, paddingVertical: 14 },
   buttonText: {
     color: "#fff",
     textAlign: "center",
     fontSize: 16,
     fontWeight: "600",
   },
-  passwordContainer: {
-    position: "relative",
-    width: "100%",
-  },
-  passwordInput: {
-    paddingRight: 50,
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 12,
-    top: 12,
-    padding: 4,
-  },
+  passwordContainer: { position: "relative", width: "100%" },
+  passwordInput: { paddingRight: 50 },
+  eyeButton: { position: "absolute", right: 12, top: 12, padding: 4 },
 });

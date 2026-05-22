@@ -1,20 +1,20 @@
+import { auth } from "@/firebaseConfig";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
 import {
   Image,
   ImageBackground,
+  Pressable,
   StyleSheet,
   View,
-  Pressable,
 } from "react-native";
-import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useEffect } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/firebaseConfig";
 
-import ThemedText from "@/components/ThemedText";
-import ThemedButton from "@/components/ThemedButton";
 import Spacer from "@/components/Spacer";
+import ThemedButton from "@/components/ThemedButton";
+import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/colors";
 
 export default function WelcomeScreen() {
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     paddingVertical: 18,
     borderRadius: 16,
-    marginVertical: 0, // Reset default margin if any
+    marginVertical: 0,
   },
   loginButton: {
     width: "100%",
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     paddingVertical: 18,
     borderRadius: 16,
-    marginVertical: 0, // Reset default margin if any
+    marginVertical: 0,
   },
   buttonText: {
     color: "#FFFFFF",
