@@ -26,12 +26,12 @@ export default function useCart() {
     updateQuantityLocal,
     updateItemStoreLocal,
     updateAllItemsStoreLocal,
+    scratchItemLocal,
     clearLocal,
   } = useCartStore();
 
   const isInitialMount = useRef(true);
 
-  // Sincronização com Firestore
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -80,16 +80,10 @@ export default function useCart() {
 
   const addProduct = useCallback(
     async (product, quantityToAdd = 1, storeId = null) => {
-      // Atualiza localmente primeiro para feedback instantâneo
       addProductLocal(product, quantityToAdd, storeId);
 
-      // Se houver user, salva no Firestore (o snapshot depois confirma)
       const user = auth.currentUser;
       if (user) {
-        // Precisamos do estado atualizado. Como o set do zustand é síncrono mas
-        // o products aqui pode estar desatualizado por causa da closure,
-        // idealmente o useCartStore deveria expor o estado atualizado.
-        // Por simplicidade, recalculamos o next aqui ou usamos o store diretamente
         const currentProducts = useCartStore.getState().products;
         await saveToFirestore(currentProducts);
       }
@@ -145,6 +139,19 @@ export default function useCart() {
     [updateAllItemsStoreLocal, saveToFirestore],
   );
 
+  // toggles scratch state and persists
+  const scratchItem = useCallback(
+    async (id) => {
+      scratchItemLocal(id);
+      const user = auth.currentUser;
+      if (user) {
+        const currentProducts = useCartStore.getState().products;
+        await saveToFirestore(currentProducts);
+      }
+    },
+    [scratchItemLocal, saveToFirestore],
+  );
+
   const clear = useCallback(async () => {
     clearLocal();
     const user = auth.currentUser;
@@ -171,6 +178,7 @@ export default function useCart() {
     updateQuantity,
     updateItemStore,
     updateAllItemsStore,
+    scratchItem,
     clear,
   };
 }
