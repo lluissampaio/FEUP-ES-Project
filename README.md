@@ -236,15 +236,28 @@ Nota: Nesta iteração, alguns botões e elementos interativos ainda não se enc
 
 ## Validação de Requisitos
 
-No início do projeto, realizámos um questionário ao nosso público-alvo para validar a utilidade da aplicação e perceber quais as funcionalidades com maior procura. Este processo foi fundamental para refinar o nosso Product Backlog (PBL) e focar o esforço de desenvolvimento no que realmente importa.
+No início do projeto, realizámos um questionário ao nosso público-alvo (com a participação de 21 respondentes) para validar a utilidade da aplicação e compreender as funcionalidades com maior procura. Este processo foi fundamental para refinar o nosso Product Backlog (PBL) com base em dados quantitativos, focando o esforço de desenvolvimento no MVP.
+
 Link do formulário: [https://tally.so/r/pbWPjV]
+
+### Resultados
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/user-attachments/assets/4cdc7b88-41b6-43e4-b1bc-d9616ece3cbc" alt="Hábitos de Consumo e Adesão da Ideia" width="100%" />
+    </td>
+    <td width="50%">
+      <img src="https://github.com/user-attachments/assets/3b69b073-2f68-47d7-9514-6b5654dd4f09" alt="Ordenação e Feedback de Funcionalidades" width="100%" />
+    </td>
+  </tr>
+</table>
 
 ### Principais Conclusões e Impacto no PBL:
 
-- Priorização da Checklist: O feedback indicou que os utilizadores queriam algo prático para usar durante as compras no supermercado. Isto levou-nos a priorizar a implementação da checklist interativa (Issue #117), em vez de mantermos apenas uma lista de produtos estática.
-- Implementação do Modo Convidado: Percebemos que obrigar à criação de conta afastava potenciais utilizadores. Ajustámos a arquitetura para permitir a utilização da app como "Convidado", mantendo o registo e a sincronização com o Firebase apenas para quem quer guardar o histórico.
-- Toggle de Poupança vs. Conveniência: Os inquéritos confirmaram que a decisão de compra varia: uns dias procura-se o preço mais baixo (várias lojas), noutros a rapidez (uma só loja). Isto validou a necessidade do toggle de otimização no ecrã do carrinho.
-- Corte de Funcionalidades (Limpeza do MVP): Ideias iniciais que tínhamos planeado, como os indicadores ecológicos, pontuação nutricional ou partilha de listas, não despertaram grande interesse. Foram removidas do backlog para podermos focar em funcionalidades com maior importância para o user final
+- **Priorização da Checklist:** 95.2% dos utilizadores (20 em 21) consideram importante planear as compras (38.1% faz sempre lista e 57.1% faz ocasionalmente). Isto levou-nos a priorizar a implementação da checklist interativa (Issue #117) para substituir dinamicamente o fluxo tradicional de papel ou notas.
+- **Implementação do Modo Convidado:** A validação inicial da utilidade da aplicação registou uma aceitação massiva, com 95.2% dos inquiridos a avaliar a ideia principal com nota igual ou superior a 4 (61.9% com pontuação máxima de 5). Para mitigar qualquer atrito que reduza a retenção desta base de utilizadores, removeu-se a obrigatoriedade de registo, adotando um "Modo Convidado" assíncrono via Firebase.
+- **Toggle de Poupança vs. Conveniência:** Confirmou-se a volatilidade do perfil de consumo: 47.6% dos inquiridos procura ativamente o supermercado com melhores promoções e 28.6% chega a deslocar-se a várias lojas na mesma semana, enquanto 23.8% prioriza a conveniência de uma loja única. Esta métrica validou o desenvolvimento do algoritmo de otimização bifuncional no carrinho.
+- **Corte de Funcionalidades (Limpeza do MVP):** Funcionalidades secundárias como a partilha de listas (Carrinho Partilhado) obtiveram a pior classificação no ecossistema de prioridades (média de 5.0, ocupando o último lugar isolado). Por registarem um rácio de rejeição ou indiferença acentuado, foram descartadas do backlog operacional para salvaguardar a entrega atempada das componentes críticas.
 
 ## Gestão do Projeto
 
