@@ -244,10 +244,10 @@ Link do formulário: [https://tally.so/r/pbWPjV]
 <table>
   <tr>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/4cdc7b88-41b6-43e4-b1bc-d9616ece3cbc" alt="Hábitos de Consumo e Adesão da Ideia" width="100%" />
+      <img src="https://github.com/user-attachments/assets/3b69b073-2f68-47d7-9514-6b5654dd4f09" alt="Ordenação e Feedback de Funcionalidades" width="100%" />
     </td>
     <td width="50%">
-      <img src="https://github.com/user-attachments/assets/3b69b073-2f68-47d7-9514-6b5654dd4f09" alt="Ordenação e Feedback de Funcionalidades" width="100%" />
+      <img src="https://github.com/user-attachments/assets/4cdc7b88-41b6-43e4-b1bc-d9616ece3cbc" alt="Hábitos de Consumo e Adesão da Ideia" width="100%" />
     </td>
   </tr>
 </table>
