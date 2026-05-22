@@ -1,8 +1,5 @@
 # Cents - Relatório de Desenvolvimento
 
-# Cents - Relatório de Desenvolvimento
-
-Bem-vindo à documentação do Cents!
 Bem-vindo à documentação do Cents!
 
 Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
@@ -106,39 +103,36 @@ Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile
 
 ### Visão do Produto
 
-O Cheapy surgiu da necessidade do consumidor final saber onde a sua lista de compras é mais barata, cruzando os preços de vários supermercados com as promoções existentes.
+O Cents é uma aplicação focada em simplificar, organizar e otimizar as compras de supermercado do consumidor final. O seu principal objetivo é permitir que o utilizador pesquise produtos de forma intuitiva, os adicione a uma lista e descubra rapidamente as opções mais económicas.
 
-Dado um conjunto de produtos selecionados pelo utilizador, a aplicação analisa os preços nos principais supermercados portugueses e sugere a melhor combinação de lojas para que as compras sejam o mais baratas possível, tendo em conta fatores como a distância ao supermercado.
-
-Para além da comparação de preços, a aplicação permite ao utilizador criar e gerir as suas listas de compras, tornando o processo mais rápido e organizado. As listas podem ser partilhadas com outras pessoas e guardadas nos favoritos, o que facilita a reutilização em compras frequentes e torna a experiência mais prática no dia a dia.
+Quer o utilizador prefira a máxima poupança (combinando compras em várias lojas diferentes) ou a conveniência (comprando tudo num só supermercado), a aplicação adapta-se através de ferramentas de filtragem inteligentes. Além da poupança, o Cents traz valor real durante a ida ao supermercado, oferecendo uma checklist interativa que facilita o acompanhamento dos produtos já recolhidos, garantindo uma experiência de compras mais rápida e sem esquecimentos.
 
 ### Funcionalidades e Pressupostos
 
 **Funcionalidades**
 
-- **Autenticação** - Registo e login de utilizadores, com proteção de rotas e gestão de sessão.
-- **Pesquisa de Supermercados** - Pesquisa de supermercados por nome, com filtragem por distância e estado de funcionamento (aberto/fechado).
-- **Geolocalização** - Cálculo da distância entre o utilizador e os supermercados disponíveis, usando a fórmula de Haversine.
-- **Horários** - Consulta do horário de funcionamento de cada supermercado.
-- **Pesquisa de Produtos** - Pesquisa e adição de produtos ao carrinho de compras.
-- **Comparação de Preços** - Dado um carrinho de produtos, a aplicação identifica o supermercado onde o total é mais baixo, considerando as promoções disponíveis.
-- **Otimização Multi-loja** - Sugestão da melhor combinação de supermercados para minimizar o custo total do carrinho.
-- **Listas de Compras** - Criação, edição e reutilização de listas de compras personalizadas.
-- **Carrinho Partilhado** - Partilha de listas de compras com outros utilizadores.
-- **Favoritos** - Possibilidade de guardar listas nos favoritos para reutilização futura.
-- **Perfil** - Página pessoal com informações do utilizador e histórico de compras.
-- **Recomendações** - Sugestão de produtos com base no histórico de compras do utilizador.
-- **Indicador Ecológico** - Identificação de produtos com baixa pegada de carbono.
-- **Indicador Nutricional** - Classificação da qualidade nutricional de cada produto.
-- **Modo Offline** - Acesso ao carrinho de compras sem necessidade de ligação à internet.
-- **Definições** - Gestão de notificações e preferências do utilizador.
+**Pesquisa de Produtos por Categoria** - Exploração e adição de produtos à lista de compras organizados pelas respetivas categorias.
+
+**Otimização de Preços (Toggle Mix/Loja Única)** - Na aba da lista de compras, o utilizador pode alternar entre ver o "melhor preço absoluto" (um mix de produtos em diferentes lojas) ou restringir a lista para ver apenas os produtos de uma loja específica.
+
+**Checklist Interativa de Compras** - Modo de visualização desenhado para o momento da compra. Ao clicar num produto da lista, este é "riscado", a sua cor muda para cinzento e é movido para o fim da lista. Se o carrinho for esvaziado, o ecrã adapta-se apresentando um estado de "Lista vazia".
+
+**Pesquisa de Supermercados e Horários** - Descoberta de supermercados próximos com base na localização atual do GPS do utilizador ou através de uma localização introduzida manualmente (suportada pela API do Photon). Os resultados incluem a apresentação dos horários de funcionamento de cada loja.
+
+**Sistema de Utilizadores (Conta vs. Convidado)** - A aplicação pode ser explorada como convidado ou através da criação de uma conta de utilizador para acesso a funcionalidades extra.
+
+**Sincronização na Cloud** - Para utilizadores com conta registada, a sua lista de compras sincroniza automaticamente em tempo real com a base de dados (Firestore), permitindo não perder os dados.
+
+**Gestão de Conta Segura** - Sistema de recuperação de conta através do envio de e-mails. Na funcionalidade de alteração de e-mail da conta, é enviado um e-mail de verificação para o novo endereço, obrigando à confirmação da sua existência antes de efetivar a mudança.
+
+**Personalização da Interface (Dark/Light Mode)** - Suporte nativo para modo claro e modo escuro, adaptando-se às preferências do utilizador.
 
 **Pressupostos**
 
-- A aplicação depende do Firebase para os serviços de base de dados (Firestore) e autenticação (Auth).
-- Os dados de produtos e preços são inseridos manualmente ou via API, não sendo garantida atualização automática.
-- A geolocalização do utilizador é acedida via GPS do dispositivo, através da biblioteca `expo-location`.
-- A aplicação assume que o utilizador tem ligação à internet para a maioria das funcionalidades, exceto o modo offline.
+- A aplicação utiliza o Firebase como infraestrutura principal para os serviços de Autenticação (Auth) e Base de Dados em tempo real (Firestore).
+- Atualmente, todos os produtos, os supermercados disponíveis e os seus respetivos horários de funcionamento presentes no Firestore são dados simulados (mocks) para efeitos de prova de conceito e demonstração de funcionamento.
+- A pesquisa e conversão de localizações personalizadas inseridas pelo utilizador dependem do serviço externo da API do Photon.
+- Assume-se que o utilizador necessita de uma ligação ativa à internet para sincronizar a lista na cloud, pesquisar supermercados noutras localizações e efetuar login/alteração de credenciais.
 
 ---
 
@@ -156,15 +150,31 @@ Para além da comparação de preços, a aplicação permite ao utilizador criar
 
 As user stories foram criadas e geridas no [GitHub Projects](https://github.com/orgs/FEUP-LEIC-ES-2025-26/projects). Segue-se um resumo das histórias identificadas:
 
-- Enquanto utilizador não registado, quero registar uma conta na aplicação, de modo a guardar toda a informação necessária.
-- Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso a toda a minha informação.
-- Enquanto utilizador registado, quero ver o meu perfil, para que possa saber se estou na minha conta.
-- Enquanto utilizador, quero selecionar os supermercados onde a pesquisa vai ser feita, para escolher os meus preferidos.
-- Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar os que estão abertos, para decidir rapidamente onde fazer compras.
-- Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados, para planear as minhas compras de forma mais eficiente.
-- Enquanto utilizador, quero ver se os produtos são ecológicos, para diminuir a minha pegada ambiental.
-- Enquanto utilizador, quero consultar onde o meu carrinho de compras é mais barato, para que possa poupar dinheiro.
-- Enquanto utilizador, quero esvaziar o carrinho, para que não tenha de remover manualmente cada produto.
+Autenticação e Gestão de Conta
+
+- Enquanto utilizador, quero ser recebido por um ecrã inicial claro, com opções fáceis para entrar com conta ou aceder como convidado.
+- Enquanto utilizador não registado, quero criar uma conta na aplicação, de modo a guardar e sincronizar a minha lista de compras.
+- Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso à minha informação guardada.
+- Enquanto utilizador registado, quero ter acesso a uma aba de conta para visualizar o meu perfil (nome e foto).
+- Enquanto utilizador registado, quero conseguir recuperar a minha palavra-passe e alterar o meu e-mail de forma segura, para garantir o acesso e a segurança da minha conta.
+
+Supermercados e Localização
+
+- Enquanto utilizador, quero pesquisar supermercados perto de mim usando a minha localização atual ou uma localização que eu defina manualmente.
+- Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar se estão abertos agora.
+- Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados para conseguir planear as minhas compras.
+
+Produtos e Lista de Compras (Carrinho)
+
+- Enquanto utilizador, quero conseguir pesquisar e explorar produtos organizados por uma dada categoria.
+- Enquanto utilizador, quero adicionar produtos à minha lista de compras e gerir as suas quantidades num ecrã dedicado.
+- Enquanto utilizador, quero visualizar os dados básicos do produto e comparar os seus preços em diferentes supermercados.
+- Enquanto utilizador, quero escolher na minha lista de compras entre a opção de "melhor preço absoluto" (mix de supermercados) ou restringir os produtos a uma loja específica.
+- Enquanto utilizador, quero uma checklist interativa dos produtos que vou comprar (onde os itens clicados ficam riscados, a cinzento, e movem-se para o fundo), para me organizar melhor durante as compras na loja.
+
+Personalização
+
+- Enquanto utilizador, quero escolher o tema da aplicação (modo claro e escuro), para que a interface se ajuste às minhas preferências.
 
 ### Modelo de Domínio
 
@@ -329,23 +339,31 @@ Fim do Sprint 1
 
 #### Funcionalidades Implementadas
 
-- Página de produto por @dcl674
-- Página de supermercado por @bcdtrack
-- Dark/Light mode por @bcdtrack
-- Carrinho por @lluissampaio
-- Ecrã esquecer password por @JoseSantos56
-- Ecrã inicial por @lluissampaio
+- Ecrã Inicial por @lluissampaio
+Landing page com as opções de login, registo ou entrada rápida como convidado.
+- Página de Produtos por @dcl674
+Página com preços em diversos supermercados e mais informações como nutriscore, ecoscore e quantidade. Permite adicionar produtos ao carrinho.
+- Página de horários de supermercados por @bcdtrak
+Página com horário completo do supermercado selecionado
+- Carrinho de Compras por @lluissampaio
+Gestão da lista de compras com um toggle que permite calcular o melhor preço num "mix" de supermercados ou restringir tudo a uma só loja. Conecção à firestore.
+- Checklist Interativa por @bcdtrak
+Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
+- Recuperação e Gestão de Conta por @JoseSantos56
+Ecrã para recuperar a password e lógica de segurança (verificação por e-mail) ao alterar os dados do utilizador.
+- Dark/Light Mode por @bcdtrak
+Suporte nativo para alternar entre modo claro e escuro em toda a aplicação.
 
 #### Retrospetiva
 
 **O que correu bem**
 
-- Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
+- Implementação Paralela: A equipa implementou 7 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
 - Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
 
 **O que fazer de forma diferente**
 
-- Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
+- Organização: A equipa poderia se ter organizado melhor para conseguir realizar as features mais atempadamente.
 
 **Questões em aberto**
 
