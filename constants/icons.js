@@ -1,6 +1,8 @@
 import {
   CaretLeft,
   CaretRight,
+  CheckCircle,
+  Circle,
   Crosshair,
   Eye,
   EyeSlash,
@@ -49,4 +51,7 @@ export const ICON_MAP = {
   sun: Sun,
   moon: Moon,
   gear: Gear,
+
+  checkCircle: CheckCircle,
+  circle: Circle,
 };
