@@ -1,3 +1,4 @@
+import AppIcon from "@/components/AppIcon";
 import FilterPill from "@/components/DropdownButton";
 import DropdownPill from "@/components/FilterButton";
 import SearchInput from "@/components/SearchInput";
@@ -12,9 +13,15 @@ import {
 } from "@/hooks/useSupermarketFilters";
 import { useSupermarkets } from "@/hooks/useSupermarkets";
 import { FlashList } from "@shopify/flash-list";
-import { useCallback } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { router } from "expo-router";
+import { useCallback } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
 export default function SearchSupermarkets() {
   const { location: userLocation, isLoading: isFetchingLocation } =
@@ -31,6 +38,8 @@ export default function SearchSupermarkets() {
     setDistanceFilter,
     filteredData,
   } = useSupermarketFilters(supermarkets);
+
+  const theme = Colors[useColorScheme()] ?? Colors.light;
 
   const renderItem = useCallback(
     ({ item }) => (
@@ -50,9 +59,31 @@ export default function SearchSupermarkets() {
 
   return (
     <ThemedView safe style={styles.container}>
-      <ThemedView style={styles.headerWrapper}>
-        <SearchInput value={query} onChangeText={setQuery} />
+      {/* Navigation Header */}
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => router.back()}
+          style={styles.backButton}
+          testID="location-back-button"
+        >
+          <AppIcon
+            name="back"
+            size={22}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
+        </Pressable>
+      </View>
 
+      <ThemedView style={styles.headerWrapper}>
+        {/* Search Input with buffered spacing */}
+        <SearchInput
+          value={query}
+          onChangeText={setQuery}
+          style={styles.searchInputOverride}
+        />
+
+        {/* Filter Row */}
         <View style={styles.filterRow}>
           <DropdownPill
             testID="filter-distance-dropdown"
@@ -104,8 +135,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   headerWrapper: {
     zIndex: 10,
+  },
+  searchInputOverride: {
+    marginHorizontal: 16,
+    marginTop: 4,
+    marginBottom: 16,
   },
   filterRow: {
     flexDirection: "row",
