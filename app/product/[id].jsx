@@ -28,6 +28,8 @@ export default function ProductDetail() {
   const theme = Colors[colorScheme] ?? Colors.light;
   const { addProduct } = useCart();
 
+  const { addProduct } = useCart();
+
   const {
     product,
     loading,

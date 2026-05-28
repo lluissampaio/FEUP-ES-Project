@@ -22,6 +22,7 @@ export default function Cart() {
   const {
     products,
     total,
+    totalSaved,
     loading,
     error,
     remove,
@@ -239,9 +240,16 @@ export default function Cart() {
       >
         {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
         <View style={styles.totalButton}>
-          <ThemedText style={styles.totalLabel}>
-            {allScratched ? "Lista Completa" : "Total Estimado"}
-          </ThemedText>
+          <View style={styles.totalTextGroup}>
+            <ThemedText style={styles.totalLabel}>
+              {allScratched ? "Lista Completa" : "Total Estimado"}
+            </ThemedText>
+            {totalSaved > 0 && (
+              <ThemedText style={styles.totalSavedText}>
+                Poupou: {totalSaved.toFixed(2)} €
+              </ThemedText>
+            )}
+          </View>
           <ThemedText
             style={styles.totalValue}
             testID="cart-total-estimated-value"
@@ -320,6 +328,16 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "600",
+  },
+  totalSavedText: {
+    color: Colors.warning,
+    fontSize: 13,
+    fontWeight: "600",
+    marginTop: 2,
+  },
+  totalTextGroup: {
+    flexDirection: "column",
+    justifyContent: "center",
   },
   totalValue: {
     color: "#fff",

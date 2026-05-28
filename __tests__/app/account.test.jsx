@@ -147,6 +147,17 @@ describe("Account Feature Tests", () => {
       fireEvent.press(locationItem);
       expect(router.push).toHaveBeenCalledWith("/location");
     });
+<<<<<<< HEAD
+=======
+
+    it("navigates to help page when 'Ajuda' menu item is pressed", () => {
+      const { router } = require("expo-router");
+      render(<AccountScreen />);
+      const helpItem = screen.getByText("Ajuda");
+      fireEvent.press(helpItem);
+      expect(router.push).toHaveBeenCalledWith("/help");
+    });
+>>>>>>> main
   });
 
   describe("User Acceptance Tests (UAT)", () => {
@@ -171,6 +182,19 @@ describe("Account Feature Tests", () => {
       });
     });
 
+<<<<<<< HEAD
+=======
+    it("Acceptance: Navegação Correta - User navigates to Help screen", () => {
+      const { router } = require("expo-router");
+      render(<AccountScreen />);
+
+      const helpItem = screen.getByText("Ajuda");
+      fireEvent.press(helpItem);
+
+      expect(router.push).toHaveBeenCalledWith("/help");
+    });
+
+>>>>>>> main
     it("fetches guestName from AsyncStorage when user is null", async () => {
       mockCurrentUser = null;
       const AsyncStorage = require("@react-native-async-storage/async-storage");

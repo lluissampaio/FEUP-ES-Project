@@ -168,9 +168,29 @@ export default function useCart() {
     return sum + price * p.quantity;
   }, 0);
 
+  const totalSaved = products.reduce((sum, p) => {
+    let currentPrice = p.currentPrice ?? 0;
+    let originalPrice = p.originalPrice ?? currentPrice;
+
+    if (p.selectedStoreId && p.prices?.[p.selectedStoreId]) {
+      const storeData = p.prices[p.selectedStoreId];
+      currentPrice = storeData.current_price;
+      if (storeData.is_promo && storeData.original_price != null) {
+        originalPrice = storeData.original_price;
+      } else {
+        originalPrice = currentPrice;
+      }
+    }
+
+    const savedPerItem =
+      originalPrice > currentPrice ? originalPrice - currentPrice : 0;
+    return sum + savedPerItem * p.quantity;
+  }, 0);
+
   return {
     products,
     total,
+    totalSaved,
     loading,
     error,
     addProduct,

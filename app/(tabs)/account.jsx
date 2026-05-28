@@ -80,7 +80,7 @@ const AccountScreen = () => {
     {
       title: "Ajuda",
       icon: "help",
-      onPress: () => console.log("Ajuda pressed"),
+      onPress: () => router.push("/help"),
     },
     {
       title: "Sobre nós",
