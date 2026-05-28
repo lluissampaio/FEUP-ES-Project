@@ -8,36 +8,7 @@ import { ShoppingCartSimple } from "phosphor-react-native";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function Cart() {
-  const { products, total, error, clear, remove, updateQuantity } = useCart([
-    {
-      id: "1",
-      name: "Morangos",
-      price: 4.99,
-      subtitle: "1kg, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "2",
-      name: "Ovos",
-      price: 1.99,
-      subtitle: "6un, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "3",
-      name: "Banana",
-      price: 3.00,
-      subtitle: "1kg, Price",
-      image: { uri: '' }
-    },
-    {
-      id: "4",
-      name: "Couve-flor",
-      price: 2.99,
-      subtitle: "250g, Price",
-      image: { uri: '' }
-    },
-  ]);
+  const { products, total, error, clear, remove, updateQuantity } = useCart([]);
 
   if (products.length === 0) {
     return (

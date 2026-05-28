@@ -16,6 +16,7 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
+import useCart from "@/hooks/useCart";
 
 import { useProductDetail } from '@/hooks/useProductDetails';
 
@@ -23,6 +24,7 @@ export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
+  const { addProduct } = useCart();
 
   const {
     product,
@@ -52,6 +54,12 @@ export default function ProductDetail() {
       </ThemedView>
     );
   }
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    await addProduct(product, 1, selectedStoreKey);
+    router.back();
+  };
 
   const metaSegments = [capitalizeFirstLetter(product.category), product.formattedCapacity].filter(Boolean);
 
@@ -129,13 +137,13 @@ export default function ProductDetail() {
         ]}
       >
         <Pressable
+          onPress={handleAddToCart}
           style={({ pressed }) => [styles.addButton, pressed && styles.pressedOpacity]}
           accessibilityRole="button"
         >
           <ThemedText style={styles.addButtonLabel}>
             {'Adicionar à Lista'}
           </ThemedText>
-
           <ThemedText style={styles.addButtonPrice}>
             {totalPrice.toFixed(2)}€
           </ThemedText>
@@ -145,6 +153,7 @@ export default function ProductDetail() {
     </ThemedView>
   );
 }
+
 
 // ---------------------------------------------------------------------------
 // Styles

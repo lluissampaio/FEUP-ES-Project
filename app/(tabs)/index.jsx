@@ -82,7 +82,7 @@
                 isPromo={product.isPromo}
                 bestStore={product.bestStore}
                 image_ref={product.image_ref}
-                onPress={() => console.log('Produto:', product.name)}
+                onPress={() => router.push(`/product/${product.id}`)}
               />
             ))}
           </ScrollView>
@@ -113,7 +113,7 @@
                 isPromo={product.isPromo}
                 bestStore={product.bestStore}
                 image_ref={product.image_ref}
-                onPress={() => console.log('Produto:', product.name)}
+                onPress={() => router.push(`/product/${product.id}`)}
               />
             ))}
           </ScrollView>

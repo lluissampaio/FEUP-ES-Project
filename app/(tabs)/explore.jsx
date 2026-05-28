@@ -7,6 +7,7 @@ import useProducts from '@/hooks/useProducts';
 import { FlashList } from '@shopify/flash-list';
 import { useCallback, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { router } from 'expo-router';
 
 export default function SearchProducts() {
   const [query, setQuery] = useState('');
@@ -22,7 +23,7 @@ export default function SearchProducts() {
       isPromo={item.isPromo}
       bestStore={item.bestStore}
       image_ref={item.image_ref}
-      onPress={() => {}}
+      onPress={() => router.push(`/product/${item.id}`)}
     />
   ), []);
 

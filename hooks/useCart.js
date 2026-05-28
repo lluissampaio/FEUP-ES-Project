@@ -1,25 +1,45 @@
-import { useState } from "react";
+import { useCartStore } from "@/store/useCartStore";
 
-export default function useCart(initialProducts = []) {
-  const [products, setProducts] = useState(
-    initialProducts.map(p => ({ ...p, quantity: p.quantity || 1 }))
-  );
-  const [error, setError] = useState(null);
+export default function useCart() {
+  const {
+    products,
+    loading,
+    error,
+    addProductLocal,
+    removeLocal,
+    updateQuantityLocal,
+    clearLocal,
+  } = useCartStore();
+
+  const addProduct = (product, quantity = 1, selectedStoreId = null) => {
+    addProductLocal(product, quantity, selectedStoreId);
+  };
 
   const remove = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-    setError(null);
+    removeLocal(id);
   };
 
   const updateQuantity = (id, delta) => {
-    setProducts((prev) =>
-      prev.map((p) =>
-        p.id === id ? { ...p, quantity: Math.max(1, p.quantity + delta) } : p
-      )
-    );
+    updateQuantityLocal(id, delta);
   };
 
-  const total = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  const clear = () => {
+    clearLocal();
+  };
 
-  return { products, total, error, remove, updateQuantity };
+  const total = products.reduce((sum, p) => {
+    const price = p.price || p.currentPrice || 0;
+    return sum + price * p.quantity;
+  }, 0);
+
+  return {
+    products,
+    total,
+    loading,
+    error,
+    addProduct,
+    remove,
+    updateQuantity,
+    clear,
+  };
 }
