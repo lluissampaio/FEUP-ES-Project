@@ -466,10 +466,16 @@ Como fazer o pitch?
 
 # Prompts Relevantes
 
+- "O Detox está a demorar muito tempo a completar os testes, podes ver o meu ficheiro de configuração e, se necessário, alterar para que funcione melhor?"
+- "Estou a ter um erro de build no Detox, podes me ajudar a resolvê-lo?"
+
 # Código Gerado por IA
+
+- ".detoxrc.js"
 
 # PBIs com label "MisterAI"
 
+- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 ---
 
 ### Entrega Final
