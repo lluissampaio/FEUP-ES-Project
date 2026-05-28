@@ -85,7 +85,7 @@ const AccountScreen = () => {
     {
       title: "Sobre nós",
       icon: "about",
-      onPress: () => console.log("Sobre nós pressed"),
+      onPress: () => router.push("/about"),
     },
   ];
 
