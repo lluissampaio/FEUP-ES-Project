@@ -480,5 +480,14 @@ Como fazer o pitch?
 
 ### Entrega Final
 
+#### Final Product
+
+Perceived business value: consistent set of features; features polished enough for production. A aplicação implementa todas as funcionalidades necessárias para cumprir o seu propósito, adicionando funcionalidades extra para proporcionar conveniência ao utilizador. Apesar de o *core* ser a poupança de dinheiro via uma "rota" de compras personalizada com base em preços, existem features de consulta do horário dos supermercados, para planear as compras atempadamente, e uma checklist de compras, para que o utilizador possa atualizar em tempo-real a sua lista de produtos a adquirir. Apesar de não ser uma aplicação extensiva relativamente a funcionalidades, cada uma está fortemente integrada para proporcionar uma experiência de utilizador agradável, o que resulta num valor acrescido e numa experiência suave e fácil de entender/interagir com.
+
+Technical external quality (usability): A interface é limpa e segue padrões de design modernos, cumprindo as expectativas do utilizador. As interações com os menus e toda a experiência de utilizador são o foco principal da aplicação, sendo bastante intuitivas, suaves e bem integradas. Não existem funcionalidades escondidas, a aplicação tem uma curva de aprendizagem bastante suave e um teor elevado de *discoverability*, o utilizador consegue internalizar o *workflow* rapidamente.
+
+Technical internal quality (code quality): O código segue a estrutura *standard* de projetos de React Native, organizando a *codebase* em pastas separadas para cada tipo de biblioteca utilizada. Este modelo permitiu-nos criar um código bastante modular, extensível e auto-documentativo, isto é, meramente olhando para a estrutura de ficheiro, é possível ter uma ideia do funcionamento da aplicação. A qualidade do código revelou-se, de um modo geral, boa, tendo evoluído gradualmente desde o primeiro sprint, à medida que fomos aprendendo e utilizando boas práticas de desenvolvimento de código em React Native. Implementamos, na pipeline de DevOps, um workflow para manutenção da formatação e estilo do código, o que o tornou mais legível e consistente, aumentando a sua qualidade. De uma maneira geral, o código segue as *guidelines* genéricas de React Native, o que permite que qualquer desenvolvedor com conhecimento da framework consiga assimilar o funcionamento da aplicação rapidamente e começar a desenvolver código. A cobertura de testes foi extensiva, testando exaustivamente cada funcionalidade da aplicação e as bibliotecas que integram o *backend*. Os testes de aceitação percorrem o workflow do user na aplicação, testando as diversas interações possíveis. Deste modo, foram necessários 5 testes de aceitação para validar totalmente a aplicação.
+
+Perceived business value: 
 _A preencher na entrega final._
 _A preencher na entrega final._
