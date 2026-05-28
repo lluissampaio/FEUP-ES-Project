@@ -374,8 +374,6 @@ Fim do Sprint 1
   Página com horário completo do supermercado selecionado
 - Carrinho de Compras por @lluissampaio
   Gestão da lista de compras com um toggle que permite calcular o melhor preço num "mix" de supermercados ou restringir tudo a uma só loja. Conecção à firestore.
-- Checklist Interativa por @bcdtrak
-  Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
 - Recuperação e Gestão de Conta por @JoseSantos56
   Ecrã para recuperar a password e lógica de segurança (verificação por e-mail) ao alterar os dados do utilizador.
 - Dark/Light Mode por @bcdtrak
@@ -430,13 +428,37 @@ Fim do Sprint 1
 
 #### Funcionalidades Implementadas
 
+- Pesquisa de produto por categoria por @dcl674
+  Funcionalidade que permite pesquisar produtos de modo mais eficiente através de filtros por categorias, otimizando o processo de seleção de um modo intuitivo.
+- Edição do perfil por @lluissampaio
+  Permite personalização da conta do utilizador, proporcionando uma experiência mais agradável.
+- Gestão de conta por @lluissampaio
+  Secção adicionada para alteração de informações relativas à segurança e manutenção conta do utilizador.
+- Página de ajuda por @lluissampaio
+  Página criada com o intuito de orientar e ajudar o utilizador no seu uso da aplicação.
+- Checklist Interativa por @bcdtrak
+  Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
+- Página "Sobre Nós" por @noloseiiird
+  Página com os devidos créditos aos autores da aplicação.
+- Botão de limpeza de texto por @noloseiiird
+  Pequena conveniência em barras de pesquisa para apagar rapidamente todo o texto inserido.
+
 #### Retrospetiva
 
 **O que correu bem**
 
+- Implementação Paralela: A equipa implementou 7 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
+- Organização: A equipa usufruiu das frameworks disponibilizadas para organização do sprint, utilizando-as ao seu máximo potencial para acelerar a integração das features sem conflitos.
+
 **O que fazer de forma diferente**
 
+- Delegação de tarefas: A distribuição de tarefas entre os membros da equipa foi ligeiramente desequilibrada, dificultando o progresso a nível de funcionalidades novas na aplicação.
+- Comunicação: A comunicação, embora tenha melhorado comparativemente ao início, revelou-se escassa, o que, por vezes, levou a repetição desnecessária de tarefas.
+
 **Questões em aberto**
+
+Como estruturar a demo?
+Como fazer o pitch?
 
 # Ferramentas de IA Utilizadas
 
