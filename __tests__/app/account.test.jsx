@@ -147,6 +147,14 @@ describe("Account Feature Tests", () => {
       fireEvent.press(locationItem);
       expect(router.push).toHaveBeenCalledWith("/location");
     });
+
+    it("navigates to help page when 'Ajuda' menu item is pressed", () => {
+      const { router } = require("expo-router");
+      render(<AccountScreen />);
+      const helpItem = screen.getByText("Ajuda");
+      fireEvent.press(helpItem);
+      expect(router.push).toHaveBeenCalledWith("/help");
+    });
   });
 
   describe("User Acceptance Tests (UAT)", () => {
