@@ -51,7 +51,7 @@ describe("Hook useCart", () => {
             currentPrice: 2.0,
             originalPrice: 4.0,
           },
-          1
+          1,
         );
       });
 
@@ -69,7 +69,7 @@ describe("Hook useCart", () => {
             currentPrice: 3.0,
             originalPrice: 3.0,
           },
-          1
+          1,
         );
       });
 
@@ -87,11 +87,15 @@ describe("Hook useCart", () => {
             id: "promo2",
             name: "Promo Product 2",
             prices: {
-              "loja-a": { current_price: 3.0, original_price: 6.0, is_promo: true },
+              "loja-a": {
+                current_price: 3.0,
+                original_price: 6.0,
+                is_promo: true,
+              },
             },
           },
           1,
-          "loja-a"
+          "loja-a",
         );
       });
 

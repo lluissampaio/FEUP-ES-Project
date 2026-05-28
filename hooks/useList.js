@@ -182,7 +182,8 @@ export default function useCart() {
       }
     }
 
-    const savedPerItem = originalPrice > currentPrice ? originalPrice - currentPrice : 0;
+    const savedPerItem =
+      originalPrice > currentPrice ? originalPrice - currentPrice : 0;
     return sum + savedPerItem * p.quantity;
   }, 0);
 
