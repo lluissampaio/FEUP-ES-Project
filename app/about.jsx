@@ -14,7 +14,7 @@ const teamMembers = [
     bio: "Focado na experiência do utilizador, garantiu que cada ecrã da app fosse intuitivo e agradável de usar.",
   },
   {
-    name: "Daniel Filipe Cidade de Azeredo Lobo",
+    name: "Daniel Lobo",
     up: "up202306056",
     bio: "Responsável pela pesquisa de produtos e integração com a base de dados, assegurou a consistência dos dados em toda a aplicação.",
   },
@@ -27,11 +27,6 @@ const teamMembers = [
     name: "José Dinis Rocha Melo Maçorano dos Santos",
     up: "up202405578",
     bio: "Dedicado à qualidade e organização do projeto, contribuiu para a robustez da autenticação e segurança da conta.",
-  },
-  {
-    name: "Afonso Sofia de Moura",
-    up: "up202403939",
-    bio: "Implementou a infraestrutura de DevOps e funcionalidades como a localização, dark mode e a checklist interativa.",
   },
 ];
 
