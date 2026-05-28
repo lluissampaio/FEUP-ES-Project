@@ -5,7 +5,13 @@ import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
 const teamMembers = [
   {
@@ -98,7 +104,9 @@ export default function AboutPage() {
                   </ThemedText>
                 </View>
                 <View style={styles.memberInfo}>
-                  <ThemedText style={styles.memberName}>{member.name}</ThemedText>
+                  <ThemedText style={styles.memberName}>
+                    {member.name}
+                  </ThemedText>
                   <ThemedText style={styles.memberUp}>{member.up}</ThemedText>
                   <ThemedText style={styles.memberBio}>{member.bio}</ThemedText>
                 </View>

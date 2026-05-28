@@ -241,6 +241,7 @@ No início do projeto, realizámos um questionário ao nosso público-alvo (com 
 Link do formulário: [https://tally.so/r/pbWPjV]
 
 ### Resultados
+
 <table>
   <tr>
     <td width="50%">
@@ -366,19 +367,19 @@ Fim do Sprint 1
 #### Funcionalidades Implementadas
 
 - Ecrã Inicial por @lluissampaio
-Landing page com as opções de login, registo ou entrada rápida como convidado.
+  Landing page com as opções de login, registo ou entrada rápida como convidado.
 - Página de Produtos por @dcl674
-Página com preços em diversos supermercados e mais informações como nutriscore, ecoscore e quantidade. Permite adicionar produtos ao carrinho.
+  Página com preços em diversos supermercados e mais informações como nutriscore, ecoscore e quantidade. Permite adicionar produtos ao carrinho.
 - Página de horários de supermercados por @bcdtrak
-Página com horário completo do supermercado selecionado
+  Página com horário completo do supermercado selecionado
 - Carrinho de Compras por @lluissampaio
-Gestão da lista de compras com um toggle que permite calcular o melhor preço num "mix" de supermercados ou restringir tudo a uma só loja. Conecção à firestore.
+  Gestão da lista de compras com um toggle que permite calcular o melhor preço num "mix" de supermercados ou restringir tudo a uma só loja. Conecção à firestore.
 - Checklist Interativa por @bcdtrak
-Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
+  Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
 - Recuperação e Gestão de Conta por @JoseSantos56
-Ecrã para recuperar a password e lógica de segurança (verificação por e-mail) ao alterar os dados do utilizador.
+  Ecrã para recuperar a password e lógica de segurança (verificação por e-mail) ao alterar os dados do utilizador.
 - Dark/Light Mode por @bcdtrak
-Suporte nativo para alternar entre modo claro e escuro em toda a aplicação.
+  Suporte nativo para alternar entre modo claro e escuro em toda a aplicação.
 
 #### Retrospetiva
 

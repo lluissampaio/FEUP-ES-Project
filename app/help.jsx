@@ -5,7 +5,13 @@ import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
 const faqs = [
   {
@@ -74,12 +80,16 @@ export default function HelpPage() {
 
         {/* FAQs */}
         <View style={[styles.card, { backgroundColor: theme.uiBackground }]}>
-          <ThemedText style={styles.sectionTitle}>Perguntas Frequentes (FAQs)</ThemedText>
+          <ThemedText style={styles.sectionTitle}>
+            Perguntas Frequentes (FAQs)
+          </ThemedText>
           <Spacer height={10} />
           {faqs.map((faq, index) => (
             <View key={index}>
               <View style={styles.faqRow}>
-                <ThemedText style={styles.faqQuestion}>{faq.question}</ThemedText>
+                <ThemedText style={styles.faqQuestion}>
+                  {faq.question}
+                </ThemedText>
                 <ThemedText style={styles.faqAnswer}>{faq.answer}</ThemedText>
               </View>
               {index < faqs.length - 1 && (

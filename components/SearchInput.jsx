@@ -1,7 +1,13 @@
 import AppIcon from "@/components/AppIcon";
 import { Colors } from "@/constants/colors";
 import ThemedText from "@/components/ThemedText";
-import { Pressable, StyleSheet, TextInput, useColorScheme, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  TextInput,
+  useColorScheme,
+  View,
+} from "react-native";
 
 export default function SearchInput({
   value,
@@ -34,8 +40,8 @@ export default function SearchInput({
       />
       {value?.length > 0 && (
         <Pressable onPress={() => onChangeText("")} hitSlop={8}>
-        <ThemedText style={{ fontSize: 18, fontWeight: "700" }}>✕</ThemedText>
-      </Pressable>
+          <ThemedText style={{ fontSize: 18, fontWeight: "700" }}>✕</ThemedText>
+        </Pressable>
       )}
     </View>
   );
