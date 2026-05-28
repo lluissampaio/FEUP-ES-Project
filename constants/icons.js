@@ -19,6 +19,7 @@ import {
   PencilSimple,
   Question,
   Ruler,
+  x,
   Storefront,
   Sun,
   User,
@@ -31,6 +32,7 @@ export const ICON_MAP = {
   notepad: NotepadIcon,
   favourite: Heart,
   account: User,
+  close: x,
 
   location: MapPin,
   crosshair: Crosshair,

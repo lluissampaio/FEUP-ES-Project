@@ -1,6 +1,7 @@
 import AppIcon from "@/components/AppIcon";
 import { Colors } from "@/constants/colors";
-import { StyleSheet, TextInput, useColorScheme, View } from "react-native";
+import ThemedText from "@/components/ThemedText";
+import { Pressable, StyleSheet, TextInput, useColorScheme, View } from "react-native";
 
 export default function SearchInput({
   value,
@@ -31,6 +32,11 @@ export default function SearchInput({
         onSubmitEditing={onSubmitEditing}
         returnKeyType="search"
       />
+      {value?.length > 0 && (
+        <Pressable onPress={() => onChangeText("")} hitSlop={8}>
+        <ThemedText style={{ fontSize: 18, fontWeight: "700" }}>✕</ThemedText>
+      </Pressable>
+      )}
     </View>
   );
 }
