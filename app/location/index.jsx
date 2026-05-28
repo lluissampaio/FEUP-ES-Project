@@ -1,25 +1,39 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View, useColorScheme } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 
-import AppIcon from '@/components/AppIcon';
-import SearchInput from '@/components/SearchInput';
-import Spacer from '@/components/Spacer';
-import ThemedButton from '@/components/ThemedButton';
-import ThemedText from '@/components/ThemedText';
-import ThemedView from '@/components/ThemedView';
-import { Colors } from '@/constants/colors';
-import { useActiveLocation } from '@/hooks/useActiveLocation';
-import { searchLocations } from '@/utils/photon';
+import AppIcon from "@/components/AppIcon";
+import SearchInput from "@/components/SearchInput";
+import Spacer from "@/components/Spacer";
+import ThemedButton from "@/components/ThemedButton";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { Colors } from "@/constants/colors";
+import { useActiveLocation } from "@/hooks/useActiveLocation";
+import { searchLocations } from "@/utils/photon";
+import { router } from "expo-router";
 
 export default function LocationPage() {
-  const { location: gpsLocation, isLoading: isGpsLoading, override, setManualLocation, clearOverride, refreshLocation } = useActiveLocation();
-  
+  const {
+    location: gpsLocation,
+    isLoading: isGpsLoading,
+    override,
+    setManualLocation,
+    clearOverride,
+    refreshLocation,
+  } = useActiveLocation();
+
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
-  const [mode, setMode] = useState('none');
+  const [mode, setMode] = useState("none");
   const [manualLocation, setManualLocationState] = useState(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
 
@@ -27,10 +41,14 @@ export default function LocationPage() {
 
   useEffect(() => {
     if (override) {
-      setManualLocationState({ displayString: override.name, latitude: override.lat, longitude: override.lon });
-      setMode('manual');
+      setManualLocationState({
+        displayString: override.name,
+        latitude: override.lat,
+        longitude: override.lon,
+      });
+      setMode("manual");
     } else if (gpsLocation) {
-      setMode('gps');
+      setMode("gps");
     }
   }, [override, gpsLocation]);
 
@@ -59,41 +77,60 @@ export default function LocationPage() {
     }, 300);
   }, []);
 
-  const handleSelectLocation = useCallback(async (loc) => {
-    await setManualLocation(loc);
-    setManualLocationState(loc);
-    setMode('manual');
-    setSearchQuery('');
-    setSearchResults([]);
-  }, [setManualLocation]);
+  const handleSelectLocation = useCallback(
+    async (loc) => {
+      await setManualLocation(loc);
+      setManualLocationState(loc);
+      setMode("manual");
+      setSearchQuery("");
+      setSearchResults([]);
+    },
+    [setManualLocation],
+  );
 
   const handleRemoveManual = useCallback(async () => {
     await clearOverride();
     setManualLocationState(null);
-    setMode(gpsLocation ? 'gps' : 'none');
+    setMode(gpsLocation ? "gps" : "none");
   }, [clearOverride, gpsLocation]);
 
   const handleGps = useCallback(() => {
     setManualLocationState(null);
-    setMode('gps');
+    setMode("gps");
     refreshLocation();
   }, [refreshLocation]);
 
-  const isActive = mode === 'gps' || mode === 'manual';
-  const isManual = mode === 'manual';
+  const isActive = mode === "gps" || mode === "manual";
+  const isManual = mode === "manual";
 
-  const activeCoords = isManual && manualLocation
-    ? `${manualLocation.latitude.toFixed(4)}, ${manualLocation.longitude.toFixed(4)}`
-    : '';
+  const activeCoords =
+    isManual && manualLocation
+      ? `${manualLocation.latitude.toFixed(4)}, ${manualLocation.longitude.toFixed(4)}`
+      : "";
 
   return (
     <ThemedView safe style={styles.container}>
-      <ScrollView 
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => router.back()}
+          style={styles.backButton}
+          testID="location-back-button"
+        >
+          <AppIcon
+            name="back"
+            size={22}
+            color={theme.iconColorFocused}
+            weight="bold"
+          />
+        </Pressable>
+      </View>
+
+      <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
-        keyboardShouldPersistTaps="handled" 
+        keyboardShouldPersistTaps="handled"
       >
-        <Spacer height={40} />
+        <Spacer height={10} />
 
         <View style={styles.statusArea}>
           <AppIcon
@@ -123,19 +160,39 @@ export default function LocationPage() {
         {isManual && activeCoords && (
           <View style={styles.cardWrapper}>
             <View style={styles.cardStack}>
-              <View style={[styles.locationCard, { backgroundColor: theme.uiBackground }]}>
-                <AppIcon name="location" size={22} weight="fill" color="#53B175" />
+              <View
+                style={[
+                  styles.locationCard,
+                  { backgroundColor: theme.uiBackground },
+                ]}
+              >
+                <AppIcon
+                  name="location"
+                  size={22}
+                  weight="fill"
+                  color="#53B175"
+                />
                 <Spacer height={12} />
                 <ThemedText title style={styles.cardName} numberOfLines={2}>
                   {manualLocation.displayString}
                 </ThemedText>
-                <View style={[styles.cardSplitter, { backgroundColor: theme.searchBackground }]} />
-                <ThemedText style={styles.cardCoords}>{activeCoords}</ThemedText>
+                <View
+                  style={[
+                    styles.cardSplitter,
+                    { backgroundColor: theme.searchBackground },
+                  ]}
+                />
+                <ThemedText style={styles.cardCoords}>
+                  {activeCoords}
+                </ThemedText>
               </View>
 
-              <Pressable 
-                onPress={handleRemoveManual} 
-                style={({ pressed }) => [styles.removeButton, pressed && styles.removePressed]}
+              <Pressable
+                onPress={handleRemoveManual}
+                style={({ pressed }) => [
+                  styles.removeButton,
+                  pressed && styles.removePressed,
+                ]}
               >
                 <ThemedText style={styles.removeButtonText}>Remover</ThemedText>
               </Pressable>
@@ -148,7 +205,9 @@ export default function LocationPage() {
         <ThemedButton onPress={handleGps} style={styles.gpsButton}>
           <View style={styles.buttonContent}>
             <AppIcon name="crosshair" size={18} color="#fff" weight="fill" />
-            <ThemedText style={styles.buttonText}>Usar localização GPS</ThemedText>
+            <ThemedText style={styles.buttonText}>
+              Usar localização GPS
+            </ThemedText>
           </View>
         </ThemedButton>
 
@@ -156,13 +215,16 @@ export default function LocationPage() {
 
         <View style={styles.divider}>
           <View style={styles.dividerLine} />
-          <ThemedText style={styles.dividerText}>ou pesquisar localização</ThemedText>
+          <ThemedText style={styles.dividerText}>
+            ou pesquisar localização
+          </ThemedText>
           <View style={styles.dividerLine} />
         </View>
 
         <Spacer height={16} />
 
         <SearchInput
+          testID="location-search-input"
           value={searchQuery}
           onChangeText={handleSearchChange}
           placeholder="Pesquisar cidade, morada..."
@@ -176,18 +238,28 @@ export default function LocationPage() {
             <ThemedText style={styles.dimText}>A pesquisar...</ThemedText>
           </View>
         ) : searchResults.length > 0 ? (
-          <View style={[styles.resultsListWrapper, { backgroundColor: theme.uiBackground }]}>
+          <View
+            style={[
+              styles.resultsListWrapper,
+              { backgroundColor: theme.uiBackground },
+            ]}
+          >
             {searchResults.map((loc, index) => (
               <Pressable
                 key={loc.id}
                 style={({ pressed }) => [
                   styles.resultRow,
                   index !== searchResults.length - 1 && styles.resultSeparator,
-                  pressed && { backgroundColor: theme.searchBackground }
+                  pressed && { backgroundColor: theme.searchBackground },
                 ]}
                 onPress={() => handleSelectLocation(loc)}
               >
-                <AppIcon name="location" size={18} color={theme.iconColor} weight="light" />
+                <AppIcon
+                  name="location"
+                  size={18}
+                  color={theme.iconColor}
+                  weight="light"
+                />
                 <ThemedText style={styles.resultTitle} numberOfLines={2}>
                   {loc.displayString}
                 </ThemedText>
@@ -218,90 +290,102 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  header: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 4,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   scrollContent: {
     paddingHorizontal: 20,
     paddingBottom: 40,
   },
   statusArea: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   statusText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   activeText: {
-    color: '#53B175',
+    color: "#53B175",
   },
   inactiveText: {
-    color: '#cc475a',
+    color: "#cc475a",
   },
   cardWrapper: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   cardStack: {
-    width: '100%',
-    overflow: 'hidden',
+    width: "100%",
+    overflow: "hidden",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: 'rgba(150, 150, 150, 0.1)',
+    borderColor: "rgba(150, 150, 150, 0.1)",
   },
   locationCard: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   cardName: {
     fontSize: 16,
-    textAlign: 'center',
-    fontWeight: '500',
+    textAlign: "center",
+    fontWeight: "500",
     lineHeight: 22,
   },
   cardSplitter: {
-    width: '100%',
+    width: "100%",
     height: 1,
     marginVertical: 14,
   },
   cardCoords: {
     fontSize: 13,
     opacity: 0.5,
-    textAlign: 'center',
+    textAlign: "center",
   },
   removeButton: {
-    backgroundColor: '#cc475a',
+    backgroundColor: "#cc475a",
     paddingVertical: 14,
   },
   removePressed: {
     opacity: 0.7,
   },
   removeButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 15,
-    fontWeight: '600',
-    textAlign: 'center',
+    fontWeight: "600",
+    textAlign: "center",
   },
   gpsButton: {
     borderRadius: 10,
     paddingVertical: 14,
   },
   buttonContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
   },
   dividerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(150, 150, 150, 0.2)',
+    backgroundColor: "rgba(150, 150, 150, 0.2)",
   },
   dividerText: {
     fontSize: 13,
@@ -310,31 +394,31 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 40,
   },
   dimText: {
     fontSize: 14,
     opacity: 0.4,
-    textAlign: 'center',
+    textAlign: "center",
   },
   resultsListWrapper: {
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: 'rgba(150, 150, 150, 0.1)',
+    borderColor: "rgba(150, 150, 150, 0.1)",
   },
   resultRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 14,
     paddingHorizontal: 16,
     gap: 12,
   },
   resultSeparator: {
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(150, 150, 150, 0.1)',
+    borderBottomColor: "rgba(150, 150, 150, 0.1)",
   },
   resultTitle: {
     fontSize: 15,

@@ -1,15 +1,16 @@
 {
   "expo": {
     "name": "Cents",
-    "slug": "cents",
+    "slug": "cheapy",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "cheapy",
+    "scheme": "cents",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.cheapy"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.cheapy",
+      "package": "com.anonymous.cents",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION"
@@ -32,6 +33,21 @@
     },
     "plugins": [
       "expo-router",
+      "@config-plugins/detox",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "packagingOptions": {
+              "pickFirsts": [
+                "lib/**/libc++_shared.so",
+                "lib/**/libfbjni.so",
+                "lib/**/libfabricjni.so"
+              ]
+            }
+          }
+        }
+      ],
       [
         "expo-splash-screen",
         {

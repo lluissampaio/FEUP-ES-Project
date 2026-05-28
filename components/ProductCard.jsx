@@ -1,44 +1,51 @@
 import ThemedText from "@/components/ThemedText";
 import { Colors } from "@/constants/colors";
 import { getImageForProductCategory } from "@/constants/images";
-import { Image, Pressable, StyleSheet, View, useColorScheme } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+  useColorScheme,
+} from "react-native";
 import BaseCard from "./BaseCard";
 
-const ProductCard = ({ 
-  name, 
-  formattedCapacity, 
-  currentPrice, 
-  originalPrice, 
-  isPromo, 
-  bestStore, 
+const ProductCard = ({
+  name,
+  formattedCapacity,
+  currentPrice,
+  originalPrice,
+  isPromo,
+  bestStore,
   image_ref,
-  onPress
+  onPress,
 }) => {
   const theme = Colors[useColorScheme()] ?? Colors.light;
 
   return (
-    <BaseCard onPress={onPress} style>
-      
-      <Image 
-        source={getImageForProductCategory(image_ref)} 
-        style={styles.image} 
-        resizeMode="contain" 
+    <BaseCard
+      onPress={onPress}
+      testID={`product-card-${name.toLowerCase().replace(/\s/g, "-")}`}
+      style
+    >
+      <Image
+        source={getImageForProductCategory(image_ref)}
+        style={styles.image}
+        resizeMode="contain"
       />
 
       <View style={styles.infoContainer}>
         <ThemedText title style={styles.name} numberOfLines={2}>
           {name}
         </ThemedText>
-        
-        <ThemedText style={styles.capacity}>
-          {formattedCapacity}
-        </ThemedText>
+
+        <ThemedText style={styles.capacity}>{formattedCapacity}</ThemedText>
 
         <View style={styles.priceRow}>
           <ThemedText style={[styles.currentPrice, { color: Colors.primary }]}>
             {currentPrice.toFixed(2)}€
           </ThemedText>
-          
+
           {isPromo && originalPrice && (
             <ThemedText style={styles.originalPrice}>
               {originalPrice.toFixed(2)}€
@@ -47,21 +54,26 @@ const ProductCard = ({
         </View>
 
         {bestStore ? (
-          <View style={[styles.badge, { backgroundColor: theme.searchBackground }]}>
+          <View
+            style={[styles.badge, { backgroundColor: theme.searchBackground }]}
+          >
             <ThemedText style={styles.badgeText}>
-              Melhor preço: <ThemedText style={styles.badgeStoreText}>
-                  {bestStore ? bestStore.charAt(0).toUpperCase() + bestStore.slice(1) : ''}
-                </ThemedText>
+              Melhor preço:{" "}
+              <ThemedText style={styles.badgeStoreText}>
+                {bestStore
+                  ? bestStore.charAt(0).toUpperCase() + bestStore.slice(1)
+                  : ""}
+              </ThemedText>
             </ThemedText>
           </View>
         ) : null}
 
-        <Pressable 
+        <Pressable
           style={({ pressed }) => [
-            styles.button, 
+            styles.button,
             { backgroundColor: Colors.primary },
-            pressed && styles.buttonPressed
-          ]} 
+            pressed && styles.buttonPressed,
+          ]}
           onPress={onPress}
         >
           <ThemedText style={styles.buttonText}>Ver Ofertas</ThemedText>
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   name: {
     fontSize: 16,
@@ -95,8 +107,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   priceRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
+    flexDirection: "row",
+    alignItems: "baseline",
     marginBottom: 12,
   },
   currentPrice: {
@@ -107,14 +119,14 @@ const styles = StyleSheet.create({
   originalPrice: {
     fontSize: 14,
     opacity: 0.5,
-    textDecorationLine: 'line-through',
+    textDecorationLine: "line-through",
   },
   badge: {
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 6,
     marginBottom: 12,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   badgeText: {
     fontSize: 11,
@@ -122,22 +134,22 @@ const styles = StyleSheet.create({
   },
   badgeStoreText: {
     fontSize: 11,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   button: {
     paddingVertical: 10,
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   buttonPressed: {
     opacity: 0.8,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
+    color: "#FFFFFF",
+    fontWeight: "bold",
     fontSize: 14,
-  }
+  },
 });
 
 export default ProductCard;

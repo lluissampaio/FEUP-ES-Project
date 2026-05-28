@@ -43,7 +43,7 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Ínicio",
           headerShown: false,
@@ -63,7 +63,7 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="cart"
+        name="list"
         options={{
           title: "Lista",
           headerShown: false,

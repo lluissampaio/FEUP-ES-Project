@@ -1,21 +1,26 @@
-import FilterPill from '@/components/DropdownButton';
-import DropdownPill from '@/components/FilterButton';
-import SearchInput from '@/components/SearchInput';
-import SupermarketCard from '@/components/SupermarketCard';
-import ThemedText from '@/components/ThemedText';
-import ThemedView from '@/components/ThemedView';
-import { Colors } from '@/constants/colors';
-import { useActiveLocation } from '@/hooks/useActiveLocation';
-import { DISTANCE_OPTIONS, useSupermarketFilters } from '@/hooks/useSupermarketFilters';
-import { useSupermarkets } from '@/hooks/useSupermarkets';
-import { FlashList } from '@shopify/flash-list';
-import { useCallback } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import { router } from 'expo-router';
+import FilterPill from "@/components/DropdownButton";
+import DropdownPill from "@/components/FilterButton";
+import SearchInput from "@/components/SearchInput";
+import SupermarketCard from "@/components/SupermarketCard";
+import ThemedText from "@/components/ThemedText";
+import ThemedView from "@/components/ThemedView";
+import { Colors } from "@/constants/colors";
+import { useActiveLocation } from "@/hooks/useActiveLocation";
+import {
+  DISTANCE_OPTIONS,
+  useSupermarketFilters,
+} from "@/hooks/useSupermarketFilters";
+import { useSupermarkets } from "@/hooks/useSupermarkets";
+import { FlashList } from "@shopify/flash-list";
+import { useCallback } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { router } from "expo-router";
 
 export default function SearchSupermarkets() {
-  const { location: userLocation, isLoading: isFetchingLocation } = useActiveLocation();
-  const { supermarkets, loading: isSupermarketsLoading } = useSupermarkets(userLocation);
+  const { location: userLocation, isLoading: isFetchingLocation } =
+    useActiveLocation();
+  const { supermarkets, loading: isSupermarketsLoading } =
+    useSupermarkets(userLocation);
 
   const {
     query,
@@ -30,6 +35,7 @@ export default function SearchSupermarkets() {
   const renderItem = useCallback(
     ({ item }) => (
       <SupermarketCard
+        testID={`store-card-${item.id}`}
         name={item.name}
         distance={item.formattedDistance}
         isOpen={item.isOpen}
@@ -44,18 +50,19 @@ export default function SearchSupermarkets() {
 
   return (
     <ThemedView safe style={styles.container}>
-      
       <ThemedView style={styles.headerWrapper}>
         <SearchInput value={query} onChangeText={setQuery} />
 
         <View style={styles.filterRow}>
           <DropdownPill
+            testID="filter-distance-dropdown"
             icon="ruler"
             options={DISTANCE_OPTIONS}
             selectedValue={distanceFilter}
             onSelect={setDistanceFilter}
           />
           <FilterPill
+            testID="filter-status-button"
             icon="lock-simple-open"
             label="Aberto"
             active={isOpenFilter}
@@ -66,7 +73,11 @@ export default function SearchSupermarkets() {
 
       <View style={styles.listContainer}>
         {isLoading ? (
-          <ActivityIndicator size="large" color={Colors.primary} style={{ marginTop: 20 }} />
+          <ActivityIndicator
+            size="large"
+            color={Colors.primary}
+            style={{ marginTop: 20 }}
+          />
         ) : (
           <FlashList
             data={filteredData}
@@ -77,7 +88,9 @@ export default function SearchSupermarkets() {
             contentContainerStyle={styles.listContent}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
-                <ThemedText style={styles.emptyText}>Nenhuma loja encontrada</ThemedText>
+                <ThemedText style={styles.emptyText}>
+                  Nenhuma loja encontrada
+                </ThemedText>
               </View>
             }
           />
@@ -95,7 +108,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   filterRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 16,
     paddingBottom: 12,
     gap: 8,
@@ -105,13 +118,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   listContent: {
-    paddingTop: 8, 
-    paddingBottom: 20, 
+    paddingTop: 8,
+    paddingBottom: 20,
   },
   emptyContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 40,
   },
   emptyText: {

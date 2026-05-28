@@ -1,9 +1,9 @@
-import CartItemRow from "@/components/CartItemRow";
+import CartItemRow from "@/components/ListItemRow";
 import Spacer from "@/components/Spacer";
 import ThemedText from "@/components/ThemedText";
 import ThemedView from "@/components/ThemedView";
 import { Colors } from "@/constants/colors";
-import useCart from "@/hooks/useCart";
+import useCart from "@/hooks/useList";
 import { ShoppingCartSimple } from "phosphor-react-native";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 

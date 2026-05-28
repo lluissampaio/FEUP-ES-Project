@@ -8,12 +8,14 @@ const LogoutButton = ({ onPress }) => {
   const theme = Colors[colorScheme] ?? Colors.light;
 
   return (
-    <TouchableOpacity 
-      onPress={onPress} 
+    <TouchableOpacity
+      onPress={onPress}
       style={[styles.button, { backgroundColor: theme.searchBackground }]}
       activeOpacity={0.8}
     >
-      <ThemedText style={[styles.text, { color: Colors.warning }]}>Log Out</ThemedText>
+      <ThemedText style={[styles.text, { color: Colors.warning }]}>
+        Log Out
+      </ThemedText>
     </TouchableOpacity>
   );
 };

@@ -1,15 +1,18 @@
 import ThemedView from "@/components/ThemedView";
 import { Pressable, StyleSheet } from "react-native";
 
-const BaseCard = ({ children, onPress, style }) => {
+const BaseCard = ({ children, onPress, style, testID }) => {
   return (
-    <Pressable 
-      onPress={onPress} 
-      style={({ pressed }) => [styles.wrapper, pressed && styles.pressed, style]}
+    <Pressable
+      onPress={onPress}
+      testID={testID}
+      style={({ pressed }) => [
+        styles.wrapper,
+        pressed && styles.pressed,
+        style,
+      ]}
     >
-      <ThemedView style={styles.card}>
-        {children}
-      </ThemedView>
+      <ThemedView style={styles.card}>{children}</ThemedView>
     </Pressable>
   );
 };
