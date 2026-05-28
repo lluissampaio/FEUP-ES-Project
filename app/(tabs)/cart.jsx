@@ -16,7 +16,9 @@ export default function Cart() {
         <View style={styles.emptyState}>
           <ShoppingCartSimple size={80} color={Colors.primary} weight="thin" />
           <Spacer height={24} />
-          <ThemedText style={styles.emptyTitle}>O carrinho está vazio</ThemedText>
+          <ThemedText style={styles.emptyTitle}>
+            O carrinho está vazio
+          </ThemedText>
           <ThemedText style={styles.emptySubtitle}>
             Adiciona produtos para começares a poupar!
           </ThemedText>
@@ -53,9 +55,7 @@ export default function Cart() {
       />
 
       <View style={styles.footer}>
-        {error && (
-          <ThemedText style={styles.errorText}>{error}</ThemedText>
-        )}
+        {error && <ThemedText style={styles.errorText}>{error}</ThemedText>}
 
         <TouchableOpacity style={styles.checkoutButton} activeOpacity={0.8}>
           <ThemedText style={styles.checkoutText}>Checkout</ThemedText>
