@@ -123,8 +123,6 @@ describe("Acceptance Test: Página do Carrinho - Novas Funcionalidades", () => {
     expect(updateQuantity).toHaveBeenCalledWith("1", -1);
   });
 });
-<<<<<<< HEAD
-=======
 
 describe("Unit/Integration Tests: Total Poupado UI", () => {
   it("não deve mostrar o texto de poupança se totalSaved for 0", () => {
@@ -160,4 +158,3 @@ describe("Unit/Integration Tests: Total Poupado UI", () => {
     expect(screen.getByText("Poupou: 2.50 €")).toBeTruthy();
   });
 });
->>>>>>> main
