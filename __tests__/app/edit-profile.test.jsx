@@ -15,6 +15,7 @@ jest.mock("firebase/auth", () => ({
   updateEmail: jest.fn(() => Promise.resolve()),
   updatePassword: jest.fn(() => Promise.resolve()),
   reauthenticateWithCredential: jest.fn(() => Promise.resolve()),
+  verifyBeforeUpdateEmail: jest.fn(() => Promise.resolve()),
   EmailAuthProvider: {
     credential: jest.fn(),
   },
@@ -262,7 +263,7 @@ describe("EditProfile screen", () => {
         expect(reauthenticateWithCredential).toHaveBeenCalled();
         expect(Alert.alert).toHaveBeenCalledWith(
           "Sucesso",
-          "Perfil atualizado com sucesso!",
+          "Alterações guardadas! Enviámos um link de validação para o novo email. A alteração só terá efeito após confirmares no teu email.",
           expect.any(Array),
         );
       });

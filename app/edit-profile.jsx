@@ -140,7 +140,7 @@ export default function EditProfile() {
 
       const successMessage = emailVerificationSent
         ? "Alterações guardadas! Enviámos um link de validação para o novo email. A alteração só terá efeito após confirmares no teu email."
-        : "Perfil updated com sucesso!";
+        : "Perfil atualizado com sucesso!";
 
       Alert.alert("Sucesso", successMessage, [
         { text: "OK", onPress: () => router.back() },
