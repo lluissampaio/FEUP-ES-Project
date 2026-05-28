@@ -123,3 +123,38 @@ describe("Acceptance Test: Página do Carrinho - Novas Funcionalidades", () => {
     expect(updateQuantity).toHaveBeenCalledWith("1", -1);
   });
 });
+
+describe("Unit/Integration Tests: Total Poupado UI", () => {
+  it("não deve mostrar o texto de poupança se totalSaved for 0", () => {
+    useCart.mockReturnValue({
+      products: [],
+      total: 0,
+      totalSaved: 0,
+      loading: false,
+    });
+
+    render(<Cart />);
+
+    expect(screen.queryByText(/Poupou:/)).toBeNull();
+  });
+
+  it("deve renderizar 'Poupou: X €' quando totalSaved é maior que 0", () => {
+    useCart.mockReturnValue({
+      products: [
+        {
+          id: "1",
+          name: "Produto Promo",
+          currentPrice: 1.0,
+          quantity: 1,
+        },
+      ],
+      total: 1.0,
+      totalSaved: 2.5,
+      loading: false,
+    });
+
+    render(<Cart />);
+
+    expect(screen.getByText("Poupou: 2.50 €")).toBeTruthy();
+  });
+});
