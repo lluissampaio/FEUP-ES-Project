@@ -22,17 +22,8 @@ jest.mock("firebase/firestore", () => ({
 }));
 
 import useList from "@/hooks/useList";
-<<<<<<< HEAD
-import { renderHook, waitFor } from "@testing-library/react-native";
-
-describe("Hook useCart", () => {
-  it("deve iniciar com estado empty via mock", async () => {
-    const { result } = renderHook(() => useList());
-    await waitFor(() => expect(result.current.loading).toBe(false));
-    expect(result.current.products).toEqual([]);
-=======
-import { act, renderHook, waitFor } from "@testing-library/react-native";
 import { useCartStore } from "@/store/useCartStore";
+import { act, renderHook, waitFor } from "@testing-library/react-native";
 
 describe("Hook useCart", () => {
   beforeEach(() => {
@@ -116,6 +107,5 @@ describe("Hook useCart", () => {
 
       expect(result.current.totalSaved).toBe(6.0); // 3 * 2 = 6
     });
->>>>>>> main
   });
 });
