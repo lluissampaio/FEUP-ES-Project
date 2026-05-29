@@ -1,11 +1,11 @@
-# Cents - Relatório de Desenvolvimento
+# Cents
 
-Bem-vindo à documentação do Cents!
+Aplicação móvel de comparação de preços de supermercado, desenvolvida em React Native com Expo e Firebase. Permite ao utilizador gerir uma lista de compras otimizada por preço, pesquisar supermercados próximos e acompanhar as compras em tempo real através de uma checklist interativa.
 
-Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
-Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
+---
 
-- [Como Correr a Aplicação](#como-correr-a-aplicação)
+## Índice
+
 - [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
@@ -24,22 +24,13 @@ Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até �
   - [Sprint 2](#sprint-2)
   - [Sprint 3](#sprint-3)
   - [Entrega Final](#entrega-final)
+- [Equipa](#equipa)
 
-As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 
 Entre em contacto connosco!
 
 Obrigado!
-
----
-
-## Membros da Equipa
-
-| Nome | Email |
-| ---- | ----- |
-|      |       |
-
 ---
 
 ## Como Correr a Aplicação
@@ -52,11 +43,8 @@ Obrigado!
 ### Instalação
 
 ```bash
-# Clonar o repositório
 git clone <url-do-repositório>
 cd <pasta-do-projeto>
-
-# Instalar dependências
 npm install
 ```
 
@@ -66,37 +54,37 @@ npm install
 # Iniciar em modo Expo Go
 npx expo start --go
 
-# Limpar cache (caso necessário, recomendado em caso de erros inesperados)
+# Limpar cache (recomendado em caso de erros inesperados)
 npx expo start --go -c
 ```
 
-Após iniciar, abre a aplicação **Expo Go** no teu dispositivo e lê o QR code exibido no terminal.
+Após iniciar, abrir a aplicação **Expo Go** no dispositivo e ler o QR code exibido no terminal.
 
 ### Build Local com EAS
 
-    Instalar o EAS CLI globalmente:
-    Bash
+1. Instalar o EAS CLI globalmente:
 
-    npm install -g eas-cli
+```bash
+npm install -g eas-cli
+```
 
-    Fazer login na conta da Expo:
-    Bash
+2. Fazer login na conta Expo:
 
-    eas login
+```bash
+eas login
+```
 
-3. **Executar o build localmente**:
-   - Para **Android** (Gera um ficheiro `.apk`):
-     ```bash
-     eas build --profile development --platform android --local
-     ```
-   - Para **iOS** (Requer macOS com Xcode instalado; gera um build para Simulador):
+3. Executar o build localmente:
 
-     ```bash
-     eas build --profile development --platform ios --local
+```bash
+# Android (gera ficheiro .apk)
+eas build --profile development --platform android --local
 
-     ```
+# iOS (requer macOS com Xcode; gera build para Simulador)
+eas build --profile development --platform ios --local
+```
 
-Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile respetivo esteja configurado (ex: Android Studio para builds Android).
+> A compilação de builds locais requer o ambiente de desenvolvimento mobile respetivo (ex: Android Studio para Android).
 
 ---
 
@@ -104,44 +92,29 @@ Nota: A compilação de builds locais exige o ambiente de desenvolvimento mobile
 
 ### Visão do Produto
 
-O Cents é uma aplicação focada em simplificar, organizar e otimizar as compras de supermercado do consumidor final. O seu principal objetivo é permitir que o utilizador pesquise produtos de forma intuitiva, os adicione a uma lista e descubra rapidamente as opções mais económicas.
+O Cents é uma aplicação focada em simplificar, organizar e otimizar as compras de supermercado. O objetivo central é permitir que o utilizador pesquise produtos de forma intuitiva, os adicione a uma lista e identifique rapidamente as opções mais económicas.
 
-Quer o utilizador prefira a máxima poupança (combinando compras em várias lojas diferentes) ou a conveniência (comprando tudo num só supermercado), a aplicação adapta-se através de ferramentas de filtragem inteligentes. Além da poupança, o Cents traz valor real durante a ida ao supermercado, oferecendo uma checklist interativa que facilita o acompanhamento dos produtos já recolhidos, garantindo uma experiência de compras mais rápida e sem esquecimentos.
+A aplicação adapta-se ao perfil de consumo de cada utilizador: quem prefere a poupança máxima pode combinar produtos de várias lojas; quem prefere conveniência pode restringir os resultados a um único supermercado. A funcionalidade de checklist interativa apoia o utilizador durante a deslocação à loja, reduzindo esquecimentos e acelerando o processo de compra.
 
 ### Funcionalidades e Pressupostos
 
 **Funcionalidades**
 
-**Pesquisa de Produtos por Categoria** - Exploração e adição de produtos à lista de compras organizados pelas respetivas categorias.
-
-**Otimização de Preços (Toggle Mix/Loja Única)** - Na aba da lista de compras, o utilizador pode alternar entre ver o "melhor preço absoluto" (um mix de produtos em diferentes lojas) ou restringir a lista para ver apenas os produtos de uma loja específica.
-
-**Checklist Interativa de Compras** - Modo de visualização desenhado para o momento da compra. Ao clicar num produto da lista, este é "riscado", a sua cor muda para cinzento e é movido para o fim da lista. Se o carrinho for esvaziado, o ecrã adapta-se apresentando um estado de "Lista vazia".
-
-**Pesquisa de Supermercados e Horários** - Descoberta de supermercados próximos com base na localização atual do GPS do utilizador ou através de uma localização introduzida manualmente (suportada pela API do Photon). Os resultados incluem a apresentação dos horários de funcionamento de cada loja.
-
-**Sistema de Utilizadores (Conta vs. Convidado)** - A aplicação pode ser explorada como convidado ou através da criação de uma conta de utilizador para acesso a funcionalidades extra.
-
-**Sincronização na Cloud** - Para utilizadores com conta registada, a sua lista de compras sincroniza automaticamente em tempo real com a base de dados (Firestore), permitindo não perder os dados.
-
-**Gestão de Conta Segura** - Sistema de recuperação de conta através do envio de e-mails. Na funcionalidade de alteração de e-mail da conta, é enviado um e-mail de verificação para o novo endereço, obrigando à confirmação da sua existência antes de efetivar a mudança.
-
-**Personalização da Interface (Dark/Light Mode)** - Suporte nativo para modo claro e modo escuro, adaptando-se às preferências do utilizador.
+- **Pesquisa de Produtos por Categoria:** exploração e adição de produtos à lista de compras, organizados pelas respetivas categorias.
+- **Otimização de Preços (Toggle Mix/Loja Única):** alternância entre o cálculo do melhor preço absoluto (combinando produtos de diferentes lojas) e a restrição a uma única loja.
+- **Checklist Interativa de Compras:** modo de visualização orientado ao momento da compra, em que os produtos clicados ficam marcados, passam a cinzento e descem para o fim da lista.
+- **Pesquisa de Supermercados e Horários:** localização de supermercados próximos com base no GPS do dispositivo ou numa localização introduzida manualmente (via API Photon), com apresentação dos horários de funcionamento.
+- **Sistema de Utilizadores (Conta vs. Convidado):** acesso à aplicação como convidado ou através de conta registada, com funcionalidades adicionais para utilizadores autenticados.
+- **Sincronização na Cloud:** sincronização automática e em tempo real da lista de compras com o Firestore, para utilizadores com conta registada.
+- **Gestão de Conta Segura:** recuperação de palavra-passe e alteração de e-mail com verificação por mensagem de confirmação.
+- **Personalização da Interface (Dark/Light Mode):** suporte para modo claro e modo escuro, adaptado às preferências do utilizador.
 
 **Pressupostos**
 
-- A aplicação utiliza o Firebase como infraestrutura principal para os serviços de Autenticação (Auth) e Base de Dados em tempo real (Firestore).
-- Atualmente, todos os produtos, os supermercados disponíveis e os seus respetivos horários de funcionamento presentes no Firestore são dados simulados (mocks) para efeitos de prova de conceito e demonstração de funcionamento.
-- A pesquisa e conversão de localizações personalizadas inseridas pelo utilizador dependem do serviço externo da API do Photon.
-- Assume-se que o utilizador necessita de uma ligação ativa à internet para sincronizar a lista na cloud, pesquisar supermercados noutras localizações e efetuar login/alteração de credenciais.
-
----
-
-## Happiness Meters
-
-<p align="center">
-  <img src="docs/happinessMeters/happiness.png"/>
-</p>
+- A aplicação utiliza o Firebase como infraestrutura principal para autenticação (Auth) e base de dados em tempo real (Firestore).
+- Os produtos, supermercados e horários presentes no Firestore são dados simulados (mocks) para efeitos de prova de conceito.
+- A pesquisa e conversão de localizações manuais dependem da API externa Photon.
+- A ligação ativa à internet é necessária para sincronização na cloud, pesquisa de supermercados e operações de autenticação.
 
 ---
 
@@ -149,33 +122,33 @@ Quer o utilizador prefira a máxima poupança (combinando compras em várias loj
 
 ### User Stories
 
-As user stories foram criadas e geridas no [GitHub Projects](https://github.com/orgs/FEUP-LEIC-ES-2025-26/projects). Segue-se um resumo das histórias identificadas:
+As user stories foram criadas e geridas no [GitHub Projects](https://github.com/orgs/FEUP-LEIC-ES-2025-26/projects).
 
-Autenticação e Gestão de Conta
+**Autenticação e Gestão de Conta**
 
-- Enquanto utilizador, quero ser recebido por um ecrã inicial claro, com opções fáceis para entrar com conta ou aceder como convidado.
+- Enquanto utilizador, quero ser recebido por um ecrã inicial com opções claras para entrar com conta ou aceder como convidado.
 - Enquanto utilizador não registado, quero criar uma conta na aplicação, de modo a guardar e sincronizar a minha lista de compras.
-- Enquanto utilizador registado, quero fazer login na aplicação, de modo a ter acesso à minha informação guardada.
-- Enquanto utilizador registado, quero ter acesso a uma aba de conta para visualizar o meu perfil (nome e foto).
+- Enquanto utilizador registado, quero fazer login na aplicação, de modo a aceder à minha informação guardada.
+- Enquanto utilizador registado, quero ter acesso a uma aba de conta para visualizar o meu perfil (nome e foto genérica).
 - Enquanto utilizador registado, quero conseguir recuperar a minha palavra-passe e alterar o meu e-mail de forma segura, para garantir o acesso e a segurança da minha conta.
 
-Supermercados e Localização
+**Supermercados e Localização**
 
 - Enquanto utilizador, quero pesquisar supermercados perto de mim usando a minha localização atual ou uma localização que eu defina manualmente.
-- Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar se estão abertos agora.
-- Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados para conseguir planear as minhas compras.
+- Enquanto utilizador, quero filtrar a lista de supermercados pela distância e verificar se estão abertos.
+- Enquanto utilizador, quero consultar o horário de funcionamento dos supermercados para planear as minhas compras.
 
-Produtos e Lista de Compras (Carrinho)
+**Produtos e Lista de Compras**
 
-- Enquanto utilizador, quero conseguir pesquisar e explorar produtos organizados por uma dada categoria.
+- Enquanto utilizador, quero pesquisar e explorar produtos organizados por categoria.
 - Enquanto utilizador, quero adicionar produtos à minha lista de compras e gerir as suas quantidades num ecrã dedicado.
 - Enquanto utilizador, quero visualizar os dados básicos do produto e comparar os seus preços em diferentes supermercados.
-- Enquanto utilizador, quero escolher na minha lista de compras entre a opção de "melhor preço absoluto" (mix de supermercados) ou restringir os produtos a uma loja específica.
-- Enquanto utilizador, quero uma checklist interativa dos produtos que vou comprar (onde os itens clicados ficam riscados, a cinzento, e movem-se para o fundo), para me organizar melhor durante as compras na loja.
+- Enquanto utilizador, quero escolher entre a opção de melhor preço absoluto (mix de supermercados) ou restringir os produtos a uma loja específica.
+- Enquanto utilizador, quero uma checklist interativa dos produtos a comprar, em que os itens clicados ficam marcados, passam a cinzento e descem para o fundo da lista, para me organizar durante as compras.
 
-Personalização
+**Personalização**
 
-- Enquanto utilizador, quero escolher o tema da aplicação (modo claro e escuro), para que a interface se ajuste às minhas preferências.
+- Enquanto utilizador, quero escolher o tema da aplicação (modo claro ou escuro) para que a interface se ajuste às minhas preferências.
 
 ### Modelo de Domínio
 
@@ -183,7 +156,7 @@ Personalização
   <img src="docs/domain/domain_model.png"/>
 </p>
 
-O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o `UtilizadorRegistado`, que possui um `Carrinho` com `ItemCarrinho` e `Produtos`, uma lista de `Favoritos`, `CarrinhosFavoritos` e `HistoricoCarrinho`. Os `Supermercados` têm `Localizacao`, `Horarios` e praticam preços via `PrecoProduto`. O `UtilizadorAnonimo` pode usar o `Carrinho`, mas não tem acesso a funcionalidades exclusivas de utilizadores registados.
+O modelo de domínio é composto por 13 classes que representam os conceitos centrais do sistema. A entidade principal é o `UtilizadorRegistado`, que possui um `Carrinho` com `ItemCarrinho` e `Produtos`, uma lista de `Favoritos`, `CarrinhosFavoritos` e `HistoricoCarrinho`. Os `Supermercados` têm `Localizacao`, `Horarios` e praticam preços via `PrecoProduto`. O `UtilizadorAnonimo` pode utilizar o `Carrinho`, sem acesso às funcionalidades exclusivas de utilizadores registados.
 
 Para mais detalhes: [Modelo de Domínio PDF](docs/domain/domain_model.pdf)
 
@@ -191,7 +164,7 @@ Para mais detalhes: [Modelo de Domínio PDF](docs/domain/domain_model.pdf)
 
 ## Arquitetura e Design
 
-A arquitetura da aplicação segue uma organização em camadas, separando a interface do utilizador da lógica de negócio. A camada de apresentação é composta por ecrãs e componentes reutilizáveis, enquanto a lógica da aplicação é gerida por hooks e constantes partilhadas. Esta separação facilita a manutenção e evolução do código ao longo do projeto.
+A arquitetura da aplicação segue uma organização em camadas, separando a interface do utilizador da lógica de negócio. A camada de apresentação é composta por ecrãs e componentes reutilizáveis; a lógica da aplicação é gerida por hooks e utilitários partilhados. Esta separação facilita a manutenção e evolução do código ao longo do projeto.
 
 ### Arquitetura Lógica
 
@@ -199,7 +172,14 @@ A arquitetura da aplicação segue uma organização em camadas, separando a int
   <img src="docs/architecture/package_diagram.png"/>
 </p>
 
-A arquitetura lógica organiza o sistema em quatro camadas: Presentation (Navigation, Screens, Components), Logic (Hooks, Utils), Data (Firebase Config, Constants) e External Services (Firebase Firestore, expo-location, Firebase Auth). Os ecrãs utilizam os componentes e hooks, os hooks utilizam utils e acedem ao Firebase e ao GPS.
+A arquitetura lógica organiza o sistema em quatro camadas:
+
+- **Presentation:** Navigation, Screens, Components
+- **Logic:** Hooks, Utils
+- **Data:** Firebase Config, Constants
+- **External Services:** Firebase Firestore, expo-location, Firebase Auth
+
+Os ecrãs utilizam os componentes e hooks; os hooks utilizam utilitários e acedem ao Firebase e ao GPS.
 
 Para mais detalhes: [Diagrama de Pacotes PDF](docs/architecture/package_diagram.pdf)
 
@@ -215,10 +195,9 @@ Para mais detalhes: [Diagrama de Deployment PDF](docs/architecture/deployment_di
 
 ### Protótipo Vertical
 
-O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
-O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
+O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados, validando a viabilidade das integrações nativas com React Native e Expo.
 
-Através da integração com o GPS do dispositivo e a base de dados Firebase Firestore, o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância usando a fórmula de Haversine e verificar se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
+Através da integração com o GPS do dispositivo e o Firestore, o sistema lê as coordenadas do utilizador, extrai as lojas ativas, calcula a distância via fórmula de Haversine e verifica se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
 
 **Screenshots**
 
@@ -230,15 +209,15 @@ Através da integração com o GPS do dispositivo e a base de dados Firebase Fir
   <img src="https://github.com/user-attachments/assets/6ea33589-7b4d-43be-bfef-e5af379c1d89" alt="Ecrã de registo" width="220"/>
 </p>
 
-Nota: Nesta iteração, alguns botões e elementos interativos ainda não se encontram totalmente operacionais. Estes elementos fazem parte das funcionalidades planeadas para os sprints seguintes.
+> Nesta iteração, alguns elementos interativos ainda não estavam totalmente operacionais. Estes fazem parte das funcionalidades implementadas nos sprints seguintes.
 
 ---
 
 ## Validação de Requisitos
 
-No início do projeto, realizámos um questionário ao nosso público-alvo (com a participação de 21 respondentes) para validar a utilidade da aplicação e compreender as funcionalidades com maior procura. Este processo foi fundamental para refinar o nosso Product Backlog (PBL) com base em dados quantitativos, focando o esforço de desenvolvimento no MVP.
+No início do projeto foi realizado um questionário ao público-alvo (21 respostas) para validar a utilidade da aplicação e identificar as funcionalidades prioritárias. Este processo informou a composição do Product Backlog com base em dados quantitativos.
 
-Link do formulário: [https://tally.so/r/pbWPjV]
+Formulário: [https://tally.so/r/pbWPjV](https://tally.so/r/pbWPjV)
 
 ### Resultados
 
@@ -253,12 +232,14 @@ Link do formulário: [https://tally.so/r/pbWPjV]
   </tr>
 </table>
 
-### Principais Conclusões e Impacto no PBL:
+### Principais Conclusões e Impacto no PBL
 
-- **Priorização da Checklist:** 95.2% dos utilizadores (20 em 21) consideram importante planear as compras (38.1% faz sempre lista e 57.1% faz ocasionalmente). Isto levou-nos a priorizar a implementação da checklist interativa (Issue #117) para substituir dinamicamente o fluxo tradicional de papel ou notas.
-- **Implementação do Modo Convidado:** A validação inicial da utilidade da aplicação registou uma aceitação massiva, com 95.2% dos inquiridos a avaliar a ideia principal com nota igual ou superior a 4 (61.9% com pontuação máxima de 5). Para mitigar qualquer atrito que reduza a retenção desta base de utilizadores, removeu-se a obrigatoriedade de registo, adotando um "Modo Convidado" assíncrono via Firebase.
-- **Toggle de Poupança vs. Conveniência:** Confirmou-se a volatilidade do perfil de consumo: 47.6% dos inquiridos procura ativamente o supermercado com melhores promoções e 28.6% chega a deslocar-se a várias lojas na mesma semana, enquanto 23.8% prioriza a conveniência de uma loja única. Esta métrica validou o desenvolvimento do algoritmo de otimização bifuncional no carrinho.
-- **Corte de Funcionalidades (Limpeza do MVP):** Funcionalidades secundárias como a partilha de listas (Carrinho Partilhado) obtiveram a pior classificação no ecossistema de prioridades (média de 5.0, ocupando o último lugar isolado). Por registarem um rácio de rejeição ou indiferença acentuado, foram descartadas do backlog operacional para salvaguardar a entrega atempada das componentes críticas.
+- **Priorização da Checklist:** 95,2% dos utilizadores considera importante planear as compras (38,1% faz sempre lista; 57,1% faz ocasionalmente). Este resultado levou à priorização da checklist interativa (Issue #117) como substituto do fluxo tradicional de lista em papel.
+- **Implementação do Modo Convidado:** 95,2% dos inquiridos avaliou a ideia principal com nota igual ou superior a 4 em 5. Para reduzir o atrito no primeiro acesso e preservar esta base de utilizadores, eliminou-se a obrigatoriedade de registo, adotando um modo convidado assíncrono via Firebase.
+- **Toggle de Poupança vs. Conveniência:** 47,6% dos inquiridos procura ativamente o supermercado com melhores promoções e 28,6% desloca-se a várias lojas na mesma semana, enquanto 23,8% prioriza a conveniência de uma loja única. Esta distribuição validou o desenvolvimento do algoritmo de otimização bifuncional no carrinho.
+- **Corte de Funcionalidades:** a partilha de listas obteve a classificação mais baixa no ranking de prioridades (média de 5,0, último lugar isolado). Dado o rácio de rejeição ou indiferença acentuado, a funcionalidade foi removida do backlog operacional para garantir a entrega atempada dos componentes críticos.
+
+---
 
 ## Gestão do Projeto
 
@@ -293,24 +274,24 @@ Fim do Sprint 0
 
 #### Funcionalidades Implementadas
 
-- Pesquisa de supermercados por @dcl674
-- Página de login por @JoseSantos56
-- Página de registo por @JoseSantos56
+- Pesquisa de supermercados por @dcl674: página de pesquisa para supemercados, mostrando nome e o estado do supermercado
+- Página de login por @JoseSantos56: página de login completa conectada ao Firebase Auth
+- Página de registo por @JoseSantos56: página de registo completa conectada ao Firebase Auth
 - DependaBot e scripts de DevOps por @bcdtrak
 
 #### Retrospetiva
 
 **O que correu bem**
 
-- Desenho do Protótipo: A equipa conseguiu implementar um protótipo funcional centrado na funcionalidade principal da app, demonstrando com sucesso o propósito do produto.
+- Desenho do Protótipo: a equipa implementou um protótipo funcional centrado na funcionalidade principal da aplicação, demonstrando o propósito do produto.
 
 **O que fazer de forma diferente**
 
-- Distribuição de Trabalho: A distribuição de tarefas foi desequilibrada, com alguns elementos a implementar significativamente mais do que outros. A equipa irá abordar este ponto no próximo sprint.
+- Distribuição de Trabalho: a distribuição de tarefas foi desequilibrada, com alguns elementos a implementar significativamente mais do que outros. Este ponto foi endereçado no sprint seguinte.
 
 **Questões em aberto**
 
-- Base de Dados de Produtos: É necessário definir uma estratégia para popular a base de dados de produtos, manualmente ou via API, de modo a que a funcionalidade de pesquisa de produtos funcione corretamente.
+- Estratégia para popular a base de dados de produtos (manualmente ou via API), necessária para o correto funcionamento da funcionalidade de pesquisa.
 
 ---
 
@@ -339,157 +320,150 @@ Fim do Sprint 1
 
 **O que correu bem**
 
-- Implementação Paralela: A equipa implementou 3 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
-- Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
+- Implementação Paralela: foram implementadas três funcionalidades em simultâneo e integradas sem conflitos significativos.
+- Distribuição de Trabalho: a carga de trabalho foi distribuída de forma mais equilibrada relativamente ao sprint anterior.
 
 **O que fazer de forma diferente**
 
-- Comunicação: A comunicação entre os elementos da equipa foi escassa, o que dificultou a implementação de algumas funcionalidades planeadas e reduziu a produtividade global. A equipa irá estabelecer check-ins mais regulares.
+- Comunicação: a comunicação entre os elementos da equipa foi escassa, dificultando a implementação de algumas funcionalidades planeadas. Foram estabelecidos check-ins mais regulares para o sprint seguinte.
 
 **Questões em aberto**
 
-- Integração Carrinho-Base de Dados: É necessário definir como ligar o carrinho do utilizador à base de dados, de modo a obter os metadados necessários para os cálculos de preço.
+- Definição da estratégia de ligação entre o carrinho do utilizador e a base de dados, para acesso aos metadados necessários nos cálculos de preço.
 
 ---
 
 ### Sprint 2
 
-#### Board do projeto
+#### Board do Projeto
 
-##### Antes
+Antes
 
 <img width="892" height="854" alt="image" src="https://github.com/user-attachments/assets/f7cbd25d-cbb2-4de9-a468-45318a95c55a" />
 
-##### Depois
+Depois
 
 <img width="539" height="877" alt="imagem" src="https://github.com/user-attachments/assets/cf14b3c4-76cb-4264-a12a-f6a47f598fbd" />
 
 #### Funcionalidades Implementadas
 
-- Ecrã Inicial por @lluissampaio
-  Landing page com as opções de login, registo ou entrada rápida como convidado.
-- Página de Produtos por @dcl674
-  Página com preços em diversos supermercados e mais informações como nutriscore, ecoscore e quantidade. Permite adicionar produtos ao carrinho.
-- Página de horários de supermercados por @bcdtrak
-  Página com horário completo do supermercado selecionado
-- Carrinho de Compras por @lluissampaio
-  Gestão da lista de compras com um toggle que permite calcular o melhor preço num "mix" de supermercados ou restringir tudo a uma só loja. Conecção à firestore.
-- Recuperação e Gestão de Conta por @JoseSantos56
-  Ecrã para recuperar a password e lógica de segurança (verificação por e-mail) ao alterar os dados do utilizador.
-- Dark/Light Mode por @bcdtrak
-  Suporte nativo para alternar entre modo claro e escuro em toda a aplicação.
+- **Ecrã Inicial** por @lluissampaio: landing page com opções de login, registo e entrada como convidado.
+- **Página de Produtos** por @dcl674: visualização de preços em vários supermercados, com dados adicionais (Nutriscore, Ecoscore, quantidade) e adição ao carrinho.
+- **Página de Horários de Supermercados** por @bcdtrak: consulta do horário completo do supermercado selecionado.
+- **Carrinho de Compras** por @lluissampaio: gestão da lista de compras com toggle entre melhor preço absoluto (mix de supermercados) e restrição a uma loja única; integração com Firestore.
+- **Recuperação e Gestão de Conta** por @JoseSantos56: ecrã de recuperação de palavra-passe e lógica de verificação por e-mail na alteração de dados do utilizador.
+- **Dark/Light Mode** por @bcdtrak: suporte para alternância entre modo claro e escuro em toda a aplicação.
 
 #### Retrospetiva
 
 **O que correu bem**
 
-- Implementação Paralela: A equipa implementou 7 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
-- Distribuição de Trabalho: A carga de trabalho foi distribuída de forma mais equilibrada, resultando num aumento de produtividade em comparação com o sprint anterior.
+- Implementação Paralela: seis funcionalidades implementadas em simultâneo e integradas sem conflitos relevantes.
+- Distribuição de Trabalho: carga de trabalho distribuída de forma equilibrada, com aumento de produtividade face ao sprint anterior.
 
 **O que fazer de forma diferente**
 
-- Organização: A equipa poderia se ter organizado melhor para conseguir realizar as features mais atempadamente.
+- Organização: a equipa poderia ter planeado melhor a calendarização das tarefas para concluir as funcionalidades mais cedo no período do sprint.
 
 **Questões em aberto**
 
-- Como melhorar a segurança da app.
+- Estratégia para reforço da segurança da aplicação.
 
 #### Ferramentas de IA Utilizadas
 
-- Gemini, GLM, Claude, Deepseek
+Gemini, GLM, Claude, Deepseek.
 
 #### Prompts Relevantes
 
-1 - Como é que resolvo as dependencias do projeto?
-2 - A app não está a abrir no expo go, o que faço para resolver?
-3 - O meu workflow do Github Actions não esta a dar upload dos build artifacts, como resolvo?
-4 - Consegues explicar-me como funciona o Zustand? Explica-me como instalar e a sintaxe específica.
-5 - O que devo fazer para sincronizar o FireStore com o "users/{uid}/cart/default" através de um hook?
+1. Como resolver as dependências do projeto?
+2. A aplicação não está a abrir no Expo Go; como resolver?
+3. O workflow do GitHub Actions não está a fazer upload dos build artifacts; como corrigir?
+4. Como funciona o Zustand? Explicação da instalação e sintaxe específica.
+5. O que fazer para sincronizar o Firestore com `users/{uid}/cart/default` através de um hook?
 
 #### Código Gerado por IA
 
-- "package.json"
-- "firebaseConfig.js"
-- Parte de "/store/useCartStore.js"
+- `package.json`
+- `firebaseConfig.js`
+- Parte de `/store/useCartStore.js`
 
-#### PBIs com label "MisterAI"
+> A IA foi utilizada como assistente de implementação e depuração. Nenhum PBI foi integralmente gerado por IA.
 
-- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
+---
 
 ### Sprint 3
 
-#### Board do projeto
+#### Board do Projeto
 
-##### Antes
+Antes
 
 <img width="540" height="874" alt="imagem" src="https://github.com/user-attachments/assets/8ae5cb67-94c8-4cc6-997d-e287eb9d613e" />
 
-##### Depois
-
 #### Funcionalidades Implementadas
 
-- Pesquisa de produto por categoria por @dcl674
-  Funcionalidade que permite pesquisar produtos de modo mais eficiente através de filtros por categorias, otimizando o processo de seleção de um modo intuitivo.
-- Edição do perfil por @lluissampaio
-  Permite personalização da conta do utilizador, proporcionando uma experiência mais agradável.
-- Gestão de conta por @lluissampaio
-  Secção adicionada para alteração de informações relativas à segurança e manutenção conta do utilizador.
-- Página de ajuda por @lluissampaio
-  Página criada com o intuito de orientar e ajudar o utilizador no seu uso da aplicação.
-- Checklist Interativa por @bcdtrak
-  Modo prático para usar dentro da loja: ao clicar num produto do carrinho, ele fica "riscado", a cinzento e desce para o fim da lista.
-- Página "Sobre Nós" por @noloseiiird
-  Página com os devidos créditos aos autores da aplicação.
-- Botão de limpeza de texto por @noloseiiird
-  Pequena conveniência em barras de pesquisa para apagar rapidamente todo o texto inserido.
+- **Pesquisa de Produto por Categoria** por @dcl674: filtragem de produtos por categoria para otimizar o processo de seleção.
+- **Edição do Perfil** por @lluissampaio: personalização dos dados da conta do utilizador.
+- **Gestão de Conta** por @lluissampaio: secção para alteração de informações de segurança e manutenção da conta.
+- **Página de Ajuda** por @lluissampaio: página de orientação ao utilizador sobre o uso da aplicação.
+- **Checklist Interativa** por @bcdtrak: modo de uso na loja em que os produtos clicados ficam marcados, passam a cinzento e descem para o fim da lista.
+- **Página "Sobre Nós"** por @noloseiiird: créditos aos autores da aplicação.
+- **Botão de Limpeza de Texto** por @noloseiiird: atalho nas barras de pesquisa para apagar rapidamente o texto inserido.
 
 #### Retrospetiva
 
 **O que correu bem**
 
-- Implementação Paralela: A equipa implementou 7 funcionalidades em simultâneo e integrou-as sem grandes conflitos, progredindo em várias frentes ao mesmo tempo.
-- Organização: A equipa usufruiu das frameworks disponibilizadas para organização do sprint, utilizando-as ao seu máximo potencial para acelerar a integração das features sem conflitos.
+- Implementação Paralela: sete funcionalidades implementadas e integradas em simultâneo sem conflitos.
+- Organização: a equipa utilizou as frameworks de gestão disponíveis de forma mais eficaz, acelerando a integração das funcionalidades.
 
 **O que fazer de forma diferente**
 
-- Delegação de tarefas: A distribuição de tarefas entre os membros da equipa foi ligeiramente desequilibrada, dificultando o progresso a nível de funcionalidades novas na aplicação.
-- Comunicação: A comunicação, embora tenha melhorado comparativemente ao início, revelou-se escassa, o que, por vezes, levou a repetição desnecessária de tarefas.
+- Delegação de Tarefas: a distribuição de trabalho foi ligeiramente desequilibrada, o que condicionou o ritmo de desenvolvimento de novas funcionalidades.
+- Comunicação: apesar da melhoria face ao início do projeto, a comunicação revelou-se pontualmente insuficiente, gerando repetição desnecessária de tarefas.
 
 **Questões em aberto**
 
-Como estruturar a demo?
-Como fazer o pitch?
+- Estruturação da demo e preparação do pitch final.
 
-# Ferramentas de IA Utilizadas
+#### Ferramentas de IA Utilizadas
 
-- Gemini, GLM, Claude, Deepseek
+Gemini, GLM, Claude, Deepseek.
 
-# Prompts Relevantes
+#### Prompts Relevantes
 
-- "O Detox está a demorar muito tempo a completar os testes, podes ver o meu ficheiro de configuração e, se necessário, alterar para que funcione melhor?"
-- "Estou a ter um erro de build no Detox, podes me ajudar a resolvê-lo?"
+- "O Detox está a demorar muito tempo a completar os testes; podes analisar o ficheiro de configuração e propor alterações para melhorar o desempenho?"
+- "Estou com um erro de build no Detox; podes ajudar a identificar a causa?"
 
-# Código Gerado por IA
+#### Código Gerado por IA
 
-- ".detoxrc.js"
+- `.detoxrc.js`
 
-# PBIs com label "MisterAI"
+> A IA foi utilizada como assistente de implementação e depuração. Nenhum PBI foi integralmente gerado por IA.
 
-- Nada foi totalmente criado com IA, apenas foi usado como um assistente para ajudar na implementação e na correção de alguns bugs mais complexos.
 ---
 
 ### Entrega Final
 
-#### Final Product
+#### Valor de Negócio Percebido
 
-##### Perceived business value: 
-- A aplicação implementa todas as funcionalidades necessárias para cumprir o seu propósito, adicionando funcionalidades extra para proporcionar conveniência ao utilizador. Apesar de o *core* ser a poupança de dinheiro via uma "rota" de compras personalizada com base em preços, existem features de consulta do horário dos supermercados, para planear as compras atempadamente, e uma checklist de compras, para que o utilizador possa atualizar em tempo-real a sua lista de produtos a adquirir. Apesar de não ser uma aplicação extensiva relativamente a funcionalidades, cada uma está fortemente integrada para proporcionar uma experiência de utilizador agradável, o que resulta num valor acrescido e numa experiência suave e fácil de entender/interagir com.
+A aplicação implementa todas as funcionalidades necessárias para cumprir o seu propósito central: identificar a combinação de compras mais económica com base nos preços praticados pelos supermercados disponíveis. Complementarmente, inclui a consulta de horários para planeamento prévio e a checklist interativa para acompanhamento em tempo real durante as compras. A integração entre funcionalidades é coesa e resulta numa experiência de utilização fluida e de baixa curva de aprendizagem.
 
-##### Technical external quality (usability): 
-- A interface é limpa e segue padrões de design modernos, cumprindo as expectativas do utilizador. As interações com os menus e toda a experiência de utilizador são o foco principal da aplicação, sendo bastante intuitivas, suaves e bem integradas. Não existem funcionalidades escondidas, a aplicação tem uma curva de aprendizagem bastante suave e um teor elevado de *discoverability*, o utilizador consegue internalizar o *workflow* rapidamente.
+#### Qualidade Externa (Usabilidade)
 
-##### Technical internal quality (code quality): 
-- O código segue a estrutura *standard* de projetos de React Native, organizando a *codebase* em pastas separadas para cada tipo de biblioteca utilizada. Este modelo permitiu-nos criar um código bastante modular, extensível e auto-documentativo, isto é, meramente olhando para a estrutura de ficheiro, é possível ter uma ideia do funcionamento da aplicação. A qualidade do código revelou-se, de um modo geral, boa, tendo evoluído gradualmente desde o primeiro sprint, à medida que fomos aprendendo e utilizando boas práticas de desenvolvimento de código em React Native. Implementamos, na pipeline de DevOps, um workflow para manutenção da formatação e estilo do código, o que o tornou mais legível e consistente, aumentando a sua qualidade. De uma maneira geral, o código segue as *guidelines* genéricas de React Native, o que permite que qualquer desenvolvedor com conhecimento da framework consiga assimilar o funcionamento da aplicação rapidamente e começar a desenvolver código. A cobertura de testes foi extensiva, testando exaustivamente cada funcionalidade da aplicação e as bibliotecas que integram o *backend*. Os testes de aceitação percorrem o workflow do user na aplicação, testando as diversas interações possíveis. Deste modo, foram necessários 5 testes de aceitação para validar totalmente a aplicação.
+A interface segue padrões de design modernos e cumpre as expectativas de utilização. As interações são intuitivas e bem integradas, sem funcionalidades ocultas. O grau de discoverability é elevado, permitindo ao utilizador internalizar o fluxo da aplicação com rapidez.
 
-_A preencher na entrega final._
-_A preencher na entrega final._
+#### Qualidade Interna (Qualidade do Código)
+
+O código segue a estrutura padrão de projetos React Native, organizada em pastas por tipo de biblioteca. Esta estrutura produz um código modular, extensível e autodocumentativo. A qualidade evoluiu gradualmente ao longo dos sprints, à medida que a equipa incorporou boas práticas de desenvolvimento em React Native. A pipeline de DevOps inclui um workflow de verificação de formatação e estilo, que aumentou a legibilidade e consistência da codebase. A cobertura de testes é extensiva, incluindo cinco testes de aceitação que percorrem os principais fluxos de interação do utilizador.
+
+---
+
+## Equipa
+
+| Nome | Número |
+|---|---|
+| Pedro Cunha Gonçalves de Melo | up202406050
+| Daniel Lobo | up202306056 
+| Luís Miguel Branco Sampaio Costa | up202404078 
+| José Dinis Rocha Melo Maçorano dos Santos | up202405578 
+| Afonso Moura | up202403939
