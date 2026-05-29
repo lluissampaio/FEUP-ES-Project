@@ -398,6 +398,10 @@ Antes
 
 <img width="540" height="874" alt="imagem" src="https://github.com/user-attachments/assets/8ae5cb67-94c8-4cc6-997d-e287eb9d613e" />
 
+Depois
+
+<img width="541" height="900" alt="imagem" src="https://github.com/user-attachments/assets/4ec6b4b6-e04a-43fc-b4f4-9e0491eb0d3e" />
+
 #### Funcionalidades Implementadas
 
 - **Pesquisa de Produto por Categoria** por @dcl674: filtragem de produtos por categoria para otimizar o processo de seleção.
