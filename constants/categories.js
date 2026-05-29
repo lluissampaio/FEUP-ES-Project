@@ -20,7 +20,7 @@ export const CATEGORY_GRID_DATA = [
     themeKey: "purple",
     asset: "padaria",
   },
-  { id: "laticinio", label: "Laticínios", themeKey: "yellow", asset: "leite" },
+  { id: "laticinios", label: "Laticínios", themeKey: "yellow", asset: "leite" },
   { id: "bebidas", label: "Bebidas", themeKey: "blue", asset: "bebidas" },
 ];
 

@@ -13,34 +13,33 @@ import {
   useColorScheme,
 } from "react-native";
 
- const teamMembers = [
+const teamMembers = [
   {
     name: "Pedro Cunha Gonçalves de Melo",
     up: "up202406050",
-    bio: "Modelou os diagramas UML do sistema e desenvolveu a interface estática de apresentação institucional do projeto."
+    bio: "Modelou os diagramas UML do sistema e desenvolveu a interface estática de apresentação institucional do projeto.",
   },
   {
     name: "Daniel Lobo",
     up: "up202306056",
-    bio: "Estruturou os dados de produtos e supermercados, desenvolveu os motores de pesquisa e filtragem, e criou o módulo de comparação de preços."
+    bio: "Estruturou os dados de produtos e supermercados, desenvolveu os motores de pesquisa e filtragem, e criou o módulo de comparação de preços.",
   },
   {
     name: "Luís Miguel Branco Sampaio Costa",
     up: "up202404078",
-    bio: "Desenvolveu o ecrã de boas-vindas, o algoritmo de otimização do carrinho de compras e os módulos de gestão de perfil e suporte."
+    bio: "Desenvolveu o ecrã de boas-vindas, o algoritmo de otimização do carrinho de compras e os módulos de gestão de perfil e suporte.",
   },
   {
     name: "José Dinis Rocha Melo Maçorano dos Santos",
     up: "up202405578",
-    bio: "Implementou os fluxos de autenticação, desenvolveu o dashboard de destaques e promoções, e garantiu a segurança do sistema."
+    bio: "Implementou os fluxos de autenticação, desenvolveu o dashboard de destaques e promoções, e garantiu a segurança do sistema.",
   },
   {
     name: "Afonso Moura",
     up: "up000000000",
-    bio: "Implementou a infraestrutura CI/CD, desenvolveu os módulos interativos de localização e listas, e assegurou a personalização da UX."
-  }
+    bio: "Implementou a infraestrutura CI/CD, desenvolveu os módulos interativos de localização e listas, e assegurou a personalização da UX.",
+  },
 ];
-
 
 export default function AboutPage() {
   const theme = Colors[useColorScheme()] ?? Colors.light;
