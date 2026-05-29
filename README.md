@@ -400,7 +400,8 @@ Antes
 
 Depois
 
-<img width="541" height="900" alt="imagem" src="https://github.com/user-attachments/assets/4ec6b4b6-e04a-43fc-b4f4-9e0491eb0d3e" />
+<img width="541" height="900" alt="imagem" src="https://github.com/user-attachments/assets/6af5f346-a92c-45d1-aaef-fec37ffec435" />
+
 
 #### Funcionalidades Implementadas
 
