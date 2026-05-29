@@ -15,25 +15,25 @@ import {
 
 const faqs = [
   {
-    question: "Como funciona o algoritmo de comparação de preços?",
-    answer:
-      "O nosso algoritmo analisa os preços de cada produto em múltiplos supermercados e identifica as combinações que resultam no menor custo total para a sua lista de compras, tendo em conta os preços e as promoções em vigor de forma a garantir a opção mais económica.",
+    question: "Como funciona a comparação de preços?",
+    answer: "O motor de cálculo avalia a sua lista contra a base de dados para identificar a combinação de lojas mais económica. Nota técnica: nesta versão académica, o catálogo opera com dados simulados para demonstração isolada do algoritmo."
   },
   {
-    question: "As promoções estão sempre atualizadas?",
-    answer:
-      "Sim, cruzamos dados constantemente para garantir que as promoções aplicadas refletem o valor real que irá pagar, ajudando-o a poupar de forma transparente.",
+    question: "Como posso criar a minha lista de compras?",
+    answer: "Navegue pelas categorias ou utilize a pesquisa global na aba 'Explorar'. Selecione um produto, ajuste a quantidade desejada através do seletor e toque em 'Adicionar à Lista'."
   },
   {
-    question: "Posso confiar no preço final apresentado?",
-    answer:
-      "O valor apresentado reflete fielmente as promoções atuais e os preços recolhidos das superfícies comerciais. A nossa prioridade é oferecer-lhe resultados verídicos para que faça a melhor escolha.",
+    question: "Como funciona a checklist durante as compras?",
+    answer: "Na aba 'Lista', toque na caixa de verificação de um item para o marcar como recolhido. O sistema reordena a lista automaticamente, movendo os itens riscados para o fundo, mantendo o custo total estimado inalterado."
   },
   {
-    question: "Como posso criar uma lista de compras?",
-    answer:
-      "Basta navegar pela app, procurar os seus produtos favoritos e adicioná-los à sua lista atual, tocando no ícone de adicionar. O algoritmo fará o resto do trabalho por si ao calcular o melhor carrinho.",
+    question: "Como altero a localização da pesquisa?",
+    answer: "Aceda à aba 'Perfil' > 'Localização'. Insira uma morada manualmente ou reative a coordenada GPS. Os resultados da pesquisa de supermercados serão reajustados a este novo raio espacial."
   },
+  {
+    question: "Como atualizo os meus dados de conta?",
+    answer: "No 'Perfil', aceda ao ícone de edição. A mutação de credenciais sensíveis (e-mail/palavra-passe) requer a introdução da palavra-passe atual. A alteração de e-mail obriga à confirmação via link enviado para a nova caixa de correio."
+  }
 ];
 
 export default function HelpPage() {

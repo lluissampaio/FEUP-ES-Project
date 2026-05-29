@@ -13,28 +13,34 @@ import {
   useColorScheme,
 } from "react-native";
 
-const teamMembers = [
+ const teamMembers = [
   {
     name: "Pedro Cunha Gonçalves de Melo",
     up: "up202406050",
-    bio: "Focado na experiência do utilizador, garantiu que cada ecrã da app fosse intuitivo e agradável de usar.",
+    bio: "Modelou os diagramas UML do sistema e desenvolveu a interface estática de apresentação institucional do projeto."
   },
   {
     name: "Daniel Lobo",
     up: "up202306056",
-    bio: "Responsável pela pesquisa de produtos e integração com a base de dados, assegurou a consistência dos dados em toda a aplicação.",
+    bio: "Estruturou os dados de produtos e supermercados, desenvolveu os motores de pesquisa e filtragem, e criou o módulo de comparação de preços."
   },
   {
     name: "Luís Miguel Branco Sampaio Costa",
     up: "up202404078",
-    bio: "Desenvolveu o ecrã inicial e o carrinho de compras, trazendo as funcionalidades mais centrais da app à vida.",
+    bio: "Desenvolveu o ecrã de boas-vindas, o algoritmo de otimização do carrinho de compras e os módulos de gestão de perfil e suporte."
   },
   {
     name: "José Dinis Rocha Melo Maçorano dos Santos",
     up: "up202405578",
-    bio: "Dedicado à qualidade e organização do projeto, contribuiu para a robustez da autenticação e segurança da conta.",
+    bio: "Implementou os fluxos de autenticação, desenvolveu o dashboard de destaques e promoções, e garantiu a segurança do sistema."
   },
+  {
+    name: "Afonso Moura",
+    up: "up000000000",
+    bio: "Implementou a infraestrutura CI/CD, desenvolveu os módulos interativos de localização e listas, e assegurou a personalização da UX."
+  }
 ];
+
 
 export default function AboutPage() {
   const theme = Colors[useColorScheme()] ?? Colors.light;
@@ -83,7 +89,7 @@ export default function AboutPage() {
           <ThemedText style={styles.bodyText}>
             O Cheapy é uma aplicação mobile desenvolvida por estudantes da FEUP
             no âmbito de Engenharia de Software (2025/26). O seu objetivo é
-            simplificar e otimizar as compras de supermercado — pesquisa
+            simplificar e otimizar as compras de supermercado, pesquisa
             produtos, compara preços entre lojas e encontra sempre a opção mais
             económica, seja num único supermercado ou em combinação de vários.
           </ThemedText>
