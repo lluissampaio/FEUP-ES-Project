@@ -3,9 +3,8 @@
 Bem-vindo à documentação do Cents!
 
 Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
-Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até às decisões de implementação de baixo nível, num relatório de desenvolvimento de software organizado por tipo de atividade:
 
-- [Como Correr a Aplicação](#como-correr-a-aplicação)
+
 - [Como Correr a Aplicação](#como-correr-a-aplicação)
 - [Modelação de Negócio](#modelação-de-negócio)
   - [Visão do Produto](#visão-do-produto)
@@ -26,7 +25,6 @@ Encontras aqui os detalhes sobre o Cents, desde uma visão de alto nível até �
   - [Entrega Final](#entrega-final)
 
 As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
-As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
 
 Entre em contacto connosco!
 
@@ -38,8 +36,11 @@ Obrigado!
 
 | Nome | Email |
 | ---- | ----- |
-|      |       |
-
+| Pedro Cunha Gonçalves de Melo | up202406050@edu.fe.up.pt |
+| Daniel Filipe Cidade de Azeredo Lobo | up202306056@edu.fe.up.pt |
+| Luís Miguel Branco Sampaio Costa | up202404078@edu.fe.up.pt |
+| José Dinis Rocha Melo Maçorano dos Santos | up202405578@edu.fe.up.pt |
+| Afonso Sofia de Moura | up202403939@edu.fe.up.pt |
 ---
 
 ## Como Correr a Aplicação
@@ -215,7 +216,6 @@ Para mais detalhes: [Diagrama de Deployment PDF](docs/architecture/deployment_di
 
 ### Protótipo Vertical
 
-O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 O protótipo vertical implementado no Sprint 0 foca-se na funcionalidade central de pesquisa e localização de supermercados. Esta _thin vertical slice_ prova a viabilidade das integrações nativas com React Native e Expo.
 
 Através da integração com o GPS do dispositivo e a base de dados Firebase Firestore, o sistema consegue ler as coordenadas do utilizador, extrair as lojas ativas, calcular a distância usando a fórmula de Haversine e verificar se cada loja se encontra dentro do seu horário de funcionamento. Os resultados são apresentados numa lista pesquisável por nome.
@@ -491,5 +491,4 @@ Como fazer o pitch?
 ##### Technical internal quality (code quality): 
 - O código segue a estrutura *standard* de projetos de React Native, organizando a *codebase* em pastas separadas para cada tipo de biblioteca utilizada. Este modelo permitiu-nos criar um código bastante modular, extensível e auto-documentativo, isto é, meramente olhando para a estrutura de ficheiro, é possível ter uma ideia do funcionamento da aplicação. A qualidade do código revelou-se, de um modo geral, boa, tendo evoluído gradualmente desde o primeiro sprint, à medida que fomos aprendendo e utilizando boas práticas de desenvolvimento de código em React Native. Implementamos, na pipeline de DevOps, um workflow para manutenção da formatação e estilo do código, o que o tornou mais legível e consistente, aumentando a sua qualidade. De uma maneira geral, o código segue as *guidelines* genéricas de React Native, o que permite que qualquer desenvolvedor com conhecimento da framework consiga assimilar o funcionamento da aplicação rapidamente e começar a desenvolver código. A cobertura de testes foi extensiva, testando exaustivamente cada funcionalidade da aplicação e as bibliotecas que integram o *backend*. Os testes de aceitação percorrem o workflow do user na aplicação, testando as diversas interações possíveis. Deste modo, foram necessários 5 testes de aceitação para validar totalmente a aplicação.
 
-_A preencher na entrega final._
-_A preencher na entrega final._
+
