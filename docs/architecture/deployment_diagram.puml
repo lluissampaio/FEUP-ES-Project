@@ -15,7 +15,7 @@ skinparam component {
 ' === NÓS FÍSICOS ===
 
 node "Dispositivo Móvel\n(iOS / Android)" {
-  component "Cheapy App\n(React Native / Expo)" as App
+  component "Cents App\n(React Native / Expo)" as App
   component "GPS\n(expo-location)" as GPS
   component "Armazenamento Local\n(AsyncStorage)" as Storage
 }
