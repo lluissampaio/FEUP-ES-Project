@@ -1,15 +1,14 @@
 import { Colors } from "@/constants/colors";
+import { router } from "expo-router";
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
   View,
   useColorScheme,
-  ActivityIndicator,
-  TouchableOpacity,
 } from "react-native";
-import { router } from "expo-router";
 
-import AppIcon from "@/components/AppIcon";
 import FakeSearchBar from "@/components/FakeSearchBar";
 import ProductCard from "@/components/ProductCard";
 import Spacer from "@/components/Spacer";
@@ -58,15 +57,7 @@ export default function Home() {
   return (
     <ThemedView safe style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <AppIcon name="location" size={24} color={theme.text} weight="fill" />
-          <ThemedText title style={styles.locationText}>
-            Porto, Portugal
-          </ThemedText>
-        </View>
-
-        <Spacer height={16} />
-
+        <Spacer/>
         <FakeSearchBar />
         <Spacer height={24} />
 
@@ -139,17 +130,6 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-  locationText: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginLeft: 8,
   },
   sectionHeader: {
     flexDirection: "row",
