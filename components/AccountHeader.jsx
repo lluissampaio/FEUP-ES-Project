@@ -1,14 +1,19 @@
+import { Colors } from "@/constants/colors";
+import { auth } from "@/firebaseConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Image } from "expo-image";
+import * as ImagePicker from "expo-image-picker";
+import { updateProfile } from "firebase/auth";
+import React, { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AppIcon from "./AppIcon";
 import ThemedText from "./ThemedText";
 import ThemedView from "./ThemedView";
-import { Colors } from "@/constants/colors";
-import { auth } from "@/firebaseConfig";
-import { updateProfile } from "firebase/auth";
-import * as ImagePicker from "expo-image-picker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Image } from "expo-image";
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, ActivityIndicator } from "react-native";
 
 const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
   const [uploading, setUploading] = useState(false);
@@ -57,6 +62,7 @@ const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
     <ThemedView style={styles.container}>
       <TouchableOpacity
         onPress={handlePhotoPress}
+        style={styles.avatarWrapper}
         activeOpacity={isAuthenticated ? 0.7 : 1}
         disabled={!isAuthenticated}
       >
@@ -67,10 +73,11 @@ const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
         />
         {isAuthenticated && (
           <View style={styles.editBadge}>
-            {uploading
-              ? <ActivityIndicator color="#fff" size="small" />
-              : <AppIcon name="edit" size={14} color="#fff" weight="bold" />
-            }
+            {uploading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <AppIcon name="edit" size={14} color="#fff" weight="bold" />
+            )}
           </View>
         )}
       </TouchableOpacity>
@@ -79,7 +86,12 @@ const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
         <View style={styles.nameRow}>
           <ThemedText style={styles.name}>{name}</ThemedText>
           <TouchableOpacity onPress={onEditPress}>
-            <AppIcon name="edit" size={18} color={Colors.primary} weight="bold" />
+            <AppIcon
+              name="edit"
+              size={18}
+              color={Colors.primary}
+              weight="bold"
+            />
           </TouchableOpacity>
         </View>
         <ThemedText style={styles.email}>{email}</ThemedText>
@@ -98,9 +110,16 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     marginTop: 20,
   },
-  avatar: {
+  avatarWrapper: {
     width: 70,
     height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  avatar: {
+    width: "100%",
+    height: "100%",
     borderRadius: 35,
     backgroundColor: "#F2F3F2",
   },

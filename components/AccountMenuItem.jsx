@@ -1,10 +1,9 @@
+import { Colors } from "@/constants/colors";
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, useColorScheme } from "react-native";
+import AppIcon from "./AppIcon";
 import ThemedText from "./ThemedText";
 import ThemedView from "./ThemedView";
-import AppIcon from "./AppIcon";
-import { useColorScheme } from "react-native";
-import { Colors } from "@/constants/colors";
 
 const AccountMenuItem = ({ title, iconName, onPress }) => {
   const colorScheme = useColorScheme();
@@ -20,7 +19,12 @@ const AccountMenuItem = ({ title, iconName, onPress }) => {
           color={theme.iconColorFocused}
         />
         <ThemedText style={styles.title}>{title}</ThemedText>
-        <AppIcon name="chevronRight" size={18} color={theme.iconColorFocused} />
+        <AppIcon
+          name="chevronRight"
+          weight="regular"
+          size={18}
+          color={theme.iconColorFocused}
+        />
       </ThemedView>
     </TouchableOpacity>
   );
