@@ -81,7 +81,7 @@ export default function AboutPage() {
           <ThemedText style={styles.sectionTitle}>O Projeto</ThemedText>
           <Spacer height={10} />
           <ThemedText style={styles.bodyText}>
-            O Cheapy é uma aplicação mobile desenvolvida por estudantes da FEUP
+            O Cents é uma aplicação mobile desenvolvida por estudantes da FEUP
             no âmbito de Engenharia de Software (2025/26). O seu objetivo é
             simplificar e otimizar as compras de supermercado — pesquisa
             produtos, compara preços entre lojas e encontra sempre a opção mais
