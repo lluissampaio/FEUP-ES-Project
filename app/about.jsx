@@ -68,7 +68,7 @@ export default function AboutPage() {
             <AppIcon name="shop" size={40} color="#fff" weight="fill" />
           </View>
           <Spacer height={16} />
-          <ThemedText style={styles.appName}>Cheapy</ThemedText>
+          <ThemedText style={styles.appName}>Cents</ThemedText>
           <ThemedText style={styles.appTagline}>
             Compra mais barato, sempre.
           </ThemedText>
