@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <ThemedView safe style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Spacer/>
+        <Spacer />
         <FakeSearchBar />
         <Spacer height={24} />
 
