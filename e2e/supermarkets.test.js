@@ -3,7 +3,6 @@
 describe("Jornada: Filtragem e Comparação de Supermercados", () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
-    // Ignorar long-polling do Firestore. Consequência: Detox deixa de esperar por fetches de DB.
     await device.setURLBlacklist([
       ".*firestore\\.googleapis\\.com.*",
       ".*Listen/channel.*",
@@ -37,7 +36,7 @@ describe("Jornada: Filtragem e Comparação de Supermercados", () => {
     await expect(backBtn).toBeVisible();
     await backBtn.tap();
 
-    await element(by.text("Ínicio")).tap();
+    await element(by.text("Início")).tap();
 
     const homeSearchBar = element(by.id("home-search-bar"));
     await expect(homeSearchBar).toBeVisible();
@@ -49,13 +48,10 @@ describe("Jornada: Filtragem e Comparação de Supermercados", () => {
     await expect(element(by.id("filter-option-10"))).toBeVisible();
     await element(by.id("filter-option-10")).tap();
 
-    // Sincronização Explícita 2: Esperar pelo Firestore injetar os dados no FlashList.
-    // Compensa o facto de termos bloqueado o domínio no beforeAll.
     const firstCard = element(by.text("Ver mais")).atIndex(0);
     await waitFor(firstCard).toBeVisible().withTimeout(10000);
     await firstCard.tap();
 
-    // Sincronização Explícita 3: Garantir que a renderização da sub-página terminou
     await waitFor(element(by.text("Horário")))
       .toBeVisible()
       .withTimeout(5000);

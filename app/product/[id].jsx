@@ -26,7 +26,6 @@ export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme] ?? Colors.light;
-
   const { addProduct } = useCart();
 
   const {
@@ -200,7 +199,6 @@ export default function ProductDetail() {
               ? `Adicionar ${quantity} à Lista`
               : "Adicionar à Lista"}
           </ThemedText>
-
           <ThemedText style={styles.addButtonPrice}>
             {totalPrice.toFixed(2)}€
           </ThemedText>

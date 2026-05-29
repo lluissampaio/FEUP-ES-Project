@@ -17,8 +17,6 @@ describe("Jornada: Checklist de Compras", () => {
     await element(by.text("Lista")).tap();
     await expect(element(by.text("empty list"))).toBeVisible();
 
-    await element(by.text("Ínicio")).tap();
-
     await element(by.text("Explorar")).tap();
 
     const categoryCard = element(by.id("category-card-frutas_vegetais"));

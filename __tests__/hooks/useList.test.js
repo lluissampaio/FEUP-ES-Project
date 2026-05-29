@@ -22,8 +22,8 @@ jest.mock("firebase/firestore", () => ({
 }));
 
 import useList from "@/hooks/useList";
-import { act, renderHook, waitFor } from "@testing-library/react-native";
 import { useCartStore } from "@/store/useCartStore";
+import { act, renderHook, waitFor } from "@testing-library/react-native";
 
 describe("Hook useCart", () => {
   beforeEach(() => {

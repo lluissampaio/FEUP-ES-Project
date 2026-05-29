@@ -45,7 +45,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Ínicio",
+          title: "Início",
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <AppIcon name="shop" color={color} weight="regular" />

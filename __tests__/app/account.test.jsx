@@ -36,8 +36,8 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react-native";
-import React from "react";
 import { signOut } from "firebase/auth";
+import React from "react";
 
 jest.mock(
   "react-native-safe-area-context",
