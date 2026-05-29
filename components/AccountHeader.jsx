@@ -8,7 +8,12 @@ import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
   const [uploading, setUploading] = useState(false);
@@ -67,10 +72,11 @@ const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
         />
         {isAuthenticated && (
           <View style={styles.editBadge}>
-            {uploading
-              ? <ActivityIndicator color="#fff" size="small" />
-              : <AppIcon name="edit" size={14} color="#fff" weight="bold" />
-            }
+            {uploading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <AppIcon name="edit" size={14} color="#fff" weight="bold" />
+            )}
           </View>
         )}
       </TouchableOpacity>
@@ -79,7 +85,12 @@ const AccountHeader = ({ name, email, avatarUrl, onEditPress }) => {
         <View style={styles.nameRow}>
           <ThemedText style={styles.name}>{name}</ThemedText>
           <TouchableOpacity onPress={onEditPress}>
-            <AppIcon name="edit" size={18} color={Colors.primary} weight="bold" />
+            <AppIcon
+              name="edit"
+              size={18}
+              color={Colors.primary}
+              weight="bold"
+            />
           </TouchableOpacity>
         </View>
         <ThemedText style={styles.email}>{email}</ThemedText>

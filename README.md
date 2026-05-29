@@ -30,8 +30,7 @@ As contribuições são esperadas exclusivamente pela equipa inicial, mas podere
 
 Entre em contacto connosco!
 
-Obrigado!
----
+## Obrigado!
 
 ## Como Correr a Aplicação
 
@@ -460,10 +459,10 @@ O código segue a estrutura padrão de projetos React Native, organizada em past
 
 ## Equipa
 
-| Nome | Número |
-|---|---|
-| Pedro Cunha Gonçalves de Melo | up202406050
-| Daniel Lobo | up202306056 
-| Luís Miguel Branco Sampaio Costa | up202404078 
-| José Dinis Rocha Melo Maçorano dos Santos | up202405578 
-| Afonso Moura | up202403939
+| Nome                                      | Número      |
+| ----------------------------------------- | ----------- |
+| Pedro Cunha Gonçalves de Melo             | up202406050 |
+| Daniel Lobo                               | up202306056 |
+| Luís Miguel Branco Sampaio Costa          | up202404078 |
+| José Dinis Rocha Melo Maçorano dos Santos | up202405578 |
+| Afonso Moura                              | up202403939 |
