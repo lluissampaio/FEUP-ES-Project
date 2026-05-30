@@ -446,6 +446,25 @@ Gemini, GLM, Claude, Deepseek.
 
 ---
 
+#### Validação Final da Aplicação
+
+Na fase final do projeto, foi realizado um questionário focado na interface e usabilidade (com a participação de 5 respondentes) para validar o resultado final da aplicação, a clareza das funcionalidades desenvolvidas e a intenção de adoção por parte dos utilizadores. Este processo foi fundamental para confirmar se as necessidades identificadas no início do projeto foram resolvidas de forma eficaz na versão final.
+Link do questionário: [https://tally.so/r/68MNXJ]
+
+**Resultados**
+<img width="629" height="829" alt="questionario" src="https://github.com/user-attachments/assets/af9203cb-531f-4abc-889d-686c64758e95" />
+<img width="632" height="818" alt="questionário" src="https://github.com/user-attachments/assets/cfde3abc-2599-43a9-ae07-d2a17cf35295" />
+
+**Principais Conclusões e Feedback Final:**
+
+  Aprovação do Design e Onboarding: 80% dos utilizadores (4 em 5) consideram que o design inicial é polido, moderno e transmite confiança, com os restantes 20% a referir que tem bom aspeto. A implementação da entrada rápida como "Convidado" lado a lado com a criação de conta obteve uma taxa de aprovação absoluta, com 100% dos inquiridos a avaliar a intuição e utilidade desta abordagem com a pontuação máxima de 5 estrelas.
+
+  Sucesso da Otimização do Carrinho: O Toggle de "Melhor Preço" vs. "Loja Única" consolidou-se como o elemento central da aplicação, sendo considerado por 100% dos respondentes como a funcionalidade mais valiosa do Cents. Para 80% dos inquiridos, a compreensão desta mecânica através da interface é totalmente clara. No uso prático do dia a dia, 60% utilizaria maioritariamente o "Mix de Lojas" para maximizar a poupança, enquanto 40% alternaria entre as duas opções consoante as necessidades da semana.
+
+  Eficácia da Experiência na Loja e Informação: A Checklist Interativa, desenvolvida para apoiar o utilizador presencialmente no supermercado, registou uma forte aceitação, com uma média de 4.8 em 5 estrelas no que toca à sua utilidade e facilidade de uso (80% dos inquiridos atribuiu 5 estrelas). Simultaneamente, 100% da amostra considerou que a informação apresentada na página de detalhe dos produtos é completa e fácil de ler.
+
+  Elevada Intenção de Adoção: O balanço final revela uma excelente recetividade ao produto: caso o Cents estivesse disponível hoje nas lojas de aplicações, 100% dos inquiridos daria uso à ferramenta nas suas compras (sendo que 60% usaria definitivamente e 40% provavelmente usaria). O feedback qualitativo descreveu a experiência em três palavras com adjetivos como "rápido", "fácil", "eficaz" e "inovador", tendo surgido a sugestão de integrar o funcionamento com sistemas de pontos (como os do Pingo Doce) para futuras iterações.
+
 ### Entrega Final
 
 #### Valor de Negócio Percebido
