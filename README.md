@@ -24,6 +24,7 @@ Aplicação móvel de comparação de preços de supermercado, desenvolvida em R
   - [Sprint 2](#sprint-2)
   - [Sprint 3](#sprint-3)
   - [Entrega Final](#entrega-final)
+  - [Validação Final da Aplicação](#validação-final-da-aplicação)
 - [Equipa](#equipa)
 
 As contribuições são esperadas exclusivamente pela equipa inicial, mas poderemos abri-las à comunidade após o curso, em todas as áreas e tópicos: requisitos, tecnologias, desenvolvimento, experimentação, testes, etc...
@@ -449,11 +450,21 @@ Gemini, GLM, Claude, Deepseek.
 #### Validação Final da Aplicação
 
 Na fase final do projeto, foi realizado um questionário focado na interface e usabilidade (com a participação de 5 respondentes) para validar o resultado final da aplicação, a clareza das funcionalidades desenvolvidas e a intenção de adoção por parte dos utilizadores. Este processo foi fundamental para confirmar se as necessidades identificadas no início do projeto foram resolvidas de forma eficaz na versão final.
-Link do questionário: [https://tally.so/r/68MNXJ]
 
-**Resultados**
-<img width="629" height="829" alt="questionario" src="https://github.com/user-attachments/assets/af9203cb-531f-4abc-889d-686c64758e95" />
-<img width="632" height="818" alt="questionário" src="https://github.com/user-attachments/assets/cfde3abc-2599-43a9-ae07-d2a17cf35295" />
+Formulário: [https://tally.so/r/68MNXJ](https://tally.so/r/68MNXJ)
+
+### Resultados
+
+<table>
+  <tr>
+    <td width="50%">
+      <img src="https://github.com/user-attachments/assets/af9203cb-531f-4abc-889d-686c64758e95" alt="Ordenação e Feedback de Funcionalidades" width="100%" />
+    </td>
+    <td width="50%">
+      <img src="https://github.com/user-attachments/assets/cfde3abc-2599-43a9-ae07-d2a17cf35295" alt="Hábitos de Consumo e Adesão da Ideia" width="100%" />
+    </td>
+  </tr>
+</table>
 
 **Principais Conclusões e Feedback Final:**
 
