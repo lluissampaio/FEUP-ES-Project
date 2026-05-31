@@ -413,6 +413,8 @@ Depois
 - **Checklist Interativa** por @bcdtrak: modo de uso na loja em que os produtos clicados ficam marcados, passam a cinzento e descem para o fim da lista.
 - **Página "Sobre Nós"** por @noloseiiird: créditos aos autores da aplicação.
 - **Botão de Limpeza de Texto** por @noloseiiird: atalho nas barras de pesquisa para apagar rapidamente o texto inserido.
+- **Destaque de Promoções** por @JoseSantos56: exibição dos produtos com melhor preço por supermercado, mostrando preço atual e preço original para comparação.
+- **Produtos Ecológicos** por @JoseSantos56: secção dedicada a produtos sustentáveis com indicador visual (ícone/verde) para fácil identificação.
 
 #### Retrospetiva
 
