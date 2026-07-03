@@ -494,6 +494,23 @@ O código segue a estrutura padrão de projetos React Native, organizada em past
 
 ---
 
+### Pitch
+
+"Imagina que estás no supermercado com uma lista de compras no papel, sem saber se estás a pagar mais do que devias. Ou pior — chegares a casa e perceber que o mesmo produto estava 30% mais barato noutro sítio.
+É exatamente este problema que o Cents resolve.
+O Cents é uma aplicação mobile que te ajuda a fazer compras de supermercado de forma mais inteligente e económica. Desenvolvida por estudantes de Engenharia de Software da FEUP, a app permite-te pesquisar produtos, comparar preços entre supermercados e construir uma lista de compras otimizada — tudo num só lugar.
+Como funciona?
+Pesquisas um produto, vês os preços em todos os supermercados disponíveis e adicionas à tua lista. O algoritmo calcula automaticamente a combinação mais barata — seja num único supermercado por conveniência, ou em vários para maximizar a poupança. Tu escolhes.
+Quando estás na loja, usas a checklist interativa para ir riscando os produtos à medida que os colocas no carrinho. Sem papel, sem confusão.
+O que nos diferencia?
+Não somos apenas um comparador de preços. Somos uma ferramenta de compras do início ao fim — desde a pesquisa em casa até ao momento em que estás no corredor do supermercado.
+A app funciona com conta ou como convidado, tem dark mode, localização de supermercados próximos com horários em tempo real, e sincronização da lista na cloud para nunca perderes os teus dados.
+Os números dizem tudo — no nosso questionário inicial, 95% dos utilizadores consideraram a ideia útil, e quase metade admite procurar ativamente supermercados com melhores promoções.
+O Cents não promete milagres. Promete que nunca mais vais pagar mais do que deves.
+Compra mais barato, sempre."
+
+---
+
 ## Equipa
 
 | Nome                                      | Número      |
